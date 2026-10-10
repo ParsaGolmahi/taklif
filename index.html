@@ -394,7 +394,7 @@ input[readonly]{opacity:.65}
    DELETE /api/admin/teachers/{username}
    user = {username, name, role: student|teacher|admin, subject}
 */
-const PROD_API = 'https://YOUR-APP.up.railway.app';
+const PROD_API = 'https://taklifbackend-production.up.railway.app';
 const CONFIG = {
   API_BASE: ['localhost', '127.0.0.1'].includes(location.hostname) ? 'http://localhost:8000' : PROD_API,
   DAYS: [ // به ترتیب هفته، از شنبه
