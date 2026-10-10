@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5b4bff">
+<title>سامانه تکلیف کلاس ۹۰۱ - دبیرستان شهید بهشتی</title>
+<meta name="description" content="مشاهده و ثبت تکلیف‌های کلاس ۹۰۱ دبیرستان شهید بهشتی به تفکیک تاریخ">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.0.3/Vazirmatn-font-face.css">
+<style>
+:root{
+  --bg:#f5f6fa; --card:#fff; --text:#12162b; --muted:#6b7390; --line:#e8eaf3;
+  --accent:#5b4bff; --accent-2:#4638e0; --accent-soft:#eeecff; --on-accent:#fff;
+  --danger:#e5365b; --pill-l:36%;
+  --shadow:0 1px 2px rgba(18,22,43,.04),0 10px 28px -14px rgba(18,22,43,.14);
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0d1020; --card:#161a30; --text:#eef0fb; --muted:#9097b8; --line:#252a47;
+  --accent:#8b7dff; --accent-2:#a094ff; --accent-soft:#25214d; --on-accent:#14102e;
+  --danger:#ff6b88; --pill-l:78%; --shadow:none; color-scheme:dark;
+}}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text);
+  font-family:Vazirmatn,Tahoma,"Segoe UI",system-ui,sans-serif;font-size:16px;line-height:1.8}
+button,input,select,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{width:min(1020px,100% - 32px);margin-inline:auto}
+
+/* نوار بالا */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top)}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{flex:none;width:44px;height:44px;border-radius:14px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.logo svg{width:24px;height:24px}
+.titles{min-width:0}
+h1{margin:0;font-size:clamp(.95rem,3.6vw,1.3rem);font-weight:800;line-height:1.45}
+.titles p{margin:0;color:var(--muted);font-size:.85rem;line-height:1.4}
+.who{display:flex;align-items:center;gap:8px;flex:none}
+.who>span:first-child{font-weight:600;font-size:.92rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.auth{display:flex;gap:8px}
+.role{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:0 8px;font-size:.74rem;font-weight:700;line-height:1.7}
+
+/* دکمه‌ها */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:8px 18px;
+  font-weight:700;cursor:pointer;background:var(--accent);color:var(--on-accent);transition:background .15s,transform .1s;white-space:nowrap}
+.btn:hover{background:var(--accent-2)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.6;cursor:progress}
+.btn.line{background:var(--accent-soft);color:var(--accent)}
+.btn.line:hover{background:color-mix(in srgb,var(--accent) 18%,var(--card))}
+.btn.small{padding:3px 14px;font-size:.84rem;border-radius:10px}
+
+/* بدنه */
+main{flex:1;padding:18px 0 12px}
+.note{background:var(--accent-soft);color:var(--accent);border-radius:14px;padding:10px 16px;margin:0 0 14px;font-size:.88rem}
+
+/* ناوبری هفته */
+.weeknav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.nav-btn{flex:none;width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text);
+  display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s,color .15s}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.nav-btn svg{width:20px;height:20px}
+.weeklabel{flex:1;min-width:0;text-align:center;line-height:1.5}
+.weeklabel b{display:block;font-size:1rem;font-weight:800}
+.weeklabel small{display:block;color:var(--muted);font-size:.8rem}
+
+/* روزهای هفته */
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:4px 0 14px}
+.day{position:relative;display:flex;flex-direction:column;align-items:center;padding:10px 2px 6px;
+  border-radius:18px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;
+  box-shadow:var(--shadow);transition:transform .15s,background .15s,border-color .15s,box-shadow .2s}
+.day:hover{border-color:var(--accent)}
+.day.past:not([aria-selected=true]){opacity:.65}
+.day[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);transform:translateY(-3px);
+  box-shadow:0 14px 26px -10px color-mix(in srgb,var(--accent) 70%,transparent)}
+.dn{font-size:.8rem;font-weight:600;opacity:.85;line-height:1.5}
+.dd{font-size:1.6rem;font-weight:800;line-height:1.35}
+.dm{font-size:.76rem;opacity:.75;line-height:1.4}
+.today-tag{font-size:.66rem;font-weight:700;color:var(--accent);line-height:1.6;min-height:1.6em}
+.day[aria-selected=true] .today-tag{color:var(--on-accent)}
+.count{position:absolute;top:6px;inset-inline-end:6px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;
+  background:var(--accent-soft);color:var(--accent);font-size:.7rem;font-weight:800;line-height:19px;text-align:center}
+.day[aria-selected=true] .count{background:color-mix(in srgb,var(--on-accent) 24%,transparent);color:var(--on-accent)}
+
+.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:18px;align-items:start}
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.sheet-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:18px 20px 6px}
+h2{margin:0;font-size:1.2rem;font-weight:800;line-height:1.5}
+.sub{margin:0;color:var(--muted);font-size:.88rem}
+.sheet-body{padding:6px 20px 20px}
+.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.hw{--c:hsl(var(--h) 75% 55%);position:relative;border:1px solid var(--line);border-radius:18px;
+  padding:14px 18px 12px;padding-inline-start:24px;margin-bottom:10px;background:var(--card)}
+.hw::before{content:"";position:absolute;inset-block:14px;inset-inline-start:10px;width:4px;border-radius:4px;background:var(--c)}
+.hw-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.pill{background:hsl(var(--h) 90% 55%/.15);color:hsl(var(--h) 65% var(--pill-l));border-radius:10px;padding:1px 12px;font-weight:700;font-size:.9rem}
+.hw-actions{display:flex;gap:6px}
+.hw-text{margin:0;line-height:1.95;white-space:pre-wrap;overflow-wrap:anywhere}
+.hw-meta{display:flex;align-items:center;gap:8px;margin-top:8px;color:var(--muted);font-size:.82rem}
+.av{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:.75rem}
+
+.empty{text-align:center;padding:40px 12px;color:var(--muted)}
+.empty p{margin:0 0 14px}
+.skel{height:92px;border-radius:18px;margin:12px 0;background:linear-gradient(90deg,var(--accent-soft) 25%,var(--line) 50%,var(--accent-soft) 75%);background-size:200% 100%;animation:sh 1.3s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+
+.sched-sheet{position:sticky;top:84px}
+.periods{list-style:none;margin:0;padding:4px 0 0}
+.periods li{display:flex;align-items:center;gap:12px;padding:9px 0}
+.periods li+li{border-top:1px solid var(--line)}
+.pnum{flex:none;width:30px;height:30px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:.88rem}
+.pname{font-weight:600;line-height:1.5}
+.pteacher{color:var(--muted);font-size:.84rem;line-height:1.4}
+
+/* پنجره‌ها */
+dialog{border:0;padding:0;border-radius:24px;width:min(460px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;
+  background:var(--card);color:var(--text);box-shadow:0 30px 80px rgba(8,10,30,.45)}
+dialog::backdrop{background:rgba(10,12,30,.55);backdrop-filter:blur(3px)}
+.dlg{padding:24px}
+.dlg h3{margin:0;font-size:1.15rem;font-weight:800}
+.dlg .sub{margin-top:2px}
+.field{display:block;margin-top:14px}
+.field>span{display:block;font-size:.88rem;font-weight:600;margin-bottom:4px}
+input,select,textarea{width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+textarea{min-height:120px;resize:vertical;line-height:1.8}
+.ltr{direction:ltr;text-align:left}
+.ferr{color:var(--danger);font-size:.88rem;min-height:1.5em;margin:10px 0 0}
+.dlg-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.seg{display:flex;background:var(--bg);border-radius:14px;padding:4px;margin-top:14px}
+.seg button{flex:1;border:0;background:none;border-radius:10px;padding:6px 4px;font-weight:700;cursor:pointer;color:var(--muted)}
+.seg button[aria-selected=true]{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.srow{display:grid;grid-template-columns:28px 1fr 1fr 36px;gap:8px;align-items:center;margin-top:8px}
+.srow .pnum{width:26px;height:26px;font-size:.78rem;border-radius:8px}
+.xbtn{border:0;background:none;color:var(--danger);cursor:pointer;font-size:1.05rem;border-radius:10px;height:40px}
+.xbtn:hover{background:color-mix(in srgb,var(--danger) 12%,transparent)}
+
+.tlist{list-style:none;margin:14px 0 0;padding:0}
+.tlist li{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.tlist li:first-child{border-top:0}
+.tinfo{flex:1;min-width:0;line-height:1.5}
+.tinfo b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tinfo small{color:var(--muted)}
+.tform{margin-top:18px;padding-top:6px;border-top:2px solid var(--line)}
+.tform h3{font-size:1rem;margin-top:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input[readonly]{opacity:.65}
+.toasts{position:fixed;inset-inline:12px;top:calc(76px + env(safe-area-inset-top));display:grid;justify-items:center;gap:8px;pointer-events:none;z-index:50}
+.toast{background:var(--text);color:var(--bg);padding:10px 20px;border-radius:14px;font-size:.92rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:100%}
+.toast.bad{background:var(--danger);color:#fff}
+
+.foot{padding:26px 0 30px;text-align:center;color:var(--muted);font-size:.85rem}
+.foot-line{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center}
+.foot b{color:var(--text)}
+.sep{opacity:.4}
+
+/* تبلت و موبایل */
+@media(max-width:820px){
+  .layout{grid-template-columns:1fr}
+  .sched-sheet{position:static}
+}
+@media(max-width:600px){
+  .wrap{width:calc(100% - 24px)}
+  main{padding:14px 0 calc(92px + env(safe-area-inset-bottom))}
+  .sheet{border-radius:20px}
+  .sheet-head{padding:16px 16px 4px}
+  .sheet-body{padding:6px 14px 16px}
+  .hw{padding:12px 14px 10px;padding-inline-start:22px;border-radius:16px}
+  .btn.small{padding:6px 14px}
+  .auth .btn{padding:6px 14px;font-size:.88rem}
+  #addBtn{position:fixed;z-index:15;inset-inline-start:16px;bottom:calc(18px + env(safe-area-inset-bottom));padding:13px 24px;border-radius:18px;
+    box-shadow:0 14px 28px -8px color-mix(in srgb,var(--accent) 65%,transparent)}
+  /* پنجره‌ها به‌صورت برگه پایین صفحه */
+  dialog{width:100%;max-width:none;margin:auto 0 0;border-radius:24px 24px 0 0;max-height:92dvh}
+  .dlg{padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+  .dlg-actions .btn{flex:1}
+  .two{grid-template-columns:1fr}
+  .srow{grid-template-columns:28px 1fr 40px}
+  .srow input:nth-of-type(2){grid-column:2;grid-row:2}
+  .srow .xbtn{grid-column:3;grid-row:1}
+  .toasts{top:calc(70px + env(safe-area-inset-top))}
+}
+@media(max-width:480px){
+  .titles p{font-size:.78rem}
+  .logo{width:40px;height:40px;border-radius:12px}
+  .who>span:first-child{max-width:70px;font-size:.85rem}
+  .nav-btn{width:40px;height:40px;border-radius:12px}
+  .weeklabel b{font-size:.9rem}
+  .days{gap:5px}
+  .day{padding:8px 0 4px;border-radius:14px}
+  .dn{font-size:.7rem}
+  .dd{font-size:1.3rem}
+  .dm{font-size:.68rem}
+  .today-tag{font-size:.6rem}
+  .count{top:3px;inset-inline-end:3px;min-width:16px;height:16px;line-height:16px;font-size:.62rem;padding:0 4px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/>
+        </svg>
+      </div>
+      <div class="titles">
+        <h1>سامانه تکلیف کلاس ۹۰۱</h1>
+        <p>دبیرستان شهید بهشتی</p>
+      </div>
+    </div>
+    <div id="authArea"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="weeknav">
+    <button class="nav-btn" id="prevWeek" type="button" aria-label="هفته قبل">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="weeklabel" aria-live="polite">
+      <b id="weekLabel"></b>
+      <small id="todayText"></small>
+    </div>
+    <button class="nav-btn" id="nextWeek" type="button" aria-label="هفته بعد">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <button class="btn line small" id="goToday" type="button">امروز</button>
+  </div>
+
+  <nav class="days" id="tabs" role="tablist" aria-label="روزهای هفته"></nav>
+
+  <div class="layout">
+    <section class="sheet" id="hwSheet" role="tabpanel">
+      <div class="sheet-head">
+        <div>
+          <h2 id="dayTitle"></h2>
+          <p class="sub" id="daySub"></p>
+        </div>
+        <div class="head-actions">
+          <button class="btn line" id="refreshBtn" type="button">بروزرسانی</button>
+          <button class="btn" id="addBtn" type="button">+ ثبت تکلیف</button>
+        </div>
+      </div>
+      <div class="sheet-body" id="hwList" aria-live="polite"></div>
+    </section>
+
+    <aside class="sheet sched-sheet">
+      <div class="sheet-head">
+        <div>
+          <h2>برنامه زنگ‌ها</h2>
+          <p class="sub" id="schedSub"></p>
+        </div>
+        <button class="btn line small" id="editSched" type="button" hidden>ویرایش</button>
+      </div>
+      <div class="sheet-body"><ol class="periods" id="periods"></ol></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-line">
+      <span dir="ltr">Developed by <b>parsa.G</b></span>
+      <span class="sep" aria-hidden="true">|</span>
+      <span>یک پروژه متن‌باز</span>
+      <span class="sep" aria-hidden="true">|</span>
+      <span dir="ltr">© <span id="year"></span> Copyright</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ورود / ثبت‌نام -->
+<dialog id="authDlg" aria-labelledby="authTitle">
+  <form class="dlg" id="authForm" novalidate>
+    <h3 id="authTitle">ورود به سامانه</h3>
+    <p class="sub" id="authNote"></p>
+    <div class="seg" role="tablist">
+      <button type="button" role="tab" id="segLogin" aria-selected="true">ورود</button>
+      <button type="button" role="tab" id="segReg" aria-selected="false">ثبت‌نام دانش‌آموز</button>
+    </div>
+    <label class="field" id="nameField" hidden><span>نام و نام‌خانوادگی</span>
+      <input name="fullname" maxlength="40" autocomplete="name"></label>
+    <label class="field" id="emailField" hidden><span>ایمیل</span>
+      <input name="email" type="email" class="ltr" maxlength="254" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"></label>
+    <label class="field"><span id="userLabel">نام کاربری یا ایمیل</span>
+      <input name="username" class="ltr" maxlength="254" autocomplete="username" autocapitalize="none" spellcheck="false"></label>
+    <label class="field"><span>رمز عبور</span>
+      <input name="password" type="password" class="ltr" maxlength="64" autocomplete="current-password"></label>
+    <p class="ferr" id="authErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" data-close>انصراف</button>
+      <button type="submit" class="btn" id="authSubmit">ورود</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ثبت / ویرایش تکلیف -->
+<dialog id="hwDlg" aria-labelledby="hwTitle">
+  <form class="dlg" id="hwForm" novalidate>
+    <h3 id="hwTitle">ثبت تکلیف</h3>
+    <label class="field"><span>برای تاریخ</span><select name="date"></select></label>
+    <label class="field"><span>درس</span>
+      <input name="subject" maxlength="30" list="subjects" autocomplete="off" placeholder="مثلاً ریاضی">
+      <datalist id="subjects"></datalist></label>
+    <label class="field"><span>توضیح تکلیف</span>
+      <textarea name="text" maxlength="600" placeholder="صفحه، شماره تمرین، نکته‌های معلم..."></textarea></label>
+    <p class="ferr" id="hwErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" data-close>انصراف</button>
+      <button type="submit" class="btn" id="hwSave">ثبت تکلیف</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ویرایش برنامه (معلم) -->
+<dialog id="schedDlg" aria-labelledby="schedTitle">
+  <form class="dlg" id="schedForm" novalidate>
+    <h3 id="schedTitle">ویرایش برنامه زنگ‌ها</h3>
+    <p class="sub">برنامه هر روز هفته در همه هفته‌ها تکرار می‌شود.</p>
+    <label class="field"><span>روز هفته</span><select id="schedDay"></select></label>
+    <div id="schedRows"></div>
+    <button type="button" class="btn line small" id="addPeriod" style="margin-top:12px">افزودن زنگ</button>
+    <p class="ferr" id="schedErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" data-close>انصراف</button>
+      <button type="submit" class="btn" id="schedSave">ذخیره برنامه</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- مدیریت معلم‌ها (مدیر) -->
+<dialog id="teachersDlg" aria-labelledby="teachersTitle">
+  <div class="dlg">
+    <h3 id="teachersTitle">مدیریت معلم‌ها</h3>
+    <p class="sub">معلم را اضافه کن و نام کاربری و رمزش را به خودش بده. معلم‌ها می‌توانند تکلیف ثبت کنند و برنامه زنگ‌ها را ویرایش کنند.</p>
+    <ul class="tlist" id="teacherList"></ul>
+    <form class="tform" id="teacherForm" novalidate>
+      <h3 id="tformTitle">افزودن معلم</h3>
+      <div class="two">
+        <label class="field"><span>نام و نام‌خانوادگی</span>
+          <input name="tname" maxlength="40" autocomplete="off" placeholder="مثلاً خانم احمدی"></label>
+        <label class="field"><span>درس</span>
+          <input name="tsubject" maxlength="30" autocomplete="off" placeholder="مثلاً ریاضی"></label>
+      </div>
+      <div class="two">
+        <label class="field"><span>نام کاربری</span>
+          <input name="tusername" class="ltr" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false"></label>
+        <label class="field"><span id="tpassLabel">رمز عبور</span>
+          <input name="tpassword" type="text" class="ltr" maxlength="64" autocomplete="new-password" autocapitalize="none" spellcheck="false"></label>
+      </div>
+      <p class="ferr" id="teacherErr" role="alert"></p>
+      <div class="dlg-actions">
+        <button type="button" class="btn line" id="teacherCancel" hidden>انصراف از ویرایش</button>
+        <button type="button" class="btn line" data-close>بستن</button>
+        <button type="submit" class="btn" id="teacherSave">افزودن معلم</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ================= تنظیمات =================
+   بعد از دیپلوی بک‌اند روی Railway، آدرس عمومی آن را در PROD_API بگذار (بدون / آخر).
+   روی کامپیوتر خودت (localhost) خودکار به http://localhost:8000 وصل می‌شود.
+
+   قرارداد API:
+   POST   /api/auth/register  {name, email, username, password} -> {token, user}
+   POST   /api/auth/login     {username (نام کاربری یا ایمیل), password} -> {token, user}
+   GET    /api/auth/me                                          -> {user}
+   GET    /api/schedule                                         -> {"6":[{subject,teacher}], ...}
+   PUT    /api/schedule (معلم/مدیر)                              همان ساختار بالا
+   GET    /api/homework                                         -> [{id,day,date,subject,text,author,authorRole,authorSubject,authorId}]
+   POST   /api/homework {day,date,subject,text} | PUT /api/homework/{id} | DELETE /api/homework/{id}
+   GET    /api/admin/teachers (مدیر)                             -> [{username,name,subject,createdAt}]
+   POST   /api/admin/teachers {name,username,password,subject}
+   PUT    /api/admin/teachers/{username} {name,subject,password?}
+   DELETE /api/admin/teachers/{username}
+   user = {username, name, role: student|teacher|admin, subject}
+*/
+const PROD_API = 'https://YOUR-APP.up.railway.app';
+const CONFIG = {
+  API_BASE: ['localhost', '127.0.0.1'].includes(location.hostname) ? 'http://localhost:8000' : PROD_API,
+  DAYS: [ // به ترتیب هفته، از شنبه
+    { id: 6, name: 'شنبه' }, { id: 0, name: 'یکشنبه' }, { id: 1, name: 'دوشنبه' },
+    { id: 2, name: 'سه‌شنبه' }, { id: 3, name: 'چهارشنبه' },
+  ],
+  MAX_PERIODS: 8,
+  ADD_WEEKS_AHEAD: 6,
+  REFRESH_AFTER_MS: 30000,
+};
+
+/* ================= ابزارها ================= */
+const $ = (s, r = document) => r.querySelector(s);
+const fa = n => Number(n).toLocaleString('fa-IR');
+const fmt = (d, o) => new Intl.DateTimeFormat('fa-IR-u-ca-persian', o).format(d);
+const SHORT = { day: 'numeric', month: 'long' };
+const FULL = { day: 'numeric', month: 'long', year: 'numeric' };
+const FULLW = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+const SCHOOL = CONFIG.DAYS.map(d => d.id);
+const pad = n => String(n).padStart(2, '0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const fromIso = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const weekStartOf = d => addDays(d, -((d.getDay() - 6 + 7) % 7)); // شنبه همان هفته
+const startDate = () => { // نزدیک‌ترین روز مدرسه از امروز
+  for (let i = 0; i < 7; i++) { const d = addDays(today(), i); if (SCHOOL.includes(d.getDay())) return iso(d); }
+  return iso(today());
+};
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now() + Math.random().toString(16).slice(2));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const dayName = id => CONFIG.DAYS.find(d => d.id === id)?.name ?? '';
+
+// ساخت امن عنصر (بدون innerHTML تا متن کاربران اسکریپت اجرا نکند)
+function h(tag, props = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const kid of kids.flat()) {
+    if (kid == null || kid === false) continue;
+    el.append(kid.nodeType ? kid : document.createTextNode(kid));
+  }
+  return el;
+}
+
+const session = {
+  get() { try { return JSON.parse(localStorage.getItem('session')); } catch { return null; } },
+  set(v) { try { localStorage.setItem('session', JSON.stringify(v)); } catch {} },
+  clear() { try { localStorage.removeItem('session'); } catch {} },
+};
+
+const state = {
+  user: session.get()?.user ?? null,
+  date: startDate(), // تاریخ انتخاب‌شده (YYYY-MM-DD)
+  schedule: {}, homework: [],
+  loading: true, error: '', lastLoad: 0, pendingAdd: false, editing: null,
+};
+
+/* ================= بک‌اند واقعی ================= */
+const remote = {
+  async req(path, { method = 'GET', body } = {}) {
+    const headers = {};
+    if (body) headers['Content-Type'] = 'application/json';
+    const s = session.get();
+    if (s?.token) headers.Authorization = 'Bearer ' + s.token;
+    if (!API_READY) throw new Error('آدرس سرور تنظیم نشده است (PROD_API در index.html).');
+    let res;
+    try {
+      res = await fetch(CONFIG.API_BASE.replace(/\/$/, '') + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+    } catch { throw new Error('ارتباط با سرور برقرار نشد. اینترنت را بررسی کن.'); }
+    if (res.status === 401 && s && !path.startsWith('/api/auth/login') && !path.startsWith('/api/auth/register')) {
+      session.clear(); state.user = null; renderAll();
+      throw new Error('نشست تو تمام شده است. دوباره وارد شو.');
+    }
+    if (!res.ok) {
+      let msg = 'مشکلی پیش آمد. دوباره تلاش کن.';
+      try { const j = await res.json(); if (typeof j.detail === 'string') msg = j.detail; } catch {}
+      throw new Error(msg);
+    }
+    return res.status === 204 ? null : res.json();
+  },
+  login: d => remote.req('/api/auth/login', { method: 'POST', body: d }),
+  register: d => remote.req('/api/auth/register', { method: 'POST', body: d }),
+  getSchedule: () => remote.req('/api/schedule'),
+  saveSchedule: d => remote.req('/api/schedule', { method: 'PUT', body: d }),
+  listHomework: () => remote.req('/api/homework'),
+  addHomework: d => remote.req('/api/homework', { method: 'POST', body: d }),
+  updateHomework: (id, d) => remote.req('/api/homework/' + id, { method: 'PUT', body: d }),
+  deleteHomework: id => remote.req('/api/homework/' + id, { method: 'DELETE' }),
+  me: () => remote.req('/api/auth/me'),
+  listTeachers: () => remote.req('/api/admin/teachers'),
+  addTeacher: d => remote.req('/api/admin/teachers', { method: 'POST', body: d }),
+  updateTeacher: (u, d) => remote.req('/api/admin/teachers/' + encodeURIComponent(u), { method: 'PUT', body: d }),
+  deleteTeacher: u => remote.req('/api/admin/teachers/' + encodeURIComponent(u), { method: 'DELETE' }),
+};
+
+const backend = remote;
+const API_READY = !!CONFIG.API_BASE && !CONFIG.API_BASE.includes('YOUR-APP');
+
+/* ================= کمکی‌های نمایش ================= */
+const isStaff = u => !!u && (u.role === 'teacher' || u.role === 'admin');
+const canEdit = it => !!state.user && (isStaff(state.user) || state.user.username === it.authorId);
+const roleText = (role, subject) => role === 'admin' ? 'مدیر' : role === 'teacher' ? (subject ? 'معلم ' + subject : 'معلم') : '';
+const onDate = date => state.homework
+  .filter(x => x.date === date)
+  .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+const selDate = () => fromIso(state.date);
+const relLabel = d => {
+  const diff = Math.round((d - today()) / 864e5);
+  return diff === 0 ? 'امروز' : diff === 1 ? 'فردا' : diff === -1 ? 'دیروز' : diff > 0 ? `${fa(diff)} روز دیگر` : `${fa(-diff)} روز پیش`;
+};
+
+function toast(msg, bad = false) {
+  const t = h('div', { class: 'toast' + (bad ? ' bad' : '') }, msg);
+  $('#toasts').append(t);
+  setTimeout(() => t.remove(), 3200);
+}
+
+async function busy(btn, fn) {
+  const label = btn.textContent;
+  btn.disabled = true; btn.textContent = 'کمی صبر کن...';
+  try { return await fn(); } finally { btn.disabled = false; btn.textContent = label; }
+}
+
+/* ================= رندر ================= */
+function renderWeek() {
+  const ws = weekStartOf(selDate()), we = addDays(ws, CONFIG.DAYS.length - 1);
+  $('#weekLabel').textContent = `${fmt(ws, SHORT)} تا ${fmt(we, FULL)}`;
+  $('#todayText').textContent = 'امروز: ' + fmt(new Date(), FULLW);
+}
+
+function renderTabs() {
+  const ws = weekStartOf(selDate()), t = iso(today());
+  $('#tabs').replaceChildren(...CONFIG.DAYS.map((d, i) => {
+    const dt = addDays(ws, i), key = iso(dt), n = onDate(key).length;
+    const isToday = key === t, selected = key === state.date;
+    return h('button', {
+      class: 'day' + (key < t ? ' past' : ''), type: 'button', role: 'tab', id: 'tab-' + i,
+      'aria-selected': String(selected), tabindex: selected ? '0' : '-1',
+      'aria-label': fmt(dt, FULLW) + (n ? ` (${fa(n)} تکلیف)` : ''),
+      onclick: () => { state.date = key; renderAll(); },
+    },
+      h('span', { class: 'dn' }, d.name),
+      h('span', { class: 'dd' }, fmt(dt, { day: 'numeric' })),
+      h('span', { class: 'dm' }, fmt(dt, { month: 'long' })),
+      h('span', { class: 'today-tag' }, isToday ? 'امروز' : '\u00a0'),
+      n > 0 && h('span', { class: 'count', 'aria-hidden': 'true' }, fa(n)));
+  }));
+  const idx = (selDate().getDay() - 6 + 7) % 7;
+  $('#hwSheet').setAttribute('aria-labelledby', 'tab-' + idx);
+}
+
+const hue = s => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 360, 7);
+function hwCard(it) {
+  return h('article', { class: 'hw', style: `--h:${hue(it.subject)}` },
+    h('div', { class: 'hw-top' },
+      h('span', { class: 'pill' }, it.subject),
+      canEdit(it) && h('div', { class: 'hw-actions' },
+        h('button', { class: 'btn line small', type: 'button', onclick: () => openHw(it) }, 'ویرایش'),
+        h('button', { class: 'btn line small', type: 'button', onclick: () => removeHw(it) }, 'حذف'))),
+    h('p', { class: 'hw-text' }, it.text),
+    h('div', { class: 'hw-meta' },
+      h('span', { class: 'av', 'aria-hidden': 'true' }, [...it.author][0] || '؟'),
+      h('span', {}, it.author),
+      roleText(it.authorRole, it.authorSubject) && h('span', { class: 'role' }, roleText(it.authorRole, it.authorSubject))));
+}
+
+function renderDay() {
+  const d = selDate();
+  $('#dayTitle').textContent = `تکلیف‌های ${dayName(d.getDay()) || fmt(d, { weekday: 'long' })}`;
+  $('#daySub').textContent = `${fmt(d, FULLW)} · ${relLabel(d)}`;
+  const box = $('#hwList');
+  if (state.loading) { box.replaceChildren(h('div', { class: 'skel' }), h('div', { class: 'skel' }), h('div', { class: 'skel' })); return; }
+  if (state.error && !state.homework.length) {
+    box.replaceChildren(h('div', { class: 'empty' }, h('p', {}, state.error),
+      h('button', { class: 'btn', type: 'button', onclick: loadAll }, 'تلاش دوباره')));
+    return;
+  }
+  const items = onDate(state.date), isPast = state.date < iso(today());
+  if (!items.length) {
+    box.replaceChildren(h('div', { class: 'empty' },
+      h('p', {}, isPast ? 'برای این روز تکلیفی ثبت نشده بود.' : 'برای این روز هنوز تکلیفی ثبت نشده است.'),
+      !isPast && h('button', { class: 'btn', type: 'button', onclick: onAdd }, 'ثبت اولین تکلیف')));
+    return;
+  }
+  box.replaceChildren(...items.map(hwCard));
+}
+
+function renderSchedule() {
+  const d = selDate(), list = state.schedule[d.getDay()] || [];
+  $('#schedSub').textContent = fmt(d, FULLW);
+  $('#editSched').hidden = !isStaff(state.user);
+  $('#periods').replaceChildren(...(list.length
+    ? list.map((p, i) => h('li', {}, h('span', { class: 'pnum' }, fa(i + 1)),
+        h('div', {}, h('div', { class: 'pname' }, p.subject), p.teacher && h('div', { class: 'pteacher' }, p.teacher))))
+    : [h('li', { class: 'pteacher' }, state.loading ? 'در حال بارگذاری...' : 'برنامه این روز هنوز ثبت نشده است.')]));
+}
+
+function renderAuth() {
+  const box = $('#authArea');
+  if (state.user) {
+    box.replaceChildren(h('div', { class: 'who' },
+      h('span', {}, state.user.name),
+      roleText(state.user.role, state.user.subject) && h('span', { class: 'role' }, roleText(state.user.role, state.user.subject)),
+      state.user.role === 'admin' && h('button', { class: 'btn small', type: 'button', onclick: openTeachers }, 'معلم‌ها'),
+      h('button', { class: 'btn line small', type: 'button', onclick: logout }, 'خروج')));
+  } else {
+    box.replaceChildren(h('div', { class: 'auth' },
+      h('button', { class: 'btn line', type: 'button', onclick: () => openAuth('login') }, 'ورود'),
+      h('button', { class: 'btn', type: 'button', onclick: () => openAuth('register') }, 'ثبت‌نام')));
+  }
+}
+
+function renderAll() { renderAuth(); renderWeek(); renderTabs(); renderDay(); renderSchedule(); }
+
+/* ================= داده ================= */
+async function loadAll() {
+  state.loading = true; state.error = ''; renderDay();
+  try {
+    const [schedule, homework] = await Promise.all([backend.getSchedule(), backend.listHomework()]);
+    state.schedule = schedule || {}; state.homework = homework || [];
+  } catch (e) { state.error = e.message; if (state.homework.length) toast(e.message, true); }
+  state.loading = false; state.lastLoad = Date.now(); renderAll();
+}
+
+/* ================= ورود و ثبت‌نام ================= */
+let authMode = 'login';
+function setAuthMode(m) {
+  authMode = m;
+  const f = $('#authForm');
+  $('#authTitle').textContent = m === 'login' ? 'ورود به سامانه' : 'ثبت‌نام دانش‌آموز';
+  $('#segLogin').setAttribute('aria-selected', String(m === 'login'));
+  $('#segReg').setAttribute('aria-selected', String(m === 'register'));
+  $('#nameField').hidden = m === 'login';
+  $('#emailField').hidden = m === 'login';
+  $('#userLabel').textContent = m === 'login' ? 'نام کاربری یا ایمیل' : 'نام کاربری';
+  f.username.maxLength = m === 'login' ? 254 : 20;
+  f.password.autocomplete = m === 'login' ? 'current-password' : 'new-password';
+  $('#authSubmit').textContent = m === 'login' ? 'ورود' : 'ساخت حساب';
+  $('#authErr').textContent = '';
+}
+function openAuth(mode, note = '') {
+  $('#authForm').reset(); setAuthMode(mode);
+  $('#authNote').textContent = note;
+  $('#authDlg').showModal(); $('#authForm').username.focus();
+}
+async function onAuthSubmit(e) {
+  e.preventDefault();
+  const f = e.target, err = $('#authErr');
+  const data = { username: f.username.value.trim(), password: f.password.value };
+  if (authMode === 'register') {
+    data.name = f.fullname.value.trim();
+    if (data.name.length < 3) { err.textContent = 'نام و نام‌خانوادگی را کامل بنویس.'; return; }
+    data.email = f.email.value.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email) || data.email.length > 254) { err.textContent = 'ایمیل را درست وارد کن.'; return; }
+    if (!/^[A-Za-z0-9_]{3,20}$/.test(data.username)) { err.textContent = 'نام کاربری ۳ تا ۲۰ حرف انگلیسی، عدد یا _ باشد.'; return; }
+    if (data.password.length < 6) { err.textContent = 'رمز عبور حداقل ۶ نویسه باشد.'; return; }
+  } else if (!data.username || !data.password) { err.textContent = 'نام کاربری و رمز عبور را وارد کن.'; return; }
+  try {
+    const res = await busy($('#authSubmit'), () => authMode === 'login' ? backend.login(data) : backend.register(data));
+    session.set(res); state.user = res.user;
+    $('#authDlg').close(); renderAll();
+    toast(`${res.user.name}، خوش آمدی`);
+    if (state.pendingAdd) { state.pendingAdd = false; openHw(); }
+  } catch (ex) { err.textContent = ex.message; }
+}
+function logout() { session.clear(); state.user = null; renderAll(); toast('از حساب خارج شدی'); }
+
+/* ================= ثبت و ویرایش تکلیف ================= */
+function onAdd() {
+  if (!state.user) { state.pendingAdd = true; openAuth('login', 'برای ثبت تکلیف، وارد شو یا ثبت‌نام کن.'); return; }
+  openHw();
+}
+// فهرست تاریخ‌های قابل انتخاب: روزهای مدرسه از امروز تا چند هفته بعد
+function dateOptions(selected) {
+  const t = today(), ws0 = weekStartOf(t), nodes = [], vals = [];
+  let group = null, lastW = null;
+  for (let i = 0; i < CONFIG.ADD_WEEKS_AHEAD * 7; i++) {
+    const d = addDays(t, i);
+    if (!SCHOOL.includes(d.getDay())) continue;
+    const w = Math.round((weekStartOf(d) - ws0) / (7 * 864e5));
+    if (w !== lastW) {
+      group = h('optgroup', { label: w === 0 ? 'این هفته' : w === 1 ? 'هفته بعد' : `${fa(w)} هفته بعد` });
+      nodes.push(group); lastW = w;
+    }
+    group.append(h('option', { value: iso(d) }, fmt(d, FULLW)));
+    vals.push(iso(d));
+  }
+  if (selected && !vals.includes(selected)) nodes.unshift(h('option', { value: selected }, fmt(fromIso(selected), FULLW)));
+  return { nodes, first: vals[0] };
+}
+function openHw(it = null) {
+  state.editing = it;
+  const f = $('#hwForm');
+  $('#hwTitle').textContent = it ? 'ویرایش تکلیف' : 'ثبت تکلیف';
+  $('#hwSave').textContent = it ? 'ذخیره تغییرات' : 'ثبت تکلیف';
+  const preferred = it?.date || (state.date >= iso(today()) ? state.date : null);
+  const { nodes, first } = dateOptions(preferred);
+  f.date.replaceChildren(...nodes);
+  f.date.value = preferred || first;
+  f.subject.value = it?.subject ?? (state.user?.role === 'teacher' ? state.user.subject || '' : '');
+  f.text.value = it?.text ?? '';
+  const subs = [...new Set(Object.values(state.schedule).flat().map(p => p.subject).filter(Boolean))];
+  $('#subjects').replaceChildren(...subs.map(s => h('option', { value: s })));
+  $('#hwErr').textContent = '';
+  $('#hwDlg').showModal(); (it ? f.text : f.subject).focus();
+}
+async function onHwSubmit(e) {
+  e.preventDefault();
+  const f = e.target, err = $('#hwErr');
+  const data = { date: f.date.value, subject: f.subject.value.trim(), text: f.text.value.trim() };
+  data.day = fromIso(data.date).getDay();
+  if (!data.subject) { err.textContent = 'نام درس را وارد کن.'; return; }
+  if (!data.text) { err.textContent = 'توضیح تکلیف را بنویس.'; return; }
+  const editing = state.editing;
+  try {
+    await busy($('#hwSave'), async () => {
+      if (editing) {
+        const up = await backend.updateHomework(editing.id, data);
+        state.homework = state.homework.map(x => x.id === editing.id ? { ...x, ...data, ...(up || {}) } : x);
+      } else {
+        state.homework.push(await backend.addHomework(data));
+      }
+    });
+    state.date = data.date; $('#hwDlg').close(); renderAll();
+    toast(editing ? 'تغییرات ذخیره شد' : 'تکلیف ثبت شد');
+  } catch (ex) { err.textContent = ex.message; }
+}
+async function removeHw(it) {
+  if (!confirm(`تکلیف «${it.subject}» حذف شود؟`)) return;
+  try {
+    await backend.deleteHomework(it.id);
+    state.homework = state.homework.filter(x => x.id !== it.id);
+    renderAll(); toast('تکلیف حذف شد');
+  } catch (ex) { toast(ex.message, true); }
+}
+
+/* ================= ویرایش برنامه (معلم) ================= */
+let draft = {}, draftDay = null;
+function renderRows() {
+  const rows = draft[draftDay];
+  $('#schedRows').replaceChildren(...rows.map((r, i) => h('div', { class: 'srow' },
+    h('span', { class: 'pnum' }, fa(i + 1)),
+    h('input', { value: r.subject, placeholder: 'نام درس', maxlength: 30, 'aria-label': 'نام درس زنگ ' + fa(i + 1), oninput: e => { r.subject = e.target.value; } }),
+    h('input', { value: r.teacher || '', placeholder: 'دبیر (اختیاری)', maxlength: 30, 'aria-label': 'نام دبیر زنگ ' + fa(i + 1), oninput: e => { r.teacher = e.target.value; } }),
+    h('button', { type: 'button', class: 'xbtn', 'aria-label': 'حذف زنگ ' + fa(i + 1), onclick: () => { rows.splice(i, 1); renderRows(); } }, '✕'))));
+  $('#addPeriod').disabled = rows.length >= CONFIG.MAX_PERIODS;
+}
+function openSched() {
+  draft = JSON.parse(JSON.stringify(state.schedule));
+  CONFIG.DAYS.forEach(d => { draft[d.id] = draft[d.id] || []; });
+  const wd = selDate().getDay();
+  draftDay = SCHOOL.includes(wd) ? wd : SCHOOL[0];
+  const sel = $('#schedDay');
+  sel.replaceChildren(...CONFIG.DAYS.map(d => h('option', { value: d.id }, d.name)));
+  sel.value = String(draftDay);
+  $('#schedErr').textContent = '';
+  renderRows(); $('#schedDlg').showModal();
+}
+async function onSchedSubmit(e) {
+  e.preventDefault();
+  const out = {};
+  CONFIG.DAYS.forEach(d => {
+    out[d.id] = (draft[d.id] || []).filter(p => p.subject.trim())
+      .map(p => ({ subject: p.subject.trim(), teacher: (p.teacher || '').trim() }));
+  });
+  try {
+    await busy($('#schedSave'), () => backend.saveSchedule(out));
+    state.schedule = out; $('#schedDlg').close(); renderAll(); toast('برنامه ذخیره شد');
+  } catch (ex) { $('#schedErr').textContent = ex.message; }
+}
+
+/* ================= مدیریت معلم‌ها (مدیر) ================= */
+let teachers = [], editingTeacher = null;
+function teacherForm(t = null) {
+  editingTeacher = t;
+  const f = $('#teacherForm');
+  f.reset();
+  f.tname.value = t?.name ?? ''; f.tsubject.value = t?.subject ?? ''; f.tusername.value = t?.username ?? '';
+  f.tusername.readOnly = !!t;
+  $('#tformTitle').textContent = t ? 'ویرایش ' + t.name : 'افزودن معلم';
+  $('#tpassLabel').textContent = t ? 'رمز جدید (خالی = بدون تغییر)' : 'رمز عبور (حداقل ۸ نویسه)';
+  $('#teacherSave').textContent = t ? 'ذخیره تغییرات' : 'افزودن معلم';
+  $('#teacherCancel').hidden = !t;
+  $('#teacherErr').textContent = '';
+}
+function renderTeachers() {
+  $('#teacherList').replaceChildren(...(teachers.length
+    ? teachers.map(t => h('li', {},
+        h('div', { class: 'tinfo' }, h('b', {}, t.name),
+          h('small', {}, (t.subject ? t.subject + ' · ' : '') + t.username)),
+        h('button', { class: 'btn line small', type: 'button', onclick: () => { teacherForm(t); $('#teacherForm').tname.focus(); } }, 'ویرایش'),
+        h('button', { class: 'btn line small', type: 'button', onclick: () => removeTeacher(t) }, 'حذف')))
+    : [h('li', { class: 'pteacher' }, 'هنوز معلمی اضافه نشده است.')]));
+}
+async function loadTeachers() {
+  $('#teacherList').replaceChildren(h('li', { class: 'pteacher' }, 'در حال بارگذاری...'));
+  try { teachers = await backend.listTeachers(); renderTeachers(); }
+  catch (e) { $('#teacherList').replaceChildren(h('li', { class: 'pteacher' }, e.message)); }
+}
+function openTeachers() { teacherForm(); $('#teachersDlg').showModal(); loadTeachers(); }
+async function onTeacherSubmit(e) {
+  e.preventDefault();
+  const f = e.target, err = $('#teacherErr'), t = editingTeacher;
+  const data = { name: f.tname.value.trim(), subject: f.tsubject.value.trim(), password: f.tpassword.value };
+  if (data.name.length < 3) { err.textContent = 'نام و نام‌خانوادگی را کامل بنویس.'; return; }
+  if (!t) {
+    data.username = f.tusername.value.trim().toLowerCase();
+    if (!/^[a-z0-9_]{3,20}$/.test(data.username)) { err.textContent = 'نام کاربری ۳ تا ۲۰ حرف انگلیسی کوچک، عدد یا _ باشد.'; return; }
+    if (data.password.length < 8) { err.textContent = 'رمز عبور حداقل ۸ نویسه باشد.'; return; }
+  } else if (data.password && data.password.length < 8) { err.textContent = 'رمز جدید حداقل ۸ نویسه باشد.'; return; }
+  try {
+    await busy($('#teacherSave'), () => t
+      ? backend.updateTeacher(t.username, { name: data.name, subject: data.subject, password: data.password || null })
+      : backend.addTeacher(data));
+    toast(t ? 'تغییرات ذخیره شد' : 'معلم اضافه شد');
+    teacherForm(); loadTeachers();
+  } catch (ex) { err.textContent = ex.message; }
+}
+async function removeTeacher(t) {
+  if (!confirm(`«${t.name}» حذف شود؟ تکلیف‌هایی که او ثبت کرده هم پاک می‌شود.`)) return;
+  try {
+    await backend.deleteTeacher(t.username);
+    if (editingTeacher?.username === t.username) teacherForm();
+    toast('معلم حذف شد'); loadTeachers(); loadAll();
+  } catch (ex) { toast(ex.message, true); }
+}
+
+/* ================= شروع ================= */
+function init() {
+  $('#year').textContent = String(new Date().getFullYear());
+
+  const shift = n => { state.date = iso(addDays(selDate(), n)); renderAll(); };
+  $('#prevWeek').addEventListener('click', () => shift(-7));
+  $('#nextWeek').addEventListener('click', () => shift(7));
+  $('#goToday').addEventListener('click', () => { state.date = startDate(); renderAll(); });
+  $('#addBtn').addEventListener('click', onAdd);
+  $('#refreshBtn').addEventListener('click', loadAll);
+  $('#editSched').addEventListener('click', openSched);
+  $('#addPeriod').addEventListener('click', () => { draft[draftDay].push({ subject: '', teacher: '' }); renderRows(); });
+  $('#schedDay').addEventListener('change', e => { draftDay = Number(e.target.value); renderRows(); });
+  $('#segLogin').addEventListener('click', () => setAuthMode('login'));
+  $('#segReg').addEventListener('click', () => setAuthMode('register'));
+  $('#authForm').addEventListener('submit', onAuthSubmit);
+  $('#hwForm').addEventListener('submit', onHwSubmit);
+  $('#schedForm').addEventListener('submit', onSchedSubmit);
+  $('#teacherForm').addEventListener('submit', onTeacherSubmit);
+  $('#teacherCancel').addEventListener('click', () => teacherForm());
+
+  document.querySelectorAll('dialog').forEach(dlg => {
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+    dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
+  });
+  $('#authDlg').addEventListener('close', () => { if (!state.user) state.pendingAdd = false; });
+
+  $('#tabs').addEventListener('keydown', e => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    const ws = weekStartOf(selDate()), n = CONFIG.DAYS.length;
+    const i = Math.round((selDate() - ws) / 864e5);
+    const next = (i + (e.key === 'ArrowLeft' ? 1 : -1) + n) % n; // در راست‌به‌چپ، چپ = روز بعد
+    state.date = iso(addDays(ws, next)); renderAll(); $('#tab-' + next).focus();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && Date.now() - state.lastLoad > CONFIG.REFRESH_AFTER_MS) loadAll();
+  });
+
+  renderAll();
+  loadAll();
+  // نقش کاربر را از سرور تازه کن (مثلاً اگر مدیر نقش او را عوض کرده باشد)
+  if (state.user && API_READY) {
+    backend.me().then(r => { state.user = r.user; session.set({ ...session.get(), user: r.user }); renderAll(); }).catch(() => {});
+  }
+}
+init();
+})();
+</script>
+</body>
+</html>
