@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f6f7fb">
+<meta name="theme-color" content="#f4f5fb">
 <title>سامانه تکلیف کلاس ۹۰۱ - دبیرستان شهید بهشتی</title>
 <meta name="description" content="مشاهده و ثبت تکلیف‌های کلاس ۹۰۱ دبیرستان شهید بهشتی به تفکیک تاریخ">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -12,230 +12,306 @@
 <style>
 /* ================= توکن‌های طراحی ================= */
 :root{
-  --bg:#f6f7fb; --card:#fff;
-  --text:#1b1e38; --muted:#6a7192; --line:#e9ebf4; --line-2:#d9dcea;
-  --accent:#5b4bff; --accent-2:#4735f0;
-  --accent-soft:#eeecff; --on-accent:#fff;
-  --danger:#e5365b;
+  --ah:244; --as:85%; --al:60%;               /* رنگ اصلی (از تنظیمات تغییر می‌کند) */
+  --bg:#f4f5fb; --card:#fff; --card-2:#f8f9fe;
+  --text:#161933; --muted:#667091; --line:#e7e9f4; --line-2:#d5d9ec;
+  --accent:hsl(var(--ah) var(--as) var(--al));
+  --accent-2:hsl(var(--ah) var(--as) calc(var(--al) - 9%));
+  --accent-soft:hsl(var(--ah) 100% 96.5%);
+  --on-accent:#fff;
+  --hero-1:hsl(var(--ah) var(--as) calc(var(--al) - 6%));
+  --hero-2:hsl(calc(var(--ah) + 34) var(--as) calc(var(--al) - 19%));
+  --danger:#e5365b; --ok:#12a56e; --warn:#f59e0b;
   --pill-l:38%; --bar-l:50%;
   --shadow-sm:0 1px 2px rgba(20,24,52,.05);
-  --shadow:0 1px 2px rgba(20,24,52,.04),0 12px 32px -16px rgba(20,24,52,.18);
-  --shadow-lg:0 24px 70px -20px rgba(12,14,40,.4);
-  --btn-shadow:0 6px 16px -8px color-mix(in srgb,var(--accent) 55%,transparent);
-  --ease-spring:cubic-bezier(.3,.8,.3,1.15);
-  --hh:76px; /* ارتفاع هدر (با JS به‌روز می‌شود) */
+  --shadow:0 1px 2px rgba(20,24,52,.04),0 14px 34px -18px rgba(20,24,52,.22);
+  --shadow-lg:0 24px 70px -20px rgba(12,14,40,.42);
+  --btn-shadow:0 8px 18px -10px color-mix(in srgb,var(--accent) 70%,transparent);
+  --ease:cubic-bezier(.2,.8,.3,1);
+  --spring:cubic-bezier(.3,.8,.3,1.15);
+  --hh:66px; --fs:16px;
   color-scheme:light;
 }
 html[data-theme="dark"]{
-  --bg:#090b19; --card:#12162e;
-  --text:#e9ebfa; --muted:#8b92b6; --line:#232948; --line-2:#2e3560;
-  --accent:#8f84ff; --accent-2:#a298ff;
-  --accent-soft:#232251; --on-accent:#14102e;
-  --danger:#ff6b88;
-  --pill-l:80%; --bar-l:66%;
-  --shadow-sm:0 1px 0 rgba(255,255,255,.05);
-  --shadow:0 1px 0 rgba(255,255,255,.05),0 16px 40px -20px rgba(0,0,0,.55);
-  --shadow-lg:0 30px 80px -20px rgba(0,0,0,.65);
-  --btn-shadow:0 8px 20px -10px color-mix(in srgb,var(--accent) 40%,transparent);
+  --bg:#080a18; --card:#11152b; --card-2:#161a34;
+  --text:#e8eaf9; --muted:#8c93b8; --line:#222847; --line-2:#2f3763;
+  --accent:hsl(var(--ah) var(--as) 74%);
+  --accent-2:hsl(var(--ah) var(--as) 81%);
+  --accent-soft:hsl(var(--ah) 38% 20%);
+  --on-accent:hsl(var(--ah) 60% 9%);
+  --hero-1:hsl(var(--ah) 52% 31%);
+  --hero-2:hsl(calc(var(--ah) + 34) 52% 19%);
+  --danger:#ff6b88; --ok:#3ddc97;
+  --pill-l:78%; --bar-l:66%;
+  --shadow-sm:0 1px 0 rgba(255,255,255,.04);
+  --shadow:0 1px 0 rgba(255,255,255,.04),0 16px 40px -22px rgba(0,0,0,.65);
+  --shadow-lg:0 30px 80px -20px rgba(0,0,0,.7);
+  --btn-shadow:0 8px 20px -12px color-mix(in srgb,var(--accent) 50%,transparent);
   color-scheme:dark;
 }
 
 /* ================= پایه ================= */
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;color:var(--text);
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;font-size:var(--fs)}
+body{margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:var(--text);
   background:
-    radial-gradient(1100px 480px at 50% -220px,color-mix(in srgb,var(--accent) 8%,transparent),transparent 70%),
-    radial-gradient(700px 420px at 105% -140px,color-mix(in srgb,var(--accent) 6%,transparent),transparent 70%),
+    radial-gradient(900px 420px at 88% -180px,color-mix(in srgb,var(--accent) 12%,transparent),transparent 70%),
+    radial-gradient(700px 380px at 0% -140px,color-mix(in srgb,var(--accent) 7%,transparent),transparent 70%),
     var(--bg);
   font-family:'Vazirmatn RD','Vazirmatn',Tahoma,"Segoe UI",system-ui,sans-serif;
-  font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;
-  overflow-x:hidden}
-body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.022;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
-html[data-theme="dark"] body::after{opacity:.045}
+  font-size:1rem;line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button,input,select,textarea{font:inherit;color:inherit}
-button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer}
 :focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:2px}
 ::selection{background:color-mix(in srgb,var(--accent) 26%,transparent)}
 ::placeholder{color:color-mix(in srgb,var(--muted) 72%,transparent)}
 *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 40%,transparent) transparent}
 ::-webkit-scrollbar{width:9px;height:9px}
 ::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--muted) 35%,transparent);border-radius:99px}
-::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--muted) 55%,transparent)}
 ::-webkit-scrollbar-track{background:transparent}
-.wrap{width:min(1020px,100% - 32px);margin-inline:auto}
-.btn,.nav-btn,.icon-btn,.day,.seg button,.dp-day,.schip,.xbtn{position:relative;overflow:hidden;user-select:none;-webkit-user-select:none}
-
+.wrap{width:min(1080px,100% - 40px);margin-inline:auto}
+svg{flex:none}
+a{color:var(--accent)}
+.skip{position:absolute;inset-inline-start:12px;top:-60px;z-index:100;background:var(--accent);color:var(--on-accent);
+  padding:8px 16px;border-radius:12px;font-weight:700;text-decoration:none;transition:top .2s}
+.skip:focus{top:10px}
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 
-/* ================= نوار بالا ================= */
-.top{position:sticky;top:0;z-index:20;
-  background:color-mix(in srgb,var(--bg) 78%,transparent);
-  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
-  border-bottom:1px solid color-mix(in srgb,var(--line) 85%,transparent);
-  padding-top:env(safe-area-inset-top);transition:box-shadow .3s}
-.top.scrolled{box-shadow:0 14px 34px -20px rgba(15,18,45,.28)}
-html[data-theme="dark"] .top.scrolled{box-shadow:0 14px 34px -20px rgba(0,0,0,.6)}
-.top-in{display:flex;align-items:center;gap:10px;padding:11px 0}
-.brand{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
-.logo{flex:none;width:44px;height:44px;border-radius:14px;color:#fff;display:grid;place-items:center;
-  background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 55%,#fff),var(--accent) 55%,var(--accent-2));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 20px -10px color-mix(in srgb,var(--accent) 60%,transparent)}
-.logo svg{width:22px;height:22px}
-.titles{min-width:0}
-h1{margin:0;font-size:clamp(1rem,3.2vw,1.22rem);font-weight:800;line-height:1.5;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.titles p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
-.top-end{flex:none;display:flex;align-items:center;gap:10px;min-width:0}
-.who{display:flex;align-items:center;gap:8px;min-width:0}
-.who>span:first-of-type{font-weight:700;font-size:.92rem;max-width:150px;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.who-av{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
-  display:grid;place-items:center;font-weight:800;font-size:.8rem}
-.auth{display:flex;gap:8px}
-.role{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:999px;
-  padding:1px 10px;font-size:.72rem;font-weight:700;line-height:1.8}
-
-/* دکمه تغییر پوسته */
-.icon-btn{flex:none;width:41px;height:41px;border-radius:13px;border:1px solid var(--line);
-  background:var(--card);color:var(--muted);display:grid;place-items:center;cursor:pointer;
-  box-shadow:var(--shadow-sm);transition:color .18s,border-color .18s,transform .15s}
-.icon-btn:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));transform:translateY(-1px)}
-.icon-btn:active{transform:scale(.9)}
-.icon-btn svg{width:19px;height:19px;grid-area:1/1;
-  transition:transform .5s cubic-bezier(.3,.7,.3,1.25),opacity .2s}
-.ic-sun{opacity:0;transform:rotate(-100deg) scale(.4)}
-html[data-theme="dark"] .ic-sun{opacity:1;transform:none}
-html[data-theme="dark"] .ic-moon{opacity:0;transform:rotate(100deg) scale(.4)}
-
 /* ================= دکمه‌ها ================= */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;
-  padding:10px 19px;font-weight:700;cursor:pointer;white-space:nowrap;color:var(--on-accent);
-  background:var(--accent);
+.btn,.ib,.day,.bn,.bn-fab,.chk,.schip,.dp-day,.seg button,.arow,.topnav button,.hchip{position:relative;overflow:hidden;user-select:none;-webkit-user-select:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:13px;
+  padding:10px 20px;font-weight:700;white-space:nowrap;color:var(--on-accent);background:var(--accent);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.18),var(--btn-shadow);
-  transition:background .16s,transform .13s var(--ease-spring),box-shadow .2s}
+  transition:background .16s,transform .13s var(--spring),box-shadow .2s}
 .btn:hover{background:var(--accent-2)}
-.btn:active{transform:translateY(0) scale(.96)}
+.btn:active{transform:scale(.96)}
 .btn:disabled{opacity:.6;cursor:progress;transform:none}
+.btn svg{width:17px;height:17px}
 .btn.line{background:color-mix(in srgb,var(--accent) 9%,var(--card));color:var(--accent);
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent)}
-.btn.line:hover{background:color-mix(in srgb,var(--accent) 15%,var(--card));
-  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 42%,transparent)}
-.btn.small{padding:5px 13px;font-size:.83rem;border-radius:10px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 4px 12px -6px color-mix(in srgb,var(--accent) 50%,transparent)}
-#goToday{border-radius:999px}
-
-/* ریپل لمسی */
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 24%,transparent)}
+.btn.line:hover{background:color-mix(in srgb,var(--accent) 16%,var(--card))}
+.btn.danger{background:var(--danger);color:#fff;box-shadow:0 8px 18px -10px var(--danger)}
+.btn.danger:hover{background:color-mix(in srgb,var(--danger) 88%,#000)}
+.btn.small{padding:6px 14px;font-size:.84rem;border-radius:11px}
+.ib{flex:none;width:40px;height:40px;border-radius:13px;border:1px solid var(--line);background:var(--card);
+  color:var(--muted);display:inline-grid;place-items:center;box-shadow:var(--shadow-sm);
+  transition:color .18s,border-color .18s,background .18s,transform .15s var(--spring)}
+.ib:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.ib:active{transform:scale(.9)}
+.ib svg{width:19px;height:19px}
+.ib.sm{width:34px;height:34px;border-radius:11px;border-color:transparent;background:transparent;box-shadow:none}
+.ib.sm svg{width:17px;height:17px}
+.ib.sm:hover{background:var(--accent-soft)}
+.ib.on{color:var(--warn)}
+.ib.on svg{fill:currentColor}
+.ib.bad:hover{color:var(--danger);background:color-mix(in srgb,var(--danger) 12%,transparent)}
+.spin svg{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .ripple{position:absolute;border-radius:999px;pointer-events:none;transform:scale(0);
-  background:radial-gradient(circle,color-mix(in srgb,currentColor 28%,transparent) 0%,transparent 70%);
+  background:radial-gradient(circle,color-mix(in srgb,currentColor 26%,transparent) 0%,transparent 70%);
   animation:rip .6s cubic-bezier(.2,.6,.3,1) forwards}
 @keyframes rip{to{transform:scale(2.4);opacity:0}}
 
+/* ================= هدر ================= */
+.top{position:sticky;top:0;z-index:30;
+  background:color-mix(in srgb,var(--bg) 74%,transparent);
+  backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);
+  border-bottom:1px solid color-mix(in srgb,var(--line) 80%,transparent);
+  padding-top:env(safe-area-inset-top);transition:box-shadow .3s}
+.top.scrolled{box-shadow:0 14px 34px -22px rgba(15,18,45,.38)}
+.top-in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;min-height:66px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;color:inherit;text-decoration:none}
+.logo{flex:none;width:44px;height:44px;border-radius:15px;color:#fff;display:grid;place-items:center;
+  background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 60%,#fff),var(--accent) 50%,var(--accent-2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 22px -12px color-mix(in srgb,var(--accent) 80%,transparent)}
+html[data-theme="dark"] .logo{color:var(--on-accent)}
+.logo svg{width:23px;height:23px}
+.titles{min-width:0;display:flex;flex-direction:column}
+.titles h1{margin:0;font-size:1.06rem;font-weight:800;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.titles small{color:var(--muted);font-size:.76rem;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topnav{display:flex;gap:4px;padding:4px;border-radius:17px;background:color-mix(in srgb,var(--card) 70%,transparent);border:1px solid var(--line)}
+.topnav button{display:inline-flex;align-items:center;gap:7px;border:0;background:none;color:var(--muted);
+  font-weight:700;font-size:.9rem;padding:7px 18px;border-radius:13px;transition:background .2s,color .2s,box-shadow .2s}
+.topnav button svg{width:17px;height:17px}
+.topnav button:hover{color:var(--text)}
+.topnav button[aria-current="page"]{background:var(--accent);color:var(--on-accent);box-shadow:var(--btn-shadow)}
+.top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
+.search-btn{width:auto;padding:0 14px;gap:9px;color:var(--muted);font-size:.86rem;font-weight:600}
+.search-btn kbd{font:inherit;font-size:.7rem;font-weight:700;border:1px solid var(--line-2);border-radius:7px;padding:0 7px;line-height:1.7;color:var(--muted)}
+#themeToggle svg{grid-area:1/1;transition:transform .5s cubic-bezier(.3,.7,.3,1.25),opacity .2s}
+#themeToggle .ic-sun{opacity:0;transform:rotate(-100deg) scale(.4)}
+html[data-theme="dark"] #themeToggle .ic-sun{opacity:1;transform:none}
+html[data-theme="dark"] #themeToggle .ic-moon{opacity:0;transform:rotate(100deg) scale(.4)}
+.acc-chip{display:inline-flex;align-items:center;gap:9px;height:40px;padding:0 14px 0 6px;border-radius:999px;
+  border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow-sm);font-weight:700;font-size:.88rem;
+  transition:border-color .18s,transform .15s var(--spring)}
+.acc-chip:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.acc-chip:active{transform:scale(.96)}
+.acc-name{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who-av{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center;font-weight:800;font-size:.82rem}
+.role{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:999px;
+  padding:0 10px;font-size:.72rem;font-weight:700;line-height:1.8}
+
 /* ================= بدنه ================= */
-main{flex:1;padding:22px 0 16px}
-.note{background:var(--accent-soft);color:var(--accent);border-radius:14px;padding:10px 16px;margin:0 0 14px;font-size:.88rem}
+main{flex:1;padding:20px 0 20px}
+.banner{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:10px 14px;border-radius:16px;font-size:.86rem;font-weight:600;
+  color:color-mix(in srgb,var(--warn) 55%,var(--text));background:color-mix(in srgb,var(--warn) 14%,var(--card));
+  border:1px solid color-mix(in srgb,var(--warn) 35%,var(--line))}
+.banner svg{width:19px;height:19px;color:var(--warn)}
+.banner span{flex:1;min-width:0;line-height:1.7}
 
-/* ================= ناوبری هفته (تک‌ردیفه در همه اندازه‌ها) ================= */
-.weeknav{display:flex;align-items:center;gap:8px;margin-bottom:13px}
-.nav-btn{flex:none;width:43px;height:43px;border-radius:13px;border:1px solid var(--line);background:var(--card);
-  color:var(--muted);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);
-  transition:color .18s,border-color .18s,transform .14s var(--ease-spring)}
-.nav-btn:hover{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));transform:translateY(-1px)}
-.nav-btn:active{transform:scale(.92)}
-.nav-btn svg{width:20px;height:20px;transition:transform .2s}
-#prevWeek:hover svg{transform:translateX(2px)}
-#nextWeek:hover svg{transform:translateX(-2px)}
-.weeklabel{flex:1;min-width:0;text-align:center;line-height:1.6;padding:0 4px;overflow:hidden}
-.weeklabel b{display:block;font-size:1.02rem;font-weight:800;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.weeklabel small{display:block;color:var(--muted);font-size:.78rem;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* ----- کارت خلاصه (hero) ----- */
+.hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  margin-bottom:16px;padding:22px 26px;border-radius:28px;color:#fff;
+  background:linear-gradient(135deg,var(--hero-1),var(--hero-2));
+  box-shadow:0 22px 44px -26px color-mix(in srgb,var(--hero-2) 90%,#000),inset 0 1px 0 rgba(255,255,255,.18);
+  animation:rise .5s var(--ease) backwards}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.hero::before{width:280px;height:280px;inset-inline-end:-70px;top:-130px;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 68%)}
+.hero::after{width:220px;height:220px;inset-inline-start:30%;bottom:-150px;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%)}
+.hero-txt{position:relative;z-index:1;min-width:0}
+.hero-hi{margin:0;font-size:.86rem;font-weight:600;opacity:.82;line-height:1.6}
+.hero-title{margin:0;font-size:1.5rem;font-weight:800;line-height:1.5}
+.hero-sub{margin:0;font-size:.92rem;opacity:.88;line-height:1.7}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hchip{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:2px 13px;
+  background:rgba(255,255,255,.17);color:#fff;font-size:.78rem;font-weight:700;line-height:1.9;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .2s,transform .14s var(--spring)}
+.hchip:hover{background:rgba(255,255,255,.27)}
+.hchip:active{transform:scale(.95)}
+.hchip b{font-weight:800}
+.hero-ring{position:relative;z-index:1;flex:none;width:88px;height:88px;display:grid;place-items:center}
+.hero-ring svg{position:absolute;inset:0;width:100%;height:100%}
+.ring-bg{stroke:rgba(255,255,255,.22)}
+.ring-fg{stroke:#fff;transition:stroke-dashoffset .8s var(--ease)}
+.hero-pct{position:relative;font-weight:800;font-size:1.05rem;line-height:1}
+.hero-pct svg{position:static;width:30px;height:30px}
 
-/* ================= روزهای هفته ================= */
-.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:4px 0 18px}
-.day{position:relative;display:flex;flex-direction:column;align-items:center;padding:12px 2px 7px;
-  border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;
-  box-shadow:var(--shadow-sm);
-  transition:transform .18s var(--ease-spring),border-color .18s,box-shadow .22s,color .2s,background .2s,opacity .25s}
+/* ----- ناوبری هفته ----- */
+.weeknav{display:flex;align-items:center;gap:8px;margin-bottom:12px;animation:rise .5s .05s var(--ease) backwards}
+.weeklabel{flex:1;min-width:0;text-align:center;line-height:1.55;padding:0 4px}
+.weeklabel b{display:block;font-size:1rem;font-weight:800}
+.weeklabel small{display:block;color:var(--muted);font-size:.78rem}
+#goToday{border-radius:999px}
+
+/* ----- روزهای هفته ----- */
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:2px 0 18px;animation:rise .5s .1s var(--ease) backwards}
+.day{display:flex;flex-direction:column;align-items:center;padding:11px 2px 10px;border-radius:20px;
+  border:1px solid var(--line);background:var(--card);color:var(--text);box-shadow:var(--shadow-sm);
+  transition:transform .18s var(--spring),border-color .18s,box-shadow .22s,background .2s,opacity .25s}
 .day:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:var(--shadow)}
-.day.past:not([aria-selected=true]){opacity:.5}
-.day[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
-  box-shadow:0 12px 26px -10px color-mix(in srgb,var(--accent) 60%,transparent),inset 0 1px 0 rgba(255,255,255,.2);
+.day.past:not([aria-selected=true]){opacity:.55}
+.day[aria-selected=true]{background:linear-gradient(160deg,var(--accent),var(--accent-2));border-color:transparent;color:var(--on-accent);
+  box-shadow:0 14px 26px -12px color-mix(in srgb,var(--accent) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.22);
   animation:dayPop .3s cubic-bezier(.3,.8,.3,1.25)}
 @keyframes dayPop{from{transform:scale(.93)}}
-.dn{font-size:.77rem;font-weight:600;opacity:.8;line-height:1.6}
-.dd{font-size:1.5rem;font-weight:800;line-height:1.4}
-.dm{font-size:.72rem;opacity:.7;line-height:1.5}
-.today-tag{font-size:.64rem;font-weight:800;color:var(--accent);line-height:1.9;min-height:1.9em}
-.day[aria-selected=true] .today-tag{color:var(--on-accent)}
-.count{position:absolute;top:7px;inset-inline-end:7px;min-width:21px;height:21px;padding:0 6px;border-radius:999px;
-  background:var(--accent-soft);color:var(--accent);font-size:.68rem;font-weight:800;line-height:21px;text-align:center;
-  box-shadow:0 0 0 2px var(--card)}
-.day[aria-selected=true] .count{background:var(--on-accent);color:var(--accent);box-shadow:none}
+.dn{font-size:.76rem;font-weight:700;opacity:.75;line-height:1.5;white-space:nowrap}
+.dd{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;margin:2px 0;font-size:1.4rem;font-weight:800;line-height:1}
+.day.is-today .dd{box-shadow:inset 0 0 0 2px var(--accent)}
+.day[aria-selected=true].is-today .dd{box-shadow:inset 0 0 0 2px rgba(255,255,255,.75)}
+.dm{font-size:.68rem;opacity:.65;line-height:1.4;white-space:nowrap}
+.dots{display:flex;gap:3px;justify-content:center;align-items:center;height:8px;margin-top:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:hsl(var(--h) 72% var(--bar-l))}
+.dot.off{background:transparent;box-shadow:inset 0 0 0 1.5px hsl(var(--h) 72% var(--bar-l));opacity:.75}
+.dots small{font-size:.58rem;font-weight:800;opacity:.7;line-height:1}
+.day[aria-selected=true] .dot{background:#fff}
+.day[aria-selected=true] .dot.off{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.85)}
 
-/* ================= کارت‌ها ================= */
-.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:20px;align-items:start}
-.sheet{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
-.sheet-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:20px 22px 8px}
-h2{margin:0;font-size:1.18rem;font-weight:800;line-height:1.55}
-.sub{margin:0;color:var(--muted);font-size:.87rem}
+/* ----- چیدمان ----- */
+.layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:20px;align-items:start;animation:rise .55s .16s var(--ease) backwards}
+.col-main{min-width:0}
+.col-side{display:grid;gap:16px;position:sticky;top:calc(var(--hh) + 14px)}
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}
+.sheet-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:20px 22px 6px}
+.sheet-head>div:first-child{min-width:0}
+h2{margin:0;font-size:1.16rem;font-weight:800;line-height:1.55}
+.sub{margin:0;color:var(--muted);font-size:.86rem}
 .sheet-body{padding:8px 22px 22px}
-.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.head-actions{display:flex;gap:8px;align-items:center}
 .sheet-head h2,.dlg h3{display:flex;align-items:center;gap:10px}
 .sheet-head h2::before,.dlg h3::before{content:"";flex:none;width:6px;height:1.05em;border-radius:4px;background:var(--accent)}
-#hwList{min-height:170px}
+#hwList,#agList{min-height:150px}
+.dayline{display:flex;align-items:center;gap:12px;padding:6px 22px 4px}
+.progress{flex:1;height:8px;border-radius:99px;background:color-mix(in srgb,var(--accent) 12%,var(--line));overflow:hidden}
+.progress span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .5s var(--ease)}
+.dayline small{color:var(--muted);font-weight:700;font-size:.8rem;white-space:nowrap}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:700;font-size:.8rem;padding:2px 4px;border-radius:8px}
+.linkbtn:hover{text-decoration:underline}
 
-/* کارت تکلیف */
-.hw{--c:hsl(var(--h) 72% var(--bar-l));position:relative;border:1px solid var(--line);border-radius:16px;
-  padding:15px 18px 13px;padding-inline-start:26px;margin-bottom:12px;background:var(--card);
-  transition:border-color .2s,box-shadow .22s,transform .18s;
-  animation:cardIn .45s cubic-bezier(.2,.8,.3,1) backwards}
+/* ----- کارت تکلیف ----- */
+.hw{--c:hsl(var(--h) 72% var(--bar-l));position:relative;display:flex;align-items:flex-start;gap:12px;
+  border:1px solid var(--line);border-radius:20px;padding:14px 16px 12px 14px;padding-inline-start:22px;margin-bottom:12px;background:var(--card);
+  transition:border-color .2s,box-shadow .22s,transform .18s,opacity .25s}
+.hw.enter{animation:cardIn .45s var(--ease) backwards;animation-delay:calc(var(--i,0) * 45ms)}
 @keyframes cardIn{from{opacity:0;transform:translateY(10px)}}
-.hw:nth-child(1){animation-delay:.03s}.hw:nth-child(2){animation-delay:.08s}
-.hw:nth-child(3){animation-delay:.13s}.hw:nth-child(4){animation-delay:.18s}
-.hw:nth-child(5){animation-delay:.23s}.hw:nth-child(6){animation-delay:.28s}
-.hw:nth-child(7){animation-delay:.33s}.hw:nth-child(8){animation-delay:.38s}
-.hw:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--c) 45%,var(--line));box-shadow:var(--shadow)}
-.hw::before{content:"";position:absolute;inset-block:14px;inset-inline-start:11px;width:4px;border-radius:4px;
-  background:hsl(var(--h) 72% var(--bar-l))}
-.hw-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
-.pill{background:hsl(var(--h) 80% 58%/.14);color:hsl(var(--h) 62% var(--pill-l));
-  border-radius:999px;padding:2px 13px;font-weight:700;font-size:.85rem;max-width:100%;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  box-shadow:inset 0 0 0 1px hsl(var(--h) 70% 55%/.18)}
-.hw-actions{display:flex;gap:6px}
-.hw-text{margin:0;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
-.hw-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px;color:var(--muted);font-size:.82rem}
-.av{flex:none;width:27px;height:27px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
-  display:grid;place-items:center;font-weight:800;font-size:.72rem}
+.hw:hover{border-color:color-mix(in srgb,var(--c) 45%,var(--line));box-shadow:var(--shadow)}
+.hw::before{content:"";position:absolute;inset-block:16px;inset-inline-start:0;width:4px;border-radius:4px;background:var(--c)}
+.hw.done{background:color-mix(in srgb,var(--ok) 4%,var(--card))}
+.hw.done .hw-text,.hw.done .pill{opacity:.55}
+.hw.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,60%{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 35%,transparent)}100%{box-shadow:none}}
+.chk{flex:none;width:28px;height:28px;margin-top:2px;border-radius:10px;border:2px solid var(--line-2);background:transparent;color:transparent;
+  display:grid;place-items:center;transition:background .2s,border-color .2s,color .2s,transform .15s var(--spring)}
+.chk svg{width:16px;height:16px;stroke-width:3}
+.chk:hover{border-color:var(--ok)}
+.chk:active{transform:scale(.88)}
+.hw.done .chk{background:var(--ok);border-color:var(--ok);color:#fff}
+.chk.pop{animation:chkPop .4s var(--spring)}
+@keyframes chkPop{40%{transform:scale(1.25)}}
+.hw-body{flex:1;min-width:0}
+.hw-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px}
+.pill{background:hsl(var(--h) 80% 58%/.14);color:hsl(var(--h) 62% var(--pill-l));border-radius:999px;padding:1px 13px;font-weight:700;font-size:.85rem;
+  max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:inset 0 0 0 1px hsl(var(--h) 70% 55%/.18)}
+.hw-actions{display:flex;gap:0;margin-inline-end:-6px}
+.hw-text{margin:0;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere;transition:opacity .2s}
+.hw-note{margin-top:8px;padding:8px 12px 10px;border-radius:14px;background:color-mix(in srgb,var(--warn) 10%,var(--card));
+  border:1px dashed color-mix(in srgb,var(--warn) 40%,var(--line-2))}
+.note-lbl{display:flex;align-items:center;gap:6px;font-size:.74rem;font-weight:800;color:color-mix(in srgb,var(--warn) 60%,var(--text))}
+.note-lbl svg{width:14px;height:14px}
+.note-ta{margin-top:4px;min-height:0;padding:4px 2px;border:0;background:transparent;resize:none;font-size:.9rem;line-height:1.8;box-shadow:none}
+.note-ta:focus{box-shadow:none}
+.hw-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;color:var(--muted);font-size:.82rem}
+.av{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:.72rem}
 
-/* حالت خالی */
-.empty{text-align:center;padding:46px 16px;color:var(--muted)}
-.empty::before{content:"";display:block;width:56px;height:56px;margin:0 auto 10px;opacity:.6;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aab0cc' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4.5' width='18' height='16.5' rx='3.5'/%3E%3Cpath d='M8 2.5v4M16 2.5v4M3 9.5h18M8.5 13.5h3M8.5 16.5h7'/%3E%3C/svg%3E") center/contain no-repeat;
+/* ----- نمای پیش‌رو ----- */
+.ag-tools{padding:4px 22px 6px;display:grid;gap:10px}
+.ag-date{display:flex;align-items:baseline;gap:10px;width:100%;border:0;background:none;text-align:start;padding:10px 2px 8px;color:var(--text)}
+.ag-date b{font-size:.95rem}
+.ag-date small{color:var(--muted);font-weight:600}
+.ag-date:hover b{color:var(--accent)}
+.ag-date:first-child{padding-top:2px}
+
+/* ----- حالت خالی و اسکلت ----- */
+.empty{text-align:center;padding:42px 16px;color:var(--muted)}
+.empty-ic{display:block;width:58px;height:58px;margin:0 auto 10px;padding:14px;border-radius:20px;background:var(--accent-soft);color:var(--accent);
   animation:floatY 2.6s ease-in-out infinite alternate}
 @keyframes floatY{to{transform:translateY(-7px)}}
 .empty p{margin:0 0 16px}
-.skel{height:96px;border-radius:16px;margin:12px 0;border:1px solid var(--line);
+.skel{height:98px;border-radius:20px;margin:12px 0;border:1px solid var(--line);
   background:linear-gradient(100deg,color-mix(in srgb,var(--accent) 5%,var(--card)) 40%,color-mix(in srgb,var(--accent) 13%,var(--card)) 50%,color-mix(in srgb,var(--accent) 5%,var(--card)) 60%);
   background-size:220% 100%;animation:sh 1.4s ease-in-out infinite}
 @keyframes sh{to{background-position:-220% 0}}
 
-/* برنامه زنگ‌ها */
-.sched-sheet{position:sticky;top:calc(var(--hh) + 14px)}
+/* ----- برنامه زنگ‌ها ----- */
 .periods{list-style:none;margin:0;padding:4px 0 0}
 .periods li{display:flex;align-items:center;gap:12px;padding:10px 0}
 .periods li+li{border-top:1px solid var(--line)}
-.pnum{flex:none;width:33px;height:33px;border-radius:11px;background:var(--accent-soft);color:var(--accent);
-  display:grid;place-items:center;font-weight:800;font-size:.88rem}
-.pname{font-weight:600;line-height:1.6}
+.pnum{flex:none;width:34px;height:34px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:.88rem}
+.pinfo{flex:1;min-width:0}
+.pname{font-weight:700;line-height:1.6}
 .pteacher{color:var(--muted);font-size:.84rem;line-height:1.5}
+.pbadge{flex:none;font-size:.7rem;font-weight:800;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:0 10px;line-height:1.9}
+.focus-card .sheet-body{display:flex;align-items:center;gap:14px;padding-top:6px}
+.fc-time{font-size:1.6rem;font-weight:800;letter-spacing:.02em;line-height:1.2;font-variant-numeric:tabular-nums}
+.focus-card p{margin:0}
 
 /* ================= پنجره‌ها ================= */
-dialog{border:0;padding:0;border-radius:24px;width:min(480px,calc(100% - 28px));max-height:calc(100dvh - 28px);
-  overflow:auto;overscroll-behavior:contain;background:var(--card);color:var(--text);box-shadow:var(--shadow-lg)}
+dialog{border:0;padding:0;border-radius:28px;width:min(480px,calc(100% - 28px));max-height:calc(100dvh - 28px);overflow:auto;
+  overscroll-behavior:contain;background:var(--card);color:var(--text);box-shadow:var(--shadow-lg)}
+dialog.wide{width:min(560px,calc(100% - 28px))}
+dialog.sm{width:min(400px,calc(100% - 28px))}
 dialog::backdrop{background:rgba(9,11,28,.52);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
 dialog[open]{animation:dlgIn .4s cubic-bezier(.2,.9,.3,1.08)}
 dialog[open]::backdrop{animation:bIn .3s ease both}
@@ -246,63 +322,29 @@ dialog[open]::backdrop{animation:bIn .3s ease both}
 .dlg h3{margin:0;font-size:1.15rem;font-weight:800}
 .dlg .sub{margin-top:4px}
 .field{display:block;margin-top:16px;position:relative}
-.field>span{display:block;font-size:.9rem;font-weight:600;margin-bottom:6px}
-input,select,textarea{width:100%;padding:11px 15px;border-radius:12px;border:1.5px solid var(--line-2);
-  background:color-mix(in srgb,var(--bg) 55%,var(--card));
-  transition:border-color .18s,box-shadow .18s}
-input:hover:not([readonly]),select:hover,textarea:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--line-2))}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
-  box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
+.field>span,.field>label{display:block;font-size:.9rem;font-weight:700;margin-bottom:6px}
+input:not([type=checkbox]),select,textarea{width:100%;padding:11px 15px;border-radius:14px;border:1.5px solid var(--line-2);
+  background:color-mix(in srgb,var(--bg) 55%,var(--card));transition:border-color .18s,box-shadow .18s}
+input:hover:not([readonly]):not([type=checkbox]),select:hover,textarea:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--line-2))}
+input:focus:not([type=checkbox]),select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
 textarea{min-height:124px;resize:vertical;line-height:1.9}
 .ltr{direction:ltr;text-align:left}
 select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-inline-end:44px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a0c4' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:left 14px center;background-size:16px}
 select option{background:var(--card);color:var(--text)}
+input[readonly]{opacity:.6}
 .ferr{color:var(--danger);font-size:.88rem;min-height:1.6em;margin:11px 0 0;font-weight:600}
 .dlg-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
-.dlg-actions .btn{min-width:118px}
+.dlg-actions .btn{min-width:112px}
+.count-line{display:flex;justify-content:flex-end;color:var(--muted);font-size:.75rem;margin-top:4px}
 
-/* ===== انتخابگر تاریخ (چیپ‌ها) ===== */
-.dp[hidden]{display:none}
-.dp-sum{display:flex;align-items:center;gap:8px;margin:2px 2px 8px;font-size:.8rem;font-weight:600;color:var(--muted)}
-.dp-sum::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--accent);
-  box-shadow:0 0 0 3px var(--accent-soft)}
-.dp-scroll{max-height:300px;overflow:auto;overscroll-behavior:contain;border:1.5px solid var(--line-2);
-  border-radius:14px;padding:10px;background:color-mix(in srgb,var(--bg) 45%,var(--card))}
-.dp-week+.dp-week{margin-top:10px}
-.dp-wk{display:block;font-size:.7rem;font-weight:700;color:var(--muted);margin:0 4px 6px}
-.dp-row{display:flex;flex-wrap:wrap;gap:6px}
-.dp-day{flex:1 1 56px;min-width:52px;padding:8px 2px 6px;border-radius:12px;border:1.5px solid var(--line);
-  background:var(--card);color:var(--text);cursor:pointer;text-align:center;
-  transition:border-color .15s,background .15s,color .15s,transform .12s}
-.dp-day:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
-.dp-day:active{transform:scale(.93)}
-.dp-day .w{display:block;font-size:.66rem;font-weight:600;color:var(--muted);line-height:1.5}
-.dp-day .d{display:block;font-size:1rem;font-weight:800;line-height:1.5}
-.dp-day .m{display:block;font-size:.6rem;color:var(--muted);line-height:1.4}
-.dp-day.today{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
-.dp-day.today .w{color:var(--accent)}
-.dp-day.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
-  box-shadow:0 8px 18px -8px color-mix(in srgb,var(--accent) 60%,transparent)}
-.dp-day.on .w,.dp-day.on .m{color:color-mix(in srgb,var(--on-accent) 82%,transparent)}
-
-/* ===== چیپ درس ===== */
-.subchips{display:flex;gap:6px;overflow-x:auto;margin-top:9px;padding:1px;scrollbar-width:none}
-.subchips::-webkit-scrollbar{display:none}
-.subchips[hidden]{display:none}
-.schip{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--text);
-  border-radius:999px;padding:5px 15px;font-size:.84rem;font-weight:700;cursor:pointer;
-  transition:border-color .15s,background .15s,color .15s,transform .12s}
-.schip:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));color:var(--accent)}
-.schip:active{transform:scale(.93)}
-.schip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-
-/* دکمه چشم رمز */
-.pw-eye{position:absolute;inset-inline-end:7px;bottom:7px;width:34px;height:34px;border:0;background:none;
-  color:var(--muted);border-radius:10px;cursor:pointer;display:grid;place-items:center;
-  transition:color .15s,background .15s}
+/* تب‌های ورود/ثبت‌نام و گزینه‌های سه‌حالته */
+.seg{display:flex;gap:4px;background:color-mix(in srgb,var(--bg) 60%,var(--card));border:1px solid var(--line);border-radius:15px;padding:4px;margin-top:16px}
+.seg button{flex:1;border:0;background:none;border-radius:11px;padding:7px 6px;font-weight:700;font-size:.88rem;color:var(--muted);transition:color .2s,background .2s,box-shadow .2s}
+.seg button[aria-selected=true]{background:var(--card);color:var(--accent);box-shadow:var(--shadow-sm),inset 0 0 0 1px var(--line)}
+.seg.in-tools{margin-top:0}
+.pw-eye{position:absolute;inset-inline-end:7px;bottom:7px;width:34px;height:34px;border:0;background:none;color:var(--muted);border-radius:10px;display:grid;place-items:center;transition:color .15s,background .15s}
 .pw-eye:hover{color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .pw-eye svg{width:18px;height:18px}
 .pw-eye .ic-eye-off{display:none}
@@ -310,22 +352,39 @@ select option{background:var(--card);color:var(--text)}
 .pw-eye.on .ic-eye-off{display:block}
 #authForm input[name=password]{padding-inline-end:50px}
 
-/* سوییچ ورود/ثبت‌نام */
-.seg{display:flex;position:relative;background:color-mix(in srgb,var(--bg) 60%,var(--card));
-  border:1px solid var(--line);border-radius:14px;padding:4px;margin-top:16px}
-.seg button{flex:1;border:0;background:none;border-radius:10px;padding:8px 4px;font-weight:700;cursor:pointer;
-  color:var(--muted);transition:color .2s}
-.seg button[aria-selected=true]{color:var(--accent)}
-.seg-glider{position:absolute;top:4px;bottom:4px;inset-inline-start:4px;width:calc(50% - 4px);
-  border-radius:10px;background:var(--card);
-  box-shadow:var(--shadow-sm),inset 0 0 0 1px var(--line);
-  transition:transform .35s cubic-bezier(.3,.8,.3,1.2);pointer-events:none}
+/* انتخابگر تاریخ */
+.dp-sum{display:flex;align-items:center;gap:8px;margin:2px 2px 8px;font-size:.8rem;font-weight:700;color:var(--muted)}
+.dp-sum::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.dp-scroll{max-height:290px;overflow:auto;overscroll-behavior:contain;border:1.5px solid var(--line-2);border-radius:16px;padding:10px;background:color-mix(in srgb,var(--bg) 45%,var(--card))}
+.dp-week+.dp-week{margin-top:10px}
+.dp-wk{display:block;font-size:.7rem;font-weight:800;color:var(--muted);margin:0 4px 6px}
+.dp-row{display:flex;flex-wrap:wrap;gap:6px}
+.dp-day{flex:1 1 56px;min-width:52px;padding:8px 2px 6px;border-radius:13px;border:1.5px solid var(--line);background:var(--card);color:var(--text);text-align:center;
+  transition:border-color .15s,background .15s,color .15s,transform .12s}
+.dp-day:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.dp-day:active{transform:scale(.93)}
+.dp-day .w{display:block;font-size:.66rem;font-weight:700;color:var(--muted);line-height:1.5}
+.dp-day .d{display:block;font-size:1rem;font-weight:800;line-height:1.5}
+.dp-day .m{display:block;font-size:.6rem;color:var(--muted);line-height:1.4}
+.dp-day.today{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
+.dp-day.today .w{color:var(--accent)}
+.dp-day.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);box-shadow:0 8px 18px -8px color-mix(in srgb,var(--accent) 60%,transparent)}
+.dp-day.on .w,.dp-day.on .m{color:color-mix(in srgb,var(--on-accent) 82%,transparent)}
+
+/* چیپ‌ها */
+.subchips{display:flex;gap:6px;overflow-x:auto;margin-top:9px;padding:2px;scrollbar-width:none}
+.subchips::-webkit-scrollbar{display:none}
+.schip{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:4px 15px;font-size:.84rem;font-weight:700;
+  transition:border-color .15s,background .15s,color .15s,transform .12s}
+.schip:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));color:var(--accent)}
+.schip:active{transform:scale(.93)}
+.schip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ag-tools .subchips{margin-top:0}
 
 /* ردیف‌های برنامه */
 .srow{display:grid;grid-template-columns:28px 1fr 1fr 38px;gap:8px;align-items:center;margin-top:10px}
 .srow .pnum{width:26px;height:26px;font-size:.76rem;border-radius:9px}
-.xbtn{border:0;background:none;color:var(--danger);cursor:pointer;font-size:1.05rem;border-radius:10px;height:42px;
-  transition:background .15s,color .15s}
+.xbtn{border:0;background:none;color:var(--danger);font-size:1.05rem;border-radius:10px;height:42px;transition:background .15s}
 .xbtn:hover{background:color-mix(in srgb,var(--danger) 12%,transparent)}
 
 /* مدیریت معلم‌ها */
@@ -338,16 +397,78 @@ select option{background:var(--card);color:var(--text)}
 .tform{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
 .tform h3{font-size:1rem}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-input[readonly]{opacity:.6}
 
-/* توست‌ها — همیشه دقیقاً زیر هدر */
-.toasts{position:fixed;inset-inline:12px;top:calc(var(--hh) + 12px);display:grid;justify-items:center;
-  gap:8px;pointer-events:none;z-index:50}
-.toast{display:flex;align-items:center;gap:9px;
-  background:color-mix(in srgb,var(--text) 94%,transparent);color:var(--bg);
-  padding:11px 21px;border-radius:999px;font-size:.93rem;font-weight:600;
-  box-shadow:0 14px 34px -10px rgba(5,6,20,.4);max-width:100%;
-  animation:tIn .38s cubic-bezier(.2,.9,.3,1.25)}
+/* جستجو */
+.sbox{display:flex;align-items:center;gap:10px;padding:0 6px 0 14px;border-radius:16px;border:1.5px solid var(--line-2);background:color-mix(in srgb,var(--bg) 55%,var(--card));
+  transition:border-color .18s,box-shadow .18s}
+.sbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
+.sbox svg{width:19px;height:19px;color:var(--muted)}
+.sbox input{border:0!important;box-shadow:none!important;background:transparent!important;padding:12px 4px}
+.sres{margin-top:12px;max-height:min(52vh,420px);overflow:auto;overscroll-behavior:contain;display:grid;gap:8px}
+.sr{display:block;width:100%;text-align:start;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:10px 14px;
+  transition:border-color .15s,background .15s,transform .13s var(--spring)}
+.sr:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:var(--accent-soft)}
+.sr:active{transform:scale(.985)}
+.sr-top{display:flex;align-items:center;gap:8px;margin-bottom:2px;flex-wrap:wrap}
+.sr-date{color:var(--muted);font-size:.78rem;font-weight:600}
+.sr p{margin:0;font-size:.9rem;line-height:1.85;overflow-wrap:anywhere}
+.sr.done{opacity:.6}
+mark{background:color-mix(in srgb,var(--warn) 38%,transparent);color:inherit;border-radius:4px;padding:0 2px}
+.hint{text-align:center;color:var(--muted);padding:26px 10px;font-size:.9rem}
+
+/* تنظیمات و حساب */
+.sect{margin-top:22px}
+.sect>h4{margin:0 0 8px;font-size:.82rem;font-weight:800;color:var(--muted)}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px solid var(--line)}
+.opt:first-of-type{border-top:0}
+.opt span{min-width:0}
+.opt b{display:block;font-size:.92rem}
+.opt small{display:block;color:var(--muted);font-size:.78rem;line-height:1.6}
+input.sw{appearance:none;-webkit-appearance:none;flex:none;width:48px;height:28px;padding:0;border:0;border-radius:99px;position:relative;background:var(--line-2);cursor:pointer;transition:background .2s}
+input.sw::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:inset-inline-start .25s var(--spring)}
+input.sw:checked{background:var(--accent)}
+input.sw:checked::after{inset-inline-start:23px}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.swatch{width:38px;height:38px;border-radius:50%;border:0;background:var(--sw);color:#fff;display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 14px -8px var(--sw);
+  transition:transform .15s var(--spring)}
+.swatch svg{width:18px;height:18px;stroke-width:3;opacity:0;transform:scale(.4);transition:.2s}
+.swatch.on svg{opacity:1;transform:none}
+.swatch.on{box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--sw)}
+.swatch:active{transform:scale(.88)}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:.84rem;color:var(--muted)}
+.keys kbd{font:inherit;font-weight:800;font-size:.72rem;border:1px solid var(--line-2);border-radius:7px;padding:0 8px;margin-inline-end:6px;color:var(--text);background:var(--card-2)}
+.prof{display:flex;align-items:center;gap:14px;padding:4px 0 6px}
+.prof .who-av{width:54px;height:54px;font-size:1.3rem}
+.prof b{display:block;font-size:1.05rem;line-height:1.6}
+.alist{display:grid;gap:4px;margin-top:14px}
+.arow{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;text-align:start;padding:10px 8px;border-radius:16px;font-weight:700;transition:background .15s}
+.arow:hover{background:var(--accent-soft)}
+.arow-ic{flex:none;width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.arow-ic svg{width:19px;height:19px}
+.arow-t{flex:1;min-width:0}
+.arow-chev{width:18px;height:18px;color:var(--muted)}
+.arow.bad{color:var(--danger)}
+.arow.bad .arow-ic{background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger)}
+.auth-cta{display:flex;gap:10px;margin-top:16px}
+.auth-cta .btn{flex:1}
+
+/* تایمر تمرکز */
+.tring{position:relative;width:min(230px,68vw);aspect-ratio:1;margin:20px auto 6px}
+.tring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.tr-bg{fill:none;stroke:color-mix(in srgb,var(--accent) 14%,var(--line));stroke-width:9}
+.tr-fg{fill:none;stroke:var(--accent);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .5s linear}
+.ttime{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.t-actions{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.t-actions .btn{min-width:120px}
+.tcount{text-align:center;margin-top:12px!important}
+.timer-chip{position:fixed;z-index:35;inset-inline-start:16px;bottom:16px;display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:8px 16px;
+  background:var(--accent);color:var(--on-accent);font-weight:800;font-variant-numeric:tabular-nums;box-shadow:0 16px 30px -12px color-mix(in srgb,var(--accent) 85%,transparent);animation:tIn .35s var(--spring)}
+.timer-chip svg{width:17px;height:17px}
+
+/* توست */
+.toasts{position:fixed;inset-inline:12px;top:calc(var(--hh) + 12px);display:grid;justify-items:center;gap:8px;pointer-events:none;z-index:60}
+.toast{display:flex;align-items:center;gap:9px;background:color-mix(in srgb,var(--text) 94%,transparent);color:var(--bg);padding:11px 21px;border-radius:999px;font-size:.93rem;font-weight:600;
+  box-shadow:0 14px 34px -10px rgba(5,6,20,.4);max-width:100%;animation:tIn .38s cubic-bezier(.2,.9,.3,1.25)}
 @keyframes tIn{from{opacity:0;transform:translateY(-14px) scale(.92)}}
 .toast::before{content:"";flex:none;width:1.05em;height:1.05em;background:currentColor;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
@@ -357,207 +478,247 @@ input[readonly]{opacity:.6}
   -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 8v4M12 16h.01'/%3E%3C/svg%3E");
   mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 8v4M12 16h.01'/%3E%3C/svg%3E")}
 
+/* ================= نوار پایین موبایل ================= */
+.bnav{display:none;position:fixed;z-index:40;inset-inline:12px;bottom:calc(10px + env(safe-area-inset-bottom));pointer-events:none}
+.bnav-in{pointer-events:auto;display:grid;grid-template-columns:1fr 1fr 66px 1fr 1fr;align-items:center;height:64px;padding:0 6px;border-radius:28px;
+  background:color-mix(in srgb,var(--card) 84%,transparent);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);
+  border:1px solid color-mix(in srgb,var(--line) 85%,transparent);box-shadow:0 18px 40px -16px rgba(12,14,40,.4),0 2px 6px rgba(12,14,40,.06)}
+.bn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:0;background:none;color:var(--muted);font-size:.68rem;font-weight:700;height:52px;border-radius:20px;
+  transition:color .2s,background .2s}
+.bn svg{width:22px;height:22px;transition:transform .25s var(--spring)}
+.bn[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+.bn[aria-current="page"] svg{transform:translateY(-1px) scale(1.08)}
+.bn-fab{justify-self:center;width:56px;height:56px;border-radius:21px;border:0;background:linear-gradient(145deg,var(--accent),var(--accent-2));color:var(--on-accent);
+  display:grid;place-items:center;transform:translateY(-14px);
+  box-shadow:0 14px 26px -10px color-mix(in srgb,var(--accent) 85%,transparent),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .2s var(--spring)}
+.bn-fab:active{transform:translateY(-12px) scale(.93)}
+.bn-fab svg{width:26px;height:26px}
+
 /* ================= پابرگ ================= */
-.foot{padding:26px 0 34px;text-align:center;color:var(--muted);font-size:.84rem;
-  border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
-.foot-line{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center;padding-top:15px}
+.foot{padding:24px 0 30px;text-align:center;color:var(--muted);font-size:.84rem;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.foot-line{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;align-items:center}
 .foot b{color:var(--text)}
 .sep{opacity:.4}
 
-/* انیمیشن ورود صفحه */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
-.top-in{animation:rise .45s cubic-bezier(.2,.7,.3,1) backwards}
-.weeknav{animation:rise .5s .05s cubic-bezier(.2,.7,.3,1) backwards}
-.days{animation:rise .5s .11s cubic-bezier(.2,.7,.3,1) backwards}
-.layout{animation:rise .55s .17s cubic-bezier(.2,.7,.3,1) backwards}
-.foot{animation:rise .5s .27s cubic-bezier(.2,.7,.3,1) backwards}
+html.thx,html.thx *,html.thx *::before,html.thx *::after{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease,opacity .45s ease!important}
 
-/* انتقال نرم تغییر پوسته (fallback) */
-html.thx,html.thx *,html.thx *::before,html.thx *::after{
-  transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease,opacity .45s ease!important}
+/* ================= نمایش بر اساس بخش ================= */
+body[data-view="agenda"] #hwSheet,body[data-view="agenda"] .weeknav,body[data-view="agenda"] .days{display:none}
+body:not([data-view="agenda"]) #agendaSheet{display:none}
 
-/* ================= تبلت ================= */
+/* ================= واکنش‌گرا ================= */
+@media(max-width:1020px){
+  .search-btn .sb-label,.search-btn kbd,.acc-name{display:none}
+  .search-btn{width:40px;padding:0}
+  .acc-chip{padding:0 6px}
+}
 @media(max-width:820px){
   .layout{grid-template-columns:1fr;gap:16px}
-  .sched-sheet{position:static}
+  .col-side{position:static}
+  .topnav,.hide-m{display:none!important}
+  .top-in{grid-template-columns:minmax(0,1fr) auto;min-height:58px;gap:8px}
+  .bnav{display:block}
+  .timer-chip{inset-inline-start:auto;inset-inline-end:16px;bottom:calc(92px + env(safe-area-inset-bottom))}
+  main{padding:14px 0 calc(104px + env(safe-area-inset-bottom))}
+  .foot{display:none}
+  body[data-view="schedule"] .col-main{display:none}
+  body:not([data-view="schedule"]) .col-side{display:none}
+  body:not([data-view="day"]) .hero{display:none}
+  #addBtn{display:none}
 }
-
-/* ================= موبایل ================= */
 @media(max-width:600px){
   .wrap{width:calc(100% - 28px)}
-  main{padding:14px 0 24px}
-
-  /* —— هدر: دو ردیف بسته، بدون باکس اضافه —— */
-  .top-in{flex-wrap:wrap;row-gap:10px;padding:10px 0 12px}
-  .brand{flex:1;min-width:0;gap:10px}
-  .top-end{order:5;flex-basis:100%;min-width:0}
-  .logo{width:38px;height:38px;border-radius:12px}
-  .logo svg{width:19px;height:19px}
-  h1{font-size:1.02rem}
-  .titles p{font-size:.7rem}
-  .icon-btn{width:38px;height:38px;border-radius:12px}
-  .auth{display:flex;gap:8px;width:100%}
-  .auth .btn{flex:1;padding:9px 12px;font-size:.88rem}
-  .who{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;width:100%;min-width:0}
-  .who-av{width:32px;height:32px;font-size:.84rem}
-  .who>span:first-of-type{flex:1;min-width:0;max-width:none;font-size:.9rem}
-  .who .role{flex:none}
-  .who .btn{padding:6px 12px;font-size:.8rem}
-
-  /* نوار هفته: تک‌ردیفه */
-  .weeknav{gap:6px;margin-bottom:12px}
-  .nav-btn{width:40px;height:40px;border-radius:12px}
-  .weeklabel{padding:0 2px}
-  .weeklabel b{font-size:.94rem}
-  .weeklabel small{font-size:.7rem}
-  #goToday{padding:6px 14px;font-size:.8rem}
-
-  /* روزها: اسکرول لمسی + snap */
-  .days{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;
-    scroll-snap-type:x proximity;padding:4px 2px 14px;scrollbar-width:none;animation:none}
-  .days::-webkit-scrollbar{display:none}
-  .day{flex:0 0 auto;width:78px;scroll-snap-align:center;padding:10px 0 6px}
-  .dd{font-size:1.42rem}
-
-  .sheet{border-radius:20px}
+  .logo{width:38px;height:38px;border-radius:13px}
+  .logo svg{width:20px;height:20px}
+  .brand{gap:10px}
+  .titles h1{font-size:.98rem}
+  .titles small{font-size:.68rem}
+  .ib{width:38px;height:38px;border-radius:12px}
+  .hero{padding:16px 18px;border-radius:24px;gap:12px;margin-bottom:12px}
+  .hero-title{font-size:1.2rem}
+  .hero-sub{font-size:.84rem}
+  .hero-chips{margin-top:9px;gap:6px}
+  .hchip{font-size:.72rem;padding:0 11px}
+  .hero-ring{width:70px;height:70px}
+  .hero-pct{font-size:.9rem}
+  .weeknav{gap:6px;margin-bottom:10px}
+  .weeklabel b{font-size:.92rem}
+  .weeklabel small{display:none}
+  .days{gap:6px;padding-bottom:14px}
+  .day{padding:9px 0 8px;border-radius:17px}
+  .dn{font-size:.7rem}
+  .dd{width:36px;height:36px;font-size:1.2rem}
+  .dm{font-size:.62rem}
+  .sheet{border-radius:24px}
   .sheet-head{padding:16px 16px 4px}
   .sheet-body{padding:6px 14px 16px}
-  .hw{padding:13px 14px 11px;padding-inline-start:22px;border-radius:15px}
+  .dayline,.ag-tools{padding-inline:16px}
+  .hw{padding:12px 12px 10px 10px;padding-inline-start:18px;gap:10px;border-radius:18px}
   .hw-text{line-height:1.9}
-  .btn.small{padding:6px 13px}
-  .head-actions{width:100%}
-  .head-actions .btn{flex:1}
-  .dp-scroll{max-height:260px;padding:8px}
-
-  /* بوت‌شیت با هندل */
-  dialog{width:100%;max-width:none;margin:auto 0 0;border-radius:24px 24px 0 0;max-height:92dvh}
+  dialog{width:100%;max-width:none;margin:auto 0 0;border-radius:28px 28px 0 0;max-height:92dvh}
+  dialog.wide,dialog.sm{width:100%}
   dialog[open]{animation:shUp .42s cubic-bezier(.2,.9,.3,1)}
   .dlg{padding:18px 18px calc(22px + env(safe-area-inset-bottom))}
-  .dlg::before{content:"";display:block;width:44px;height:5px;border-radius:99px;
-    background:var(--line-2);margin:0 auto 16px}
+  .dlg::before{content:"";display:block;width:44px;height:5px;border-radius:99px;background:var(--line-2);margin:0 auto 16px}
+  .dlg h3::before{display:none}
   .dlg-actions .btn{flex:1;min-width:0}
   .two{grid-template-columns:1fr}
   .srow{grid-template-columns:28px 1fr 42px}
   .srow input:nth-of-type(2){grid-column:2;grid-row:2}
   .srow .xbtn{grid-column:3;grid-row:1}
-}
-
-/* ================= گوشی‌های کوچک ================= */
-@media(max-width:480px){
-  .day{width:73px}
-  .dd{font-size:1.35rem}
-  .auth .btn{font-size:.84rem;padding:9px 10px}
-  h1{font-size:.98rem}
-  .titles p{font-size:.68rem}
-  .who>span:first-of-type{font-size:.86rem}
-  .dp-day{min-width:50px}
-  .count{top:4px;inset-inline-end:4px;min-width:17px;height:17px;line-height:17px;font-size:.6rem;padding:0 4px}
+  .dp-scroll{max-height:250px;padding:8px}
+  .keys{display:none}
+  .sres{max-height:46vh}
 }
 @media(max-width:380px){
   .wrap{width:calc(100% - 24px)}
-  .day{width:69px}
-  .logo{width:36px;height:36px}
-  h1{font-size:.94rem}
-  .who .role{display:none}
+  .days{gap:5px}
+  .dn{font-size:.66rem}
   .dp-day .m{display:none}
   .dp-day{min-width:46px}
+  .hero-ring{display:none}
 }
 
 /* ================= چاپ ================= */
 @media print{
   body{background:#fff;color:#000}
-  body::after,.top,.weeknav,.days,.head-actions,.foot,.toasts,.sched-sheet{display:none!important}
+  .top,.banner,.hero,.weeknav,.days,.head-actions,.dayline,.foot,.toasts,.col-side,.bnav,.hw-actions,.chk,.timer-chip{display:none!important}
   main{padding:0}
   .layout{display:block}
   .sheet{box-shadow:none;border:1px solid #ddd;border-radius:12px}
   .hw{box-shadow:none;break-inside:avoid;animation:none}
 }
-
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
 }
+html[data-motion="off"] *,html[data-motion="off"] *::before,html[data-motion="off"] *::after{animation:none!important;transition:none!important}
+html[data-motion="off"]{scroll-behavior:auto}
 </style>
 <script>
-/* اعمال پوسته قبل از رندر (جلوگیری از فلش) */
+/* اعمال پوسته و تنظیمات ظاهری پیش از رندر (جلوگیری از فلش) */
 (function(){
-  var t='light';
-  try{ t=localStorage.getItem('theme')||''; }catch(e){}
-  if(t!=='light'&&t!=='dark'){
-    t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
-  }
-  document.documentElement.dataset.theme=t;
+  var r=document.documentElement,t='';
+  try{t=localStorage.getItem('theme')||'';}catch(e){}
+  if(t!=='light'&&t!=='dark')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+  r.dataset.theme=t;
   var m=document.querySelector('meta[name="theme-color"]');
-  if(m) m.content=(t==='dark')?'#090b19':'#f6f7fb';
+  if(m)m.content=(t==='dark')?'#080a18':'#f4f5fb';
+  try{
+    var p=JSON.parse(localStorage.getItem('hw:prefs')||'null');
+    if(p){
+      if(p.h!=null){r.style.setProperty('--ah',p.h);r.style.setProperty('--as',p.s);r.style.setProperty('--al',p.l);}
+      var fs={sm:'15px',md:'16px',lg:'17.5px'}[p.fs];
+      if(fs)r.style.setProperty('--fs',fs);
+      if(p.motion===false)r.dataset.motion='off';
+    }
+  }catch(e){}
 })();
 </script>
 </head>
-<body>
+<body data-view="day">
+<a class="skip" href="#main">رفتن به محتوا</a>
 
-<header class="top">
+<header class="top" id="top">
   <div class="wrap top-in">
-    <div class="brand">
-      <div class="logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/>
-        </svg>
-      </div>
-      <div class="titles">
+    <a class="brand" href="./" id="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg>
+      </span>
+      <span class="titles">
         <h1>سامانه تکلیف کلاس ۹۰۱</h1>
-        <p>دبیرستان شهید بهشتی</p>
-      </div>
+        <small>دبیرستان شهید بهشتی</small>
+      </span>
+    </a>
+
+    <nav class="topnav" id="topnav" aria-label="بخش‌ها">
+      <button type="button" data-view="day" data-ic="calendar">تکلیف‌های روزانه</button>
+      <button type="button" data-view="agenda" data-ic="list">پیش‌رو</button>
+    </nav>
+
+    <div class="top-actions">
+      <button class="ib search-btn" id="searchBtn" type="button" data-ic="search" aria-label="جستجو" title="جستجو ( / )"><span class="sb-label">جستجو</span><kbd>/</kbd></button>
+      <button class="ib hide-m" id="timerBtn" type="button" data-ic="timer" aria-label="تایمر تمرکز" title="تایمر تمرکز"></button>
+      <button class="ib hide-m" id="settingsBtn" type="button" data-ic="settings" aria-label="تنظیمات" title="تنظیمات"></button>
+      <button class="ib" id="themeToggle" type="button" aria-label="تغییر حالت روشن/تیره" title="حالت روشن/تیره"></button>
+      <div id="authArea" class="hide-m"></div>
     </div>
-    <div class="top-end">
-      <div id="authArea"></div>
-    </div>
-    <button class="icon-btn" id="themeToggle" type="button" aria-label="تغییر حالت روشن/تیره" title="حالت روشن/تیره">
-      <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-      <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-    </button>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="main">
+  <div class="banner" id="banner" role="status" hidden></div>
+
+  <section class="hero" id="hero" aria-live="polite"></section>
+
   <div class="weeknav">
-    <button class="nav-btn" id="prevWeek" type="button" aria-label="هفته قبل">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
+    <button class="ib" id="prevWeek" type="button" data-ic="chevR" aria-label="هفته قبل"></button>
     <div class="weeklabel" aria-live="polite">
       <b id="weekLabel"></b>
       <small id="todayText"></small>
     </div>
-    <button class="nav-btn" id="nextWeek" type="button" aria-label="هفته بعد">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-    </button>
+    <button class="ib" id="nextWeek" type="button" data-ic="chevL" aria-label="هفته بعد"></button>
     <button class="btn line small" id="goToday" type="button">امروز</button>
   </div>
 
   <nav class="days" id="tabs" role="tablist" aria-label="روزهای هفته"></nav>
 
   <div class="layout">
-    <section class="sheet" id="hwSheet" role="tabpanel">
-      <div class="sheet-head">
-        <div>
-          <h2 id="dayTitle"></h2>
-          <p class="sub" id="daySub"></p>
+    <div class="col-main">
+      <section class="sheet" id="hwSheet" role="tabpanel">
+        <div class="sheet-head">
+          <div>
+            <h2 id="dayTitle"></h2>
+            <p class="sub" id="daySub"></p>
+          </div>
+          <div class="head-actions">
+            <button class="ib" id="refreshBtn" type="button" data-ic="refresh" aria-label="بروزرسانی" title="بروزرسانی"></button>
+            <button class="ib" id="shareDay" type="button" data-ic="share" aria-label="کپی یا اشتراک تکلیف‌های این روز" title="کپی / اشتراک تکلیف‌های این روز"></button>
+            <button class="btn" id="addBtn" type="button" data-ic="plus">ثبت تکلیف</button>
+          </div>
         </div>
-        <div class="head-actions">
-          <button class="btn line" id="refreshBtn" type="button">بروزرسانی</button>
-          <button class="btn" id="addBtn" type="button">+ ثبت تکلیف</button>
-        </div>
-      </div>
-      <div class="sheet-body" id="hwList" aria-live="polite"></div>
-    </section>
+        <div class="dayline" id="dayLine" hidden></div>
+        <div class="sheet-body" id="hwList" aria-live="polite"></div>
+      </section>
 
-    <aside class="sheet sched-sheet">
-      <div class="sheet-head">
-        <div>
-          <h2>برنامه زنگ‌ها</h2>
-          <p class="sub" id="schedSub"></p>
+      <section class="sheet" id="agendaSheet">
+        <div class="sheet-head">
+          <div>
+            <h2>تکلیف‌های من</h2>
+            <p class="sub" id="agSub">همه‌ی تکلیف‌ها در یک نگاه</p>
+          </div>
+          <div class="head-actions">
+            <button class="ib" id="agRefresh" type="button" data-ic="refresh" aria-label="بروزرسانی" title="بروزرسانی"></button>
+          </div>
         </div>
-        <button class="btn line small" id="editSched" type="button" hidden>ویرایش</button>
-      </div>
-      <div class="sheet-body"><ol class="periods" id="periods"></ol></div>
+        <div class="ag-tools">
+          <div class="seg in-tools" id="agSeg" role="tablist" aria-label="فیلتر"></div>
+          <div class="subchips" id="agSubj" hidden></div>
+        </div>
+        <div class="sheet-body" id="agList" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <aside class="col-side">
+      <section class="sheet" id="schedSheet">
+        <div class="sheet-head">
+          <div>
+            <h2>برنامه زنگ‌ها</h2>
+            <p class="sub" id="schedSub"></p>
+          </div>
+          <button class="btn line small" id="editSched" type="button" hidden>ویرایش</button>
+        </div>
+        <div class="sheet-body"><ol class="periods" id="periods"></ol></div>
+      </section>
+
+      <section class="sheet focus-card" id="focusCard">
+        <div class="sheet-head"><div><h2>تایمر تمرکز</h2><p class="sub" id="fcSub">۲۵ دقیقه تمرکز، ۵ دقیقه استراحت</p></div></div>
+        <div class="sheet-body">
+          <span class="fc-time" id="fcTime">۲۵:۰۰</span>
+          <button class="btn line small" id="fcBtn" type="button" data-ic="timer" style="margin-inline-start:auto">باز کردن</button>
+        </div>
+      </section>
     </aside>
   </div>
 </main>
@@ -572,24 +733,40 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
   </div>
 </footer>
 
+<!-- نوار ناوبری پایین (موبایل) -->
+<nav class="bnav" id="bnav" aria-label="ناوبری اصلی">
+  <div class="bnav-in">
+    <button class="bn" type="button" data-view="day" data-ic="calendar"><span>تکلیف‌ها</span></button>
+    <button class="bn" type="button" data-view="agenda" data-ic="list"><span>پیش‌رو</span></button>
+    <button class="bn-fab" id="fab" type="button" data-ic="plus" aria-label="ثبت تکلیف جدید"></button>
+    <button class="bn" type="button" data-view="schedule" data-ic="clock"><span>برنامه</span></button>
+    <button class="bn" type="button" id="moreBtn" data-ic="menu"><span>بیشتر</span></button>
+  </div>
+</nav>
+
+<button class="timer-chip" id="timerChip" type="button" hidden></button>
+
 <!-- ورود / ثبت‌نام -->
 <dialog id="authDlg" aria-labelledby="authTitle">
   <form class="dlg" id="authForm" novalidate>
     <h3 id="authTitle">ورود به سامانه</h3>
     <p class="sub" id="authNote"></p>
     <div class="seg" role="tablist">
-      <span class="seg-glider" aria-hidden="true"></span>
       <button type="button" role="tab" id="segLogin" aria-selected="true">ورود</button>
       <button type="button" role="tab" id="segReg" aria-selected="false">ثبت‌نام دانش‌آموز</button>
     </div>
-    <label class="field" id="nameField" hidden><span>نام و نام‌خانوادگی</span>
-      <input name="fullname" maxlength="40" autocomplete="name"></label>
-    <label class="field" id="emailField" hidden><span>ایمیل</span>
-      <input name="email" type="email" class="ltr" maxlength="254" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"></label>
-    <label class="field"><span id="userLabel">نام کاربری یا ایمیل</span>
-      <input name="username" class="ltr" maxlength="254" autocomplete="username" autocapitalize="none" spellcheck="false"></label>
-    <label class="field"><span>رمز عبور</span>
-      <input name="password" type="password" class="ltr" maxlength="64" autocomplete="current-password"></label>
+    <div class="field" id="nameField" hidden><label for="fFull">نام و نام‌خانوادگی</label>
+      <input id="fFull" name="fullname" maxlength="40" autocomplete="name"></div>
+    <div class="field" id="emailField" hidden><label for="fEmail">ایمیل</label>
+      <input id="fEmail" name="email" type="email" class="ltr" maxlength="254" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false"></div>
+    <div class="field"><label for="fUser" id="userLabel">نام کاربری یا ایمیل</label>
+      <input id="fUser" name="username" class="ltr" maxlength="254" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
+    <div class="field"><label for="fPass">رمز عبور</label>
+      <input id="fPass" name="password" type="password" class="ltr" maxlength="64" autocomplete="current-password">
+      <button type="button" class="pw-eye" id="pwEye" aria-label="نمایش رمز">
+        <svg class="ic-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="ic-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+      </button></div>
     <p class="ferr" id="authErr" role="alert"></p>
     <div class="dlg-actions">
       <button type="button" class="btn line" data-close>انصراف</button>
@@ -599,20 +776,19 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
 </dialog>
 
 <!-- ثبت / ویرایش تکلیف -->
-<dialog id="hwDlg" aria-labelledby="hwTitle">
+<dialog id="hwDlg" class="wide" aria-labelledby="hwTitle">
   <form class="dlg" id="hwForm" novalidate>
     <h3 id="hwTitle">ثبت تکلیف</h3>
     <div class="field">
       <span>برای تاریخ</span>
-      <select name="date"></select>
-      <div class="dp" id="datePick" hidden></div>
+      <div class="dp" id="datePick"></div>
     </div>
-    <label class="field"><span>درس</span>
-      <input name="subject" maxlength="30" list="subjects" autocomplete="off" placeholder="مثلاً ریاضی">
-      <div class="subchips" id="subChips" hidden></div>
-      <datalist id="subjects"></datalist></label>
-    <label class="field"><span>توضیح تکلیف</span>
-      <textarea name="text" maxlength="600" placeholder="صفحه، شماره تمرین، نکته‌های معلم..."></textarea></label>
+    <div class="field"><label for="hwSubject">درس</label>
+      <input id="hwSubject" name="subject" maxlength="30" autocomplete="off" placeholder="مثلاً ریاضی">
+      <div class="subchips" id="subChips" hidden></div></div>
+    <div class="field"><label for="hwText">توضیح تکلیف</label>
+      <textarea id="hwText" name="text" maxlength="600" placeholder="صفحه، شماره تمرین، نکته‌های معلم..."></textarea>
+      <div class="count-line"><span id="hwCount"></span></div></div>
     <p class="ferr" id="hwErr" role="alert"></p>
     <div class="dlg-actions">
       <button type="button" class="btn line" data-close>انصراف</button>
@@ -626,7 +802,7 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
   <form class="dlg" id="schedForm" novalidate>
     <h3 id="schedTitle">ویرایش برنامه زنگ‌ها</h3>
     <p class="sub">برنامه هر روز هفته در همه هفته‌ها تکرار می‌شود.</p>
-    <label class="field"><span>روز هفته</span><select id="schedDay"></select></label>
+    <div class="field"><label for="schedDay">روز هفته</label><select id="schedDay"></select></div>
     <div id="schedRows"></div>
     <button type="button" class="btn line small" id="addPeriod" style="margin-top:12px">افزودن زنگ</button>
     <p class="ferr" id="schedErr" role="alert"></p>
@@ -638,7 +814,7 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
 </dialog>
 
 <!-- مدیریت معلم‌ها (مدیر) -->
-<dialog id="teachersDlg" aria-labelledby="teachersTitle">
+<dialog id="teachersDlg" class="wide" aria-labelledby="teachersTitle">
   <div class="dlg">
     <h3 id="teachersTitle">مدیریت معلم‌ها</h3>
     <p class="sub">معلم را اضافه کن و نام کاربری و رمزش را به خودش بده. معلم‌ها می‌توانند تکلیف ثبت کنند و برنامه زنگ‌ها را ویرایش کنند.</p>
@@ -646,16 +822,16 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
     <form class="tform" id="teacherForm" novalidate>
       <h3 id="tformTitle">افزودن معلم</h3>
       <div class="two">
-        <label class="field"><span>نام و نام‌خانوادگی</span>
-          <input name="tname" maxlength="40" autocomplete="off" placeholder="مثلاً خانم احمدی"></label>
-        <label class="field"><span>درس</span>
-          <input name="tsubject" maxlength="30" autocomplete="off" placeholder="مثلاً ریاضی"></label>
+        <div class="field"><label for="tName">نام و نام‌خانوادگی</label>
+          <input id="tName" name="tname" maxlength="40" autocomplete="off" placeholder="مثلاً خانم احمدی"></div>
+        <div class="field"><label for="tSubj">درس</label>
+          <input id="tSubj" name="tsubject" maxlength="30" autocomplete="off" placeholder="مثلاً ریاضی"></div>
       </div>
       <div class="two">
-        <label class="field"><span>نام کاربری</span>
-          <input name="tusername" class="ltr" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false"></label>
-        <label class="field"><span id="tpassLabel">رمز عبور</span>
-          <input name="tpassword" type="text" class="ltr" maxlength="64" autocomplete="new-password" autocapitalize="none" spellcheck="false"></label>
+        <div class="field"><label for="tUser">نام کاربری</label>
+          <input id="tUser" name="tusername" class="ltr" maxlength="20" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
+        <div class="field"><label for="tPass" id="tpassLabel">رمز عبور</label>
+          <input id="tPass" name="tpassword" type="text" class="ltr" maxlength="64" autocomplete="new-password" autocapitalize="none" spellcheck="false"></div>
       </div>
       <p class="ferr" id="teacherErr" role="alert"></p>
       <div class="dlg-actions">
@@ -664,6 +840,105 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
         <button type="submit" class="btn" id="teacherSave">افزودن معلم</button>
       </div>
     </form>
+  </div>
+</dialog>
+
+<!-- جستجو -->
+<dialog id="searchDlg" class="wide" aria-label="جستجو در تکلیف‌ها">
+  <div class="dlg">
+    <div class="sbox">
+      <span data-ic="search" style="display:grid"></span>
+      <input id="sq" type="search" placeholder="جستجو در درس، متن تکلیف، نام دبیر…" autocomplete="off" enterkeyhint="search">
+      <button class="ib sm" type="button" data-close data-ic="x" aria-label="بستن"></button>
+    </div>
+    <div class="subchips" id="sFilter" hidden></div>
+    <div class="sres" id="sRes" aria-live="polite"></div>
+  </div>
+</dialog>
+
+<!-- حساب کاربری / منوی بیشتر -->
+<dialog id="accDlg" aria-label="حساب کاربری"><div class="dlg" id="accBody"></div></dialog>
+
+<!-- تنظیمات -->
+<dialog id="setDlg" class="wide" aria-labelledby="setTitle">
+  <div class="dlg">
+    <h3 id="setTitle">تنظیمات</h3>
+    <p class="sub">این تنظیمات فقط روی همین دستگاه ذخیره می‌شوند.</p>
+
+    <div class="sect"><h4>ظاهر</h4>
+      <div class="seg in-tools" id="themeSeg" role="radiogroup" aria-label="حالت نمایش">
+        <button type="button" data-theme-pref="auto">خودکار</button>
+        <button type="button" data-theme-pref="light">روشن</button>
+        <button type="button" data-theme-pref="dark">تیره</button>
+      </div>
+    </div>
+    <div class="sect"><h4>رنگ اصلی</h4><div class="swatches" id="swatches"></div></div>
+    <div class="sect"><h4>اندازه‌ی متن</h4>
+      <div class="seg in-tools" id="fsSeg" role="radiogroup" aria-label="اندازه‌ی متن">
+        <button type="button" data-fs="sm">کوچک</button>
+        <button type="button" data-fs="md">متوسط</button>
+        <button type="button" data-fs="lg">بزرگ</button>
+      </div>
+    </div>
+
+    <div class="sect"><h4>نمایش</h4>
+      <label class="opt"><span><b>پنهان‌کردن تکلیف‌های انجام‌شده</b><small>فقط تکلیف‌های باقی‌مانده را ببین</small></span><input type="checkbox" class="sw" id="optHideDone"></label>
+      <label class="opt"><span><b>انیمیشن و افکت‌ها</b><small>برای گوشی‌های ضعیف یا راحتی بیشتر خاموش کن</small></span><input type="checkbox" class="sw" id="optMotion"></label>
+    </div>
+
+    <div class="sect"><h4>داده‌های این دستگاه</h4>
+      <p class="sub" style="margin-bottom:10px">وضعیت «انجام شد»، ستاره‌ها، یادداشت‌ها و حافظه‌ی آفلاین فقط روی همین مرورگر هستند و به سرور ارسال نمی‌شوند.</p>
+      <button class="btn line small" id="clearLocal" type="button" data-ic="trash">پاک‌کردن داده‌های محلی</button>
+    </div>
+
+    <div class="sect"><h4>میانبرهای صفحه‌کلید</h4>
+      <div class="keys">
+        <span><kbd>←</kbd><kbd>→</kbd>روز بعد / قبل</span>
+        <span><kbd>T</kbd>امروز</span>
+        <span><kbd>N</kbd>ثبت تکلیف</span>
+        <span><kbd>/</kbd>جستجو</span>
+        <span><kbd>A</kbd>نمای پیش‌رو</span>
+        <span><kbd>D</kbd>نمای روزانه</span>
+        <span><kbd>F</kbd>تایمر تمرکز</span>
+      </div>
+    </div>
+
+    <div class="dlg-actions"><button type="button" class="btn" data-close>بستن</button></div>
+  </div>
+</dialog>
+
+<!-- تایید -->
+<dialog id="confirmDlg" class="sm" aria-labelledby="cfTitle">
+  <form class="dlg" method="dialog">
+    <h3 id="cfTitle"></h3>
+    <p class="sub" id="cfMsg" style="margin-top:8px;line-height:1.9"></p>
+    <div class="dlg-actions">
+      <button class="btn line" value="no" autofocus>انصراف</button>
+      <button class="btn danger" value="yes" id="cfOk">حذف</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- تایمر تمرکز -->
+<dialog id="timerDlg" aria-labelledby="timerTitle">
+  <div class="dlg">
+    <h3 id="timerTitle">تایمر تمرکز</h3>
+    <p class="sub">گوشی را کنار بگذار، یک جلسه‌ی کامل بخوان، بعد استراحت کن.</p>
+    <div class="seg" id="tModes" role="tablist">
+      <button type="button" role="tab" data-mode="focus">تمرکز</button>
+      <button type="button" role="tab" data-mode="short">استراحت کوتاه</button>
+      <button type="button" role="tab" data-mode="long">استراحت بلند</button>
+    </div>
+    <div class="tring">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="tr-bg" cx="60" cy="60" r="54"/><circle class="tr-fg" id="trFg" cx="60" cy="60" r="54"/></svg>
+      <div class="ttime" id="tTime" role="timer" aria-live="off">۲۵:۰۰</div>
+    </div>
+    <div class="t-actions">
+      <button class="btn" id="tToggle" type="button">شروع</button>
+      <button class="btn line" id="tReset" type="button">از نو</button>
+    </div>
+    <p class="sub tcount" id="tCount"></p>
+    <div class="dlg-actions"><button type="button" class="btn line" data-close>بستن</button></div>
   </div>
 </dialog>
 
@@ -677,7 +952,7 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
    بعد از دیپلوی بک‌اند روی Railway، آدرس عمومی آن را در PROD_API بگذار (بدون / آخر).
    روی کامپیوتر خودت (localhost) خودکار به http://localhost:8000 وصل می‌شود.
 
-   قرارداد API:
+   قرارداد API (بدون تغییر نسبت به نسخه‌ی قبل):
    POST   /api/auth/register  {name, email, username, password} -> {token, user}
    POST   /api/auth/login     {username (نام کاربری یا ایمیل), password} -> {token, user}
    GET    /api/auth/me                                          -> {user}
@@ -690,6 +965,9 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{
    PUT    /api/admin/teachers/{username} {name,subject,password?}
    DELETE /api/admin/teachers/{username}
    user = {username, name, role: student|teacher|admin, subject}
+
+   قابلیت‌های جدید (انجام‌شده، ستاره، یادداشت، حافظه‌ی آفلاین، تنظیمات، تایمر و ...)
+   فقط در localStorage همین مرورگر ذخیره می‌شوند و به بک‌اند چیزی اضافه نمی‌کنند.
 */
 const PROD_API = 'https://taklifbackend-production.up.railway.app';
 const CONFIG = {
@@ -701,11 +979,16 @@ const CONFIG = {
   MAX_PERIODS: 8,
   ADD_WEEKS_AHEAD: 6,
   REFRESH_AFTER_MS: 30000,
+  AUTO_REFRESH_MS: 120000,
+  OVERDUE_DAYS: 14,
+  REQUEST_TIMEOUT_MS: 20000,
 };
 
 /* ================= ابزارها ================= */
 const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const fa = n => Number(n).toLocaleString('fa-IR');
+const faD = s => String(s).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
 const fmt = (d, o) => new Intl.DateTimeFormat('fa-IR-u-ca-persian', o).format(d);
 const SHORT = { day: 'numeric', month: 'long' };
 const FULL = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -721,14 +1004,29 @@ const startDate = () => { // نزدیک‌ترین روز مدرسه از امر
   for (let i = 0; i < 7; i++) { const d = addDays(today(), i); if (SCHOOL.includes(d.getDay())) return iso(d); }
   return iso(today());
 };
-const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now() + Math.random().toString(16).slice(2));
-const wait = ms => new Promise(r => setTimeout(r, ms));
-const dayNameFix = id => CONFIG.DAYS.find(d => d.id === id)?.name ?? '';
+const dayName = id => CONFIG.DAYS.find(d => d.id === id)?.name ?? '';
+const firstName = n => String(n || '').trim().split(/\s+/)[0] || '';
+const initial = n => [...String(n || '').trim()][0] || '؟';
+const normFa = s => String(s || '')
+  .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+  .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  .replace(/ي/g, 'ی').replace(/ك/g, 'ک')
+  .replace(/[‌ً-ٰٟ]/g, '').toLowerCase();
+const tsOf = x => { const v = x && x.createdAt; if (typeof v === 'number') return v; const n = Date.parse(v); return Number.isNaN(n) ? 0 : n; };
+const hue = s => [...String(s)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 360, 7);
+const ago = ts => {
+  const s = (Date.now() - ts) / 1000;
+  if (s < 60) return 'چند لحظه پیش';
+  if (s < 3600) return `${fa(Math.floor(s / 60))} دقیقه پیش`;
+  if (s < 86400) return `${fa(Math.floor(s / 3600))} ساعت پیش`;
+  return `${fa(Math.floor(s / 86400))} روز پیش`;
+};
+const mqMobile = window.matchMedia('(max-width:820px)');
 
 // ساخت امن عنصر (بدون innerHTML تا متن کاربران اسکریپت اجرا نکند)
 function h(tag, props = {}, ...kids) {
   const el = document.createElement(tag);
-  for (const [k, v] of Object.entries(props)) {
+  for (const [k, v] of Object.entries(props || {})) {
     if (v == null || v === false) continue;
     if (k === 'class') el.className = v;
     else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
@@ -741,18 +1039,109 @@ function h(tag, props = {}, ...kids) {
   return el;
 }
 
+/* آیکون‌ها (فقط رشته‌های ثابت؛ هیچ‌وقت متن کاربر وارد این‌ها نمی‌شود) */
+const ICON = {
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  refresh: '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+  copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  share: '<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
+  star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/>',
+  note: '<path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5z"/><path d="M15 3v6h6M8 13h8M8 17h5"/>',
+  edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  trash: '<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  calendar: '<rect x="3" y="4.5" width="18" height="16.5" rx="3.5"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18"/>',
+  list: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h10"/>',
+  timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>',
+  settings: '<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2 21a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a7 7 0 0 1 4 6.5"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+  login: '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l-5-5 5-5M5 12h12"/>',
+  x: '<path d="M18 6 6 18M6 6l12 12"/>',
+  wifiOff: '<path d="M2 2l20 20M8.5 16.4a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 4.2-2.6M10.7 5.1A15 15 0 0 1 22 8.8M5 12.9a10 10 0 0 1 5.2-2.7M15 11a10 10 0 0 1 4 1.9M12 20h.01"/>',
+  chevR: '<path d="M9 6l6 6-6 6"/>',
+  chevL: '<path d="M15 6l-6 6 6 6"/>',
+  calendarEdit: '<rect x="3" y="4.5" width="18" height="16.5" rx="3.5"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18M9 15h6"/>',
+};
+const SVGNS = 'http://www.w3.org/2000/svg';
+function ic(name, cls = '') {
+  const s = document.createElementNS(SVGNS, 'svg');
+  s.setAttribute('viewBox', '0 0 24 24');
+  s.setAttribute('fill', 'none');
+  s.setAttribute('stroke', 'currentColor');
+  s.setAttribute('stroke-width', '2');
+  s.setAttribute('stroke-linecap', 'round');
+  s.setAttribute('stroke-linejoin', 'round');
+  s.setAttribute('aria-hidden', 'true');
+  if (cls) s.setAttribute('class', cls);
+  s.innerHTML = ICON[name] || '';
+  return s;
+}
+
+/* ================= ذخیره‌سازی محلی ================= */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+};
 const session = {
   get() { try { return JSON.parse(localStorage.getItem('session')); } catch { return null; } },
   set(v) { try { localStorage.setItem('session', JSON.stringify(v)); } catch {} },
   clear() { try { localStorage.removeItem('session'); } catch {} },
 };
 
+const ACCENTS = [
+  { id: 'indigo', n: 'نیلی', h: 244, s: 85, l: 60 },
+  { id: 'violet', n: 'بنفش', h: 276, s: 70, l: 56 },
+  { id: 'blue', n: 'آبی', h: 212, s: 88, l: 50 },
+  { id: 'teal', n: 'فیروزه‌ای', h: 174, s: 80, l: 33 },
+  { id: 'rose', n: 'سرخابی', h: 343, s: 80, l: 54 },
+  { id: 'orange', n: 'نارنجی', h: 22, s: 92, l: 48 },
+];
+const FS = { sm: '15px', md: '16px', lg: '17.5px' };
+const root = document.documentElement;
+const prefs = Object.assign({ accent: 'indigo', fs: 'md', hideDone: false, motion: true }, store.get('hw:prefs', {}) || {});
+function applyPrefs() {
+  const a = ACCENTS.find(x => x.id === prefs.accent) || ACCENTS[0];
+  prefs.h = a.h; prefs.s = a.s + '%'; prefs.l = a.l + '%';
+  root.style.setProperty('--ah', a.h);
+  root.style.setProperty('--as', a.s + '%');
+  root.style.setProperty('--al', a.l + '%');
+  root.style.setProperty('--fs', FS[prefs.fs] || FS.md);
+  if (prefs.motion === false) root.dataset.motion = 'off'; else delete root.dataset.motion;
+}
+function savePrefs() { applyPrefs(); store.set('hw:prefs', prefs); }
+applyPrefs();
+
+// وضعیت‌های شخصی هر تکلیف (فقط روی همین دستگاه)
+const local = {
+  done: store.get('hw:done', {}) || {},
+  star: store.get('hw:star', {}) || {},
+  notes: store.get('hw:notes', {}) || {},
+  save(k) { store.set('hw:' + k, local[k]); },
+};
+const isDone = it => !!local.done[String(it.id)];
+const isStar = it => !!local.star[String(it.id)];
+const getNote = it => (local.notes[String(it.id)] || {}).t || '';
+
+const cached = store.get('hw:cache', null);
+const hasCache = !!(cached && Array.isArray(cached.homework));
 const state = {
   user: session.get()?.user ?? null,
-  date: startDate(), // تاریخ انتخاب‌شده (YYYY-MM-DD)
-  schedule: {}, homework: [],
-  loading: true, error: '', lastLoad: 0, pendingAdd: false, editing: null,
+  date: startDate(),
+  view: 'day', agendaFilter: 'upcoming', agendaSubject: '',
+  schedule: hasCache ? (cached.schedule || {}) : {},
+  homework: hasCache ? cached.homework : [],
+  loading: !hasCache, error: '', lastLoad: 0, refreshing: false, offline: false,
+  cacheTs: hasCache ? (cached.t || 0) : 0,
+  pendingAdd: false, editing: null, openNote: null, justDone: null, flash: null,
 };
+function persistCache() { state.cacheTs = Date.now(); store.set('hw:cache', { t: state.cacheTs, schedule: state.schedule, homework: state.homework }); }
 
 /* ================= بک‌اند واقعی ================= */
 const remote = {
@@ -762,10 +1151,14 @@ const remote = {
     const s = session.get();
     if (s?.token) headers.Authorization = 'Bearer ' + s.token;
     if (!API_READY) throw new Error('آدرس سرور تنظیم نشده است (PROD_API در index.html).');
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), CONFIG.REQUEST_TIMEOUT_MS);
     let res;
     try {
-      res = await fetch(CONFIG.API_BASE.replace(/\/$/, '') + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
-    } catch { throw new Error('ارتباط با سرور برقرار نشد. اینترنت را بررسی کن.'); }
+      res = await fetch(CONFIG.API_BASE.replace(/\/$/, '') + path, { method, headers, body: body ? JSON.stringify(body) : undefined, signal: ctrl.signal });
+    } catch (e) {
+      throw new Error(e && e.name === 'AbortError' ? 'پاسخ سرور طولانی شد. دوباره تلاش کن.' : 'ارتباط با سرور برقرار نشد. اینترنت را بررسی کن.');
+    } finally { clearTimeout(timer); }
     if (res.status === 401 && s && !path.startsWith('/api/auth/login') && !path.startsWith('/api/auth/register')) {
       session.clear(); state.user = null; renderAll();
       throw new Error('نشست تو تمام شده است. دوباره وارد شو.');
@@ -791,7 +1184,6 @@ const remote = {
   updateTeacher: (u, d) => remote.req('/api/admin/teachers/' + encodeURIComponent(u), { method: 'PUT', body: d }),
   deleteTeacher: u => remote.req('/api/admin/teachers/' + encodeURIComponent(u), { method: 'DELETE' }),
 };
-
 const backend = remote;
 const API_READY = !!CONFIG.API_BASE && !CONFIG.API_BASE.includes('YOUR-APP');
 
@@ -799,126 +1191,441 @@ const API_READY = !!CONFIG.API_BASE && !CONFIG.API_BASE.includes('YOUR-APP');
 const isStaff = u => !!u && (u.role === 'teacher' || u.role === 'admin');
 const canEdit = it => !!state.user && (isStaff(state.user) || state.user.username === it.authorId);
 const roleText = (role, subject) => role === 'admin' ? 'مدیر' : role === 'teacher' ? (subject ? 'معلم ' + subject : 'معلم') : '';
-const onDate = date => state.homework
-  .filter(x => x.date === date)
-  .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+const byCreated = (a, b) => tsOf(a) - tsOf(b);
+const onDate = date => state.homework.filter(x => x.date === date).sort(byCreated);
 const selDate = () => fromIso(state.date);
 const relLabel = d => {
   const diff = Math.round((d - today()) / 864e5);
   return diff === 0 ? 'امروز' : diff === 1 ? 'فردا' : diff === -1 ? 'دیروز' : diff > 0 ? `${fa(diff)} روز دیگر` : `${fa(-diff)} روز پیش`;
 };
+const greet = () => { const g = new Date().getHours(); return g < 5 ? 'شب بخیر' : g < 12 ? 'صبح بخیر' : g < 17 ? 'روز بخیر' : g < 20 ? 'عصر بخیر' : 'شب بخیر'; };
+const reduceMotion = () => prefs.motion === false || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 
 function toast(msg, bad = false) {
   const t = h('div', { class: 'toast' + (bad ? ' bad' : '') }, msg);
   $('#toasts').append(t);
   setTimeout(() => t.remove(), 3200);
 }
-
 async function busy(btn, fn) {
   const label = btn.textContent;
   btn.disabled = true; btn.textContent = 'کمی صبر کن...';
   try { return await fn(); } finally { btn.disabled = false; btn.textContent = label; }
 }
+function confirmBox({ title, message, ok = 'تأیید', danger = true }) {
+  return new Promise(res => {
+    const dlg = $('#confirmDlg');
+    $('#cfTitle').textContent = title; $('#cfMsg').textContent = message;
+    const okb = $('#cfOk'); okb.textContent = ok; okb.classList.toggle('danger', danger);
+    dlg.returnValue = '';
+    const onClose = () => { dlg.removeEventListener('close', onClose); res(dlg.returnValue === 'yes'); };
+    dlg.addEventListener('close', onClose);
+    dlg.showModal();
+  });
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch {}
+  try {
+    const ta = h('textarea', { style: 'position:fixed;opacity:0;top:0;inset-inline-start:0', readonly: true }, text);
+    document.body.append(ta); ta.select();
+    const ok = document.execCommand('copy'); ta.remove(); return ok;
+  } catch { return false; }
+}
+async function shareOrCopy(text, title) {
+  if (navigator.share && window.matchMedia('(pointer:coarse)').matches) {
+    try { await navigator.share({ title, text }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  if (await copyText(text)) toast('کپی شد؛ حالا می‌توانی در پیام‌رسان بفرستی'); else toast('کپی انجام نشد', true);
+}
+// لینک‌های داخل متن تکلیف قابل کلیک می‌شوند (فقط http/https)
+function linkify(text) {
+  const out = []; const re = /https?:\/\/[^\s<>"'‌]+/g; let last = 0, m;
+  while ((m = re.exec(text))) {
+    let url = m[0], tail = '';
+    const t = url.match(/[.,;:!?)\]»،؛؟]+$/);
+    if (t) { tail = t[0]; url = url.slice(0, -tail.length); }
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(h('a', { href: url, target: '_blank', rel: 'noopener noreferrer' }, url));
+    if (tail) out.push(tail);
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
 
-/* ================= رندر ================= */
+/* ================= پوسته ================= */
+const mqDark = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+const themePref = () => { try { const t = localStorage.getItem('theme'); return t === 'light' || t === 'dark' ? t : 'auto'; } catch { return 'auto'; } };
+const effTheme = () => { const p = themePref(); return p === 'auto' ? (mqDark && mqDark.matches ? 'dark' : 'light') : p; };
+function paintTheme() {
+  const t = effTheme();
+  root.dataset.theme = t;
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.content = t === 'dark' ? '#080a18' : '#f4f5fb';
+  const b = $('#themeToggle');
+  if (b) { b.setAttribute('aria-label', t === 'dark' ? 'تغییر به حالت روشن' : 'تغییر به حالت تیره'); b.title = t === 'dark' ? 'حالت روشن' : 'حالت تیره'; }
+}
+function setThemePref(p, origin) {
+  const run = () => {
+    try { if (p === 'auto') localStorage.removeItem('theme'); else localStorage.setItem('theme', p); } catch {}
+    paintTheme(); renderSettingsState();
+  };
+  if (document.startViewTransition && !reduceMotion() && origin) {
+    try {
+      const vt = document.startViewTransition(run);
+      vt.ready.then(() => {
+        const r = origin.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+        const mr = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${mr}px at ${x}px ${y}px)`] },
+          { duration: 520, easing: 'cubic-bezier(.4,0,.2,1)', pseudoElement: '::view-transition-new(root)' });
+      }).catch(() => {});
+      return;
+    } catch {}
+  }
+  root.classList.add('thx'); setTimeout(() => root.classList.remove('thx'), 520); run();
+}
+
+/* ================= رندر: بالای صفحه ================= */
+function renderAuth() {
+  const box = $('#authArea');
+  if (state.user) {
+    box.replaceChildren(h('button', { class: 'acc-chip', type: 'button', onclick: openAccount, 'aria-label': 'حساب کاربری' },
+      h('span', { class: 'who-av', 'aria-hidden': 'true' }, initial(state.user.name)),
+      h('span', { class: 'acc-name' }, firstName(state.user.name))));
+  } else {
+    box.replaceChildren(h('button', { class: 'btn small', type: 'button', onclick: () => openAuth('login') }, 'ورود / ثبت‌نام'));
+  }
+}
+
+function renderBanner() {
+  const b = $('#banner');
+  const off = state.offline || !navigator.onLine;
+  if (!off) { b.hidden = true; return; }
+  const when = state.cacheTs ? ` · آخرین به‌روزرسانی ${ago(state.cacheTs)}` : '';
+  b.hidden = false;
+  b.replaceChildren(ic('wifiOff'),
+    h('span', {}, (navigator.onLine ? 'ارتباط با سرور برقرار نشد' : 'اینترنت قطع است') + (state.homework.length ? '؛ آخرین اطلاعات ذخیره‌شده نمایش داده می‌شود' + when : '')),
+    h('button', { class: 'btn line small', type: 'button', onclick: () => loadAll() }, 'تلاش دوباره'));
+}
+
+function counts() {
+  const t = iso(today()), od = iso(addDays(today(), -CONFIG.OVERDUE_DAYS));
+  let up = 0, over = 0, star = 0;
+  for (const x of state.homework) {
+    if (isStar(x)) star++;
+    if (!isDone(x)) { if (x.date >= t) up++; else if (x.date >= od) over++; }
+  }
+  return { up, over, star };
+}
+
+function ringSvg(pct) {
+  const size = 88, sw = 8, r = (size - sw) / 2, c = 2 * Math.PI * r;
+  const s = document.createElementNS(SVGNS, 'svg');
+  s.setAttribute('viewBox', `0 0 ${size} ${size}`); s.setAttribute('aria-hidden', 'true');
+  const mk = (cls) => {
+    const el = document.createElementNS(SVGNS, 'circle');
+    el.setAttribute('class', cls); el.setAttribute('cx', size / 2); el.setAttribute('cy', size / 2); el.setAttribute('r', r);
+    el.setAttribute('fill', 'none'); el.setAttribute('stroke-width', sw); el.setAttribute('stroke-linecap', 'round');
+    el.setAttribute('transform', `rotate(-90 ${size / 2} ${size / 2})`);
+    return el;
+  };
+  const bg = mk('ring-bg'), fg = mk('ring-fg');
+  fg.setAttribute('stroke-dasharray', c); fg.setAttribute('stroke-dashoffset', c);
+  s.append(bg, fg);
+  const go = () => fg.setAttribute('stroke-dashoffset', c * (1 - pct));
+  if (reduceMotion()) go(); else requestAnimationFrame(() => requestAnimationFrame(go));
+  return s;
+}
+
+function renderHero() {
+  const fd = startDate(), d = fromIso(fd);
+  const items = onDate(fd), total = items.length, done = items.filter(isDone).length;
+  const diff = Math.round((d - today()) / 864e5);
+  const title = diff === 0 ? 'تکلیف‌های امروز' : diff === 1 ? 'تکلیف‌های فردا' : `تکلیف‌های ${dayName(d.getDay()) || fmt(d, { weekday: 'long' })}`;
+  const sub = !total ? 'برای این روز هنوز تکلیفی ثبت نشده است.'
+    : done === total ? 'همه‌ی تکلیف‌های این روز انجام شده؛ آفرین!'
+    : `${fa(done)} از ${fa(total)} تکلیف انجام شده است.`;
+  const c = counts();
+  const chip = (label, n, f) => h('button', { class: 'hchip', type: 'button', onclick: () => openAgenda(f) }, label, h('b', {}, fa(n)));
+  const chips = [chip('پیش‌رو', c.up, 'upcoming')];
+  if (c.over > 0) chips.push(chip('عقب‌افتاده', c.over, 'overdue'));
+  if (c.star > 0) chips.push(chip('ستاره‌دار', c.star, 'starred'));
+  const pct = total ? done / total : 0;
+  const center = !total ? '—' : done === total ? ic('check') : `${fa(done)}/${fa(total)}`;
+  $('#hero').replaceChildren(
+    h('div', { class: 'hero-txt' },
+      h('p', { class: 'hero-hi' }, greet() + (state.user ? '، ' + firstName(state.user.name) : '')),
+      h('h2', { class: 'hero-title' }, title),
+      h('p', { class: 'hero-sub' }, sub),
+      h('div', { class: 'hero-chips' }, ...chips)),
+    h('div', { class: 'hero-ring', 'aria-hidden': 'true' }, ringSvg(pct), h('span', { class: 'hero-pct' }, center)));
+}
+
 function renderWeek() {
   const ws = weekStartOf(selDate()), we = addDays(ws, CONFIG.DAYS.length - 1);
   $('#weekLabel').textContent = `${fmt(ws, SHORT)} تا ${fmt(we, FULL)}`;
   $('#todayText').textContent = 'امروز: ' + fmt(new Date(), FULLW);
+  $('#goToday').hidden = state.date === startDate();
 }
 
 function renderTabs() {
   const ws = weekStartOf(selDate()), t = iso(today());
   $('#tabs').replaceChildren(...CONFIG.DAYS.map((d, i) => {
-    const dt = addDays(ws, i), key = iso(dt), n = onDate(key).length;
+    const dt = addDays(ws, i), key = iso(dt), list = onDate(key), n = list.length;
     const isToday = key === t, selected = key === state.date;
+    const dots = list.slice(0, 4).map(x => h('i', { class: 'dot' + (isDone(x) ? ' off' : ''), style: `--h:${hue(x.subject)}` }));
+    if (n > 4) dots.push(h('small', {}, '+' + fa(n - 4)));
     return h('button', {
-      class: 'day' + (key < t ? ' past' : ''), type: 'button', role: 'tab', id: 'tab-' + i,
+      class: 'day' + (key < t ? ' past' : '') + (isToday ? ' is-today' : ''), type: 'button', role: 'tab', id: 'tab-' + i,
       'aria-selected': String(selected), tabindex: selected ? '0' : '-1',
-      'aria-label': fmt(dt, FULLW) + (n ? ` (${fa(n)} تکلیف)` : ''),
+      'aria-label': fmt(dt, FULLW) + (isToday ? '، امروز' : '') + (n ? ` (${fa(n)} تکلیف)` : ''),
       onclick: () => { state.date = key; renderAll(); },
     },
       h('span', { class: 'dn' }, d.name),
       h('span', { class: 'dd' }, fmt(dt, { day: 'numeric' })),
       h('span', { class: 'dm' }, fmt(dt, { month: 'long' })),
-      h('span', { class: 'today-tag' }, isToday ? 'امروز' : '\u00a0'),
-      n > 0 && h('span', { class: 'count', 'aria-hidden': 'true' }, fa(n)));
+      h('span', { class: 'dots', 'aria-hidden': 'true' }, ...dots));
   }));
   const idx = (selDate().getDay() - 6 + 7) % 7;
   $('#hwSheet').setAttribute('aria-labelledby', 'tab-' + idx);
 }
 
-const hue = s => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 360, 7);
-function hwCard(it) {
-  return h('article', { class: 'hw', style: `--h:${hue(it.subject)}` },
-    h('div', { class: 'hw-top' },
-      h('span', { class: 'pill' }, it.subject),
-      canEdit(it) && h('div', { class: 'hw-actions' },
-        h('button', { class: 'btn line small', type: 'button', onclick: () => openHw(it) }, 'ویرایش'),
-        h('button', { class: 'btn line small', type: 'button', onclick: () => removeHw(it) }, 'حذف'))),
-    h('p', { class: 'hw-text' }, it.text),
-    h('div', { class: 'hw-meta' },
-      h('span', { class: 'av', 'aria-hidden': 'true' }, [...it.author][0] || '؟'),
-      h('span', {}, it.author),
-      roleText(it.authorRole, it.authorSubject) && h('span', { class: 'role' }, roleText(it.authorRole, it.authorSubject))));
+/* ----- کارت تکلیف ----- */
+function hwCard(it, o = {}) {
+  const id = String(it.id), done = isDone(it), starred = isStar(it), note = getNote(it), editable = canEdit(it);
+  const ib = (icon, label, fn, cls = '') => h('button', { class: 'ib sm ' + cls, type: 'button', 'aria-label': label, title: label, onclick: fn }, ic(icon));
+
+  let noteBlock = null;
+  if (note || state.openNote === id) {
+    noteBlock = h('div', { class: 'hw-note' },
+      h('span', { class: 'note-lbl' }, ic('note'), 'یادداشت من'),
+      h('textarea', {
+        class: 'note-ta', rows: 2, maxlength: 300, 'aria-label': 'یادداشت شخصی',
+        placeholder: 'یادداشت شخصی (فقط روی همین دستگاه ذخیره می‌شود)',
+        oninput: e => { setNote(it, e.target.value); autoGrow(e.target); },
+        onblur: e => { if (!e.target.value.trim() && state.openNote === id) { state.openNote = null; renderLists(false); } },
+      }, note));
+  }
+  const role = roleText(it.authorRole, it.authorSubject);
+  const card = h('article', { class: 'hw' + (done ? ' done' : '') + (o.anim ? ' enter' : ''), style: `--h:${hue(it.subject)};--i:${Math.min(o.i || 0, 8)}`, 'data-id': id },
+    h('button', {
+      class: 'chk' + (state.justDone === id ? ' pop' : ''), type: 'button', role: 'checkbox', 'aria-checked': String(done),
+      'aria-label': done ? 'علامت انجام‌شدن را بردار' : 'علامت‌گذاری به‌عنوان انجام‌شده', title: done ? 'انجام شده' : 'انجام شد؟',
+      onclick: () => toggleDone(it),
+    }, ic('check')),
+    h('div', { class: 'hw-body' },
+      h('div', { class: 'hw-top' },
+        h('span', { class: 'pill' }, it.subject),
+        h('div', { class: 'hw-actions' },
+          h('button', { class: 'ib sm' + (starred ? ' on' : ''), type: 'button', 'aria-pressed': String(starred), 'aria-label': starred ? 'برداشتن ستاره' : 'ستاره‌دار کردن', title: starred ? 'برداشتن ستاره' : 'ستاره‌دار کردن', onclick: () => toggleStar(it) }, ic('star')),
+          ib('note', 'یادداشت شخصی', () => toggleNote(it)),
+          ib('copy', 'کپی یا اشتراک این تکلیف', () => shareOrCopy(itemText(it), 'تکلیف ' + it.subject)),
+          editable && ib('edit', 'ویرایش', () => openHw(it)),
+          editable && ib('trash', 'حذف', () => removeHw(it), 'bad'))),
+      h('p', { class: 'hw-text' }, ...linkify(it.text || '')),
+      noteBlock,
+      h('div', { class: 'hw-meta' },
+        h('span', { class: 'av', 'aria-hidden': 'true' }, initial(it.author)),
+        h('span', {}, it.author || ''),
+        role && h('span', { class: 'role' }, role))));
+  const ta = $('.note-ta', card); if (ta) requestAnimationFrame(() => autoGrow(ta));
+  return card;
+}
+function autoGrow(ta) { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 160) + 'px'; }
+
+/* ----- وضعیت‌های شخصی ----- */
+function toggleDone(it) {
+  const k = String(it.id);
+  if (local.done[k]) delete local.done[k]; else { local.done[k] = Date.now(); state.justDone = k; }
+  local.save('done'); renderAll({ anim: false }); state.justDone = null;
+}
+function toggleStar(it) {
+  const k = String(it.id);
+  if (local.star[k]) delete local.star[k]; else local.star[k] = Date.now();
+  local.save('star'); renderAll({ anim: false });
+}
+function toggleNote(it) {
+  const id = String(it.id);
+  state.openNote = state.openNote === id && !getNote(it) ? null : id;
+  renderLists(false);
+  const el = $$('.hw').find(x => x.dataset.id === id)?.querySelector('.note-ta');
+  if (el) { el.focus(); autoGrow(el); }
+}
+let noteTimer = null;
+function setNote(it, val) {
+  const k = String(it.id), v = val.slice(0, 300);
+  if (v.trim()) local.notes[k] = { t: v, ts: Date.now() }; else delete local.notes[k];
+  clearTimeout(noteTimer); noteTimer = setTimeout(() => local.save('notes'), 350);
+}
+function pruneLocal() {
+  const ids = new Set(state.homework.map(x => String(x.id))), cutoff = Date.now() - 60 * 864e5;
+  for (const k of ['done', 'star', 'notes']) {
+    let ch = false;
+    for (const id of Object.keys(local[k])) {
+      const v = local[k][id], ts = typeof v === 'number' ? v : (v && v.ts) || 0;
+      if (!ids.has(id) && ts < cutoff) { delete local[k][id]; ch = true; }
+    }
+    if (ch) local.save(k);
+  }
 }
 
-function renderDay() {
-  const d = selDate();
-  $('#dayTitle').textContent = `تکلیف‌های ${dayNameFix(d.getDay()) || fmt(d, { weekday: 'long' })}`;
+/* ----- متن اشتراک‌گذاری ----- */
+function itemText(it) {
+  const d = fromIso(it.date);
+  return `📚 ${it.subject} — ${fmt(d, FULLW)}\n${it.text}\n\nکلاس ۹۰۱ · دبیرستان شهید بهشتی`;
+}
+function dayText(date) {
+  const items = onDate(date);
+  const lines = [`📚 تکلیف‌های ${fmt(fromIso(date), FULLW)}`, 'کلاس ۹۰۱ · دبیرستان شهید بهشتی', ''];
+  items.forEach((it, i) => lines.push(`${faD(i + 1)}) ${it.subject}: ${it.text}`));
+  return lines.join('\n');
+}
+
+/* ----- روز انتخاب‌شده ----- */
+const skel = () => h('div', { class: 'skel' });
+function emptyBox(msg, btnLabel, fn) {
+  return h('div', { class: 'empty' }, ic('calendar', 'empty-ic'), h('p', {}, msg), btnLabel && h('button', { class: 'btn', type: 'button', onclick: fn }, btnLabel));
+}
+function renderDay(anim = true) {
+  const d = selDate(), key = state.date;
+  $('#dayTitle').textContent = `تکلیف‌های ${dayName(d.getDay()) || fmt(d, { weekday: 'long' })}`;
   $('#daySub').textContent = `${fmt(d, FULLW)} · ${relLabel(d)}`;
-  const box = $('#hwList');
-  if (state.loading) { box.replaceChildren(h('div', { class: 'skel' }), h('div', { class: 'skel' }), h('div', { class: 'skel' })); return; }
+  $('#refreshBtn').classList.toggle('spin', !!state.refreshing);
+  $('#agRefresh').classList.toggle('spin', !!state.refreshing);
+  const box = $('#hwList'), line = $('#dayLine');
+  if (state.loading) { line.hidden = true; box.replaceChildren(skel(), skel(), skel()); return; }
   if (state.error && !state.homework.length) {
-    box.replaceChildren(h('div', { class: 'empty' }, h('p', {}, state.error),
-      h('button', { class: 'btn', type: 'button', onclick: loadAll }, 'تلاش دوباره')));
+    line.hidden = true;
+    box.replaceChildren(h('div', { class: 'empty' }, ic('wifiOff', 'empty-ic'), h('p', {}, state.error), h('button', { class: 'btn', type: 'button', onclick: () => loadAll() }, 'تلاش دوباره')));
     return;
   }
-  const items = onDate(state.date), isPast = state.date < iso(today());
+  const all = onDate(key), done = all.filter(isDone).length;
+  const items = prefs.hideDone ? all.filter(x => !isDone(x)) : all;
+  if (all.length) {
+    line.hidden = false;
+    line.replaceChildren(
+      h('div', { class: 'progress', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(all.length), 'aria-valuenow': String(done) },
+        h('span', { style: `width:${Math.round(done / all.length * 100)}%` })),
+      h('small', {}, `${fa(done)} از ${fa(all.length)} انجام شد`),
+      done > 0 && h('button', { class: 'linkbtn', type: 'button', onclick: () => { prefs.hideDone = !prefs.hideDone; savePrefs(); renderLists(false); renderSettingsState(); } },
+        prefs.hideDone ? 'نمایش همه' : 'پنهان‌کردن انجام‌شده‌ها'));
+  } else line.hidden = true;
+
+  const isPast = key < iso(today());
   if (!items.length) {
-    box.replaceChildren(h('div', { class: 'empty' },
-      h('p', {}, isPast ? 'برای این روز تکلیفی ثبت نشده بود.' : 'برای این روز هنوز تکلیفی ثبت نشده است.'),
-      !isPast && h('button', { class: 'btn', type: 'button', onclick: onAdd }, 'ثبت اولین تکلیف')));
-    return;
-  }
-  box.replaceChildren(...items.map(hwCard));
+    if (all.length) box.replaceChildren(emptyBox('همه‌ی تکلیف‌های این روز انجام شده و پنهان است.', 'نمایش همه', () => { prefs.hideDone = false; savePrefs(); renderLists(false); renderSettingsState(); }));
+    else box.replaceChildren(emptyBox(isPast ? 'برای این روز تکلیفی ثبت نشده بود.' : 'برای این روز هنوز تکلیفی ثبت نشده است.', !isPast && 'ثبت اولین تکلیف', onAdd));
+  } else box.replaceChildren(...items.map((it, i) => hwCard(it, { anim, i })));
+  runFlash();
+}
+function runFlash() {
+  if (!state.flash) return;
+  const id = state.flash; state.flash = null;
+  requestAnimationFrame(() => {
+    const el = $$('.hw').find(x => x.dataset.id === id);
+    if (!el) return;
+    el.scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' });
+    el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1800);
+  });
 }
 
+/* ----- نمای پیش‌رو ----- */
+function agendaItems(filter, subject) {
+  const t = iso(today()), od = iso(addDays(today(), -CONFIG.OVERDUE_DAYS));
+  const base = state.homework.filter(x => filter === 'upcoming' ? x.date >= t : filter === 'overdue' ? (x.date < t && x.date >= od && !isDone(x)) : isStar(x));
+  const list = subject ? base.filter(x => x.subject === subject) : base;
+  const dir = filter === 'overdue' ? -1 : 1;
+  return { base, list: list.sort((a, b) => dir * (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || byCreated(a, b)) };
+}
+function renderAgenda(anim = true) {
+  const box = $('#agList'); if (!box) return;
+  const f = state.agendaFilter, c = counts();
+  const defs = [['upcoming', 'پیش‌رو', c.up], ['overdue', 'عقب‌افتاده', c.over], ['starred', 'ستاره‌دار', c.star]];
+  $('#agSeg').replaceChildren(...defs.map(([id, label, n]) => h('button', {
+    type: 'button', role: 'tab', 'aria-selected': String(f === id),
+    onclick: () => { state.agendaFilter = id; state.agendaSubject = ''; renderAgenda(true); },
+  }, n ? `${label} (${fa(n)})` : label)));
+  if (state.loading) { $('#agSubj').hidden = true; box.replaceChildren(skel(), skel()); return; }
+  if (state.error && !state.homework.length) { $('#agSubj').hidden = true; box.replaceChildren(emptyBox(state.error, 'تلاش دوباره', () => loadAll())); return; }
+
+  let { base, list } = agendaItems(f, state.agendaSubject);
+  const subs = [...new Set(base.map(x => x.subject))];
+  if (state.agendaSubject && !subs.includes(state.agendaSubject)) { state.agendaSubject = ''; list = base.slice().sort((a, b) => (a.date < b.date ? -1 : 1)); }
+  const chips = $('#agSubj');
+  chips.hidden = subs.length < 2;
+  chips.replaceChildren(...['', ...subs].map(s => h('button', {
+    class: 'schip' + (state.agendaSubject === s ? ' on' : ''), type: 'button',
+    onclick: () => { state.agendaSubject = s; renderAgenda(false); },
+  }, s || 'همه')));
+  $('#agSub').textContent = f === 'upcoming' ? 'از امروز به بعد' : f === 'overdue' ? `انجام‌نشده‌های ${fa(CONFIG.OVERDUE_DAYS)} روز گذشته` : 'تکلیف‌هایی که ستاره‌دار کرده‌ای';
+
+  if (!list.length) {
+    box.replaceChildren(emptyBox(
+      f === 'upcoming' ? 'تکلیف پیش‌رویی ثبت نشده است.' : f === 'overdue' ? 'تکلیف عقب‌افتاده‌ای نداری؛ عالی!' : 'هنوز تکلیفی را ستاره‌دار نکرده‌ای.',
+      f === 'upcoming' && 'ثبت تکلیف', onAdd));
+    return;
+  }
+  const nodes = []; let last = null;
+  list.forEach((it, i) => {
+    if (it.date !== last) {
+      last = it.date; const d = fromIso(it.date);
+      nodes.push(h('button', { class: 'ag-date', type: 'button', onclick: () => { state.date = it.date; setView('day'); } },
+        h('b', {}, fmt(d, { weekday: 'long', day: 'numeric', month: 'long' })), h('small', {}, relLabel(d))));
+    }
+    nodes.push(hwCard(it, { anim, i }));
+  });
+  box.replaceChildren(...nodes);
+}
+function renderLists(anim = true) { renderDay(anim); renderAgenda(anim); }
+
+/* ----- برنامه زنگ‌ها ----- */
 function renderSchedule() {
   const d = selDate(), list = state.schedule[d.getDay()] || [];
+  const subjToday = new Set(onDate(state.date).map(x => String(x.subject).trim()));
   $('#schedSub').textContent = fmt(d, FULLW);
   $('#editSched').hidden = !isStaff(state.user);
   $('#periods').replaceChildren(...(list.length
     ? list.map((p, i) => h('li', {}, h('span', { class: 'pnum' }, fa(i + 1)),
-        h('div', {}, h('div', { class: 'pname' }, p.subject), p.teacher && h('div', { class: 'pteacher' }, p.teacher))))
+        h('div', { class: 'pinfo' }, h('div', { class: 'pname' }, p.subject), p.teacher && h('div', { class: 'pteacher' }, p.teacher)),
+        subjToday.has(String(p.subject).trim()) && h('span', { class: 'pbadge' }, 'تکلیف دارد')))
     : [h('li', { class: 'pteacher' }, state.loading ? 'در حال بارگذاری...' : 'برنامه این روز هنوز ثبت نشده است.')]));
 }
 
-function renderAuth() {
-  const box = $('#authArea');
-  if (state.user) {
-    box.replaceChildren(h('div', { class: 'who' },
-      h('span', {}, state.user.name),
-      roleText(state.user.role, state.user.subject) && h('span', { class: 'role' }, roleText(state.user.role, state.user.subject)),
-      state.user.role === 'admin' && h('button', { class: 'btn small', type: 'button', onclick: openTeachers }, 'معلم‌ها'),
-      h('button', { class: 'btn line small', type: 'button', onclick: logout }, 'خروج')));
-  } else {
-    box.replaceChildren(h('div', { class: 'auth' },
-      h('button', { class: 'btn line', type: 'button', onclick: () => openAuth('login') }, 'ورود'),
-      h('button', { class: 'btn', type: 'button', onclick: () => openAuth('register') }, 'ثبت‌نام')));
-  }
+function renderNav() {
+  const eff = state.view === 'schedule' && !mqMobile.matches ? 'day' : state.view;
+  $$('.topnav [data-view], .bnav [data-view]').forEach(b => {
+    if (b.dataset.view === eff) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
 }
 
-function renderAll() { renderAuth(); renderWeek(); renderTabs(); renderDay(); renderSchedule(); }
+function renderAll({ anim = true } = {}) {
+  renderBanner(); renderAuth(); renderHero(); renderWeek(); renderTabs(); renderLists(anim); renderSchedule(); renderNav(); renderTimer();
+}
+function setView(v, { scroll = true } = {}) {
+  state.view = v; document.body.dataset.view = v; renderAll();
+  if (scroll) window.scrollTo({ top: 0, behavior: reduceMotion() ? 'auto' : 'smooth' });
+}
+function openAgenda(f) { state.agendaFilter = f; state.agendaSubject = ''; setView('agenda'); }
+function stepDay(n) {
+  let d = selDate();
+  for (let i = 0; i < 14; i++) { d = addDays(d, n); if (SCHOOL.includes(d.getDay())) break; }
+  state.date = iso(d); renderAll();
+}
 
 /* ================= داده ================= */
 async function loadAll() {
-  state.loading = true; state.error = ''; renderDay();
+  if (state.refreshing) return;
+  state.refreshing = true; state.error = '';
+  if (!state.homework.length) state.loading = true;
+  renderLists(false);
   try {
     const [schedule, homework] = await Promise.all([backend.getSchedule(), backend.listHomework()]);
-    state.schedule = schedule || {}; state.homework = homework || [];
-  } catch (e) { state.error = e.message; if (state.homework.length) toast(e.message, true); }
-  state.loading = false; state.lastLoad = Date.now(); renderAll();
+    state.schedule = schedule || {}; state.homework = Array.isArray(homework) ? homework : [];
+    state.offline = false; persistCache(); pruneLocal();
+  } catch (e) {
+    state.error = e.message; state.offline = true;
+    if (state.homework.length) toast(e.message, true);
+  }
+  state.loading = false; state.refreshing = false; state.lastLoad = Date.now(); renderAll({ anim: false });
 }
 
 /* ================= ورود و ثبت‌نام ================= */
@@ -939,6 +1646,7 @@ function setAuthMode(m) {
 }
 function openAuth(mode, note = '') {
   $('#authForm').reset(); setAuthMode(mode);
+  $('#pwEye').classList.remove('on'); $('#fPass').type = 'password';
   $('#authNote').textContent = note;
   $('#authDlg').showModal(); $('#authForm').username.focus();
 }
@@ -969,68 +1677,172 @@ function onAdd() {
   if (!state.user) { state.pendingAdd = true; openAuth('login', 'برای ثبت تکلیف، وارد شو یا ثبت‌نام کن.'); return; }
   openHw();
 }
-// فهرست تاریخ‌های قابل انتخاب: روزهای مدرسه از امروز تا چند هفته بعد
-function dateOptions(selected) {
-  const t = today(), ws0 = weekStartOf(t), nodes = [], vals = [];
-  let group = null, lastW = null;
+let hwDate = '';
+function renderDatePick() {
+  const t = today(), ws0 = weekStartOf(t), groups = [], vals = [];
+  let cur = null, lastW = null;
   for (let i = 0; i < CONFIG.ADD_WEEKS_AHEAD * 7; i++) {
     const d = addDays(t, i);
     if (!SCHOOL.includes(d.getDay())) continue;
     const w = Math.round((weekStartOf(d) - ws0) / (7 * 864e5));
-    if (w !== lastW) {
-      group = h('optgroup', { label: w === 0 ? 'این هفته' : w === 1 ? 'هفته بعد' : `${fa(w)} هفته بعد` });
-      nodes.push(group); lastW = w;
-    }
-    group.append(h('option', { value: iso(d) }, fmt(d, FULLW)));
-    vals.push(iso(d));
+    if (w !== lastW) { cur = { label: w === 0 ? 'این هفته' : w === 1 ? 'هفته بعد' : `${fa(w)} هفته بعد`, days: [] }; groups.push(cur); lastW = w; }
+    cur.days.push(d); vals.push(iso(d));
   }
-  if (selected && !vals.includes(selected)) nodes.unshift(h('option', { value: selected }, fmt(fromIso(selected), FULLW)));
-  return { nodes, first: vals[0] };
+  if (hwDate && !vals.includes(hwDate)) groups.unshift({ label: 'تاریخ فعلی', days: [fromIso(hwDate)] });
+  const tIso = iso(t);
+  const sum = h('div', { class: 'dp-sum' }, fmt(fromIso(hwDate), FULLW));
+  const dp = $('#datePick');
+  dp.replaceChildren(sum, h('div', { class: 'dp-scroll' }, ...groups.map(g => h('div', { class: 'dp-week' },
+    h('span', { class: 'dp-wk' }, g.label),
+    h('div', { class: 'dp-row' }, ...g.days.map(d => {
+      const key = iso(d);
+      return h('button', {
+        class: 'dp-day' + (key === hwDate ? ' on' : '') + (key === tIso ? ' today' : ''), type: 'button', 'data-val': key, title: fmt(d, FULLW),
+        'aria-pressed': String(key === hwDate),
+        onclick: () => {
+          hwDate = key; sum.textContent = fmt(d, FULLW);
+          $$('.dp-day', dp).forEach(b => { const on = b.dataset.val === key; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+        },
+      }, h('span', { class: 'w' }, dayName(d.getDay())), h('span', { class: 'd' }, fmt(d, { day: 'numeric' })), h('span', { class: 'm' }, fmt(d, { month: 'long' })));
+    }))))));
+}
+function renderSubChips() {
+  const f = $('#hwForm'), box = $('#subChips');
+  const subs = [...new Set([...Object.values(state.schedule).flat().map(p => p.subject), ...state.homework.map(x => x.subject)].filter(Boolean))].slice(0, 16);
+  const v = f.subject.value.trim();
+  box.hidden = !subs.length;
+  box.replaceChildren(...subs.map(s => h('button', {
+    class: 'schip' + (s === v ? ' on' : ''), type: 'button',
+    onclick: () => { f.subject.value = s; saveDraft(); renderSubChips(); },
+  }, s)));
+}
+function updateCount() { const n = $('#hwForm').text.value.length; $('#hwCount').textContent = `${fa(n)} / ${fa(600)}`; }
+function saveDraft() {
+  if (state.editing) return;
+  const f = $('#hwForm'), text = f.text.value, subject = f.subject.value;
+  if (!text.trim() && !subject.trim()) store.del('hw:draft'); else store.set('hw:draft', { text, subject });
 }
 function openHw(it = null) {
   state.editing = it;
   const f = $('#hwForm');
   $('#hwTitle').textContent = it ? 'ویرایش تکلیف' : 'ثبت تکلیف';
   $('#hwSave').textContent = it ? 'ذخیره تغییرات' : 'ثبت تکلیف';
-  const preferred = it?.date || (state.date >= iso(today()) ? state.date : null);
-  const { nodes, first } = dateOptions(preferred);
-  f.date.replaceChildren(...nodes);
-  f.date.value = preferred || first;
-  f.subject.value = it?.subject ?? (state.user?.role === 'teacher' ? state.user.subject || '' : '');
-  f.text.value = it?.text ?? '';
-  const subs = [...new Set(Object.values(state.schedule).flat().map(p => p.subject).filter(Boolean))];
-  $('#subjects').replaceChildren(...subs.map(s => h('option', { value: s })));
+  hwDate = it?.date || (state.date >= iso(today()) ? state.date : startDate());
+  renderDatePick();
+  const draft = it ? null : store.get('hw:draft', null);
+  f.subject.value = it?.subject ?? (draft?.subject || (state.user?.role === 'teacher' ? state.user.subject || '' : ''));
+  f.text.value = it?.text ?? (draft?.text || '');
+  updateCount(); renderSubChips();
   $('#hwErr').textContent = '';
-  $('#hwDlg').showModal(); (it ? f.text : f.subject).focus();
+  $('#hwDlg').showModal();
+  requestAnimationFrame(() => $('.dp-day.on', $('#datePick'))?.scrollIntoView({ block: 'nearest' }));
+  (it ? f.text : f.subject).focus();
 }
 async function onHwSubmit(e) {
   e.preventDefault();
   const f = e.target, err = $('#hwErr');
-  const data = { date: f.date.value, subject: f.subject.value.trim(), text: f.text.value.trim() };
+  const data = { date: hwDate, subject: f.subject.value.trim(), text: f.text.value.trim() };
+  if (!data.date) { err.textContent = 'تاریخ را انتخاب کن.'; return; }
   data.day = fromIso(data.date).getDay();
   if (!data.subject) { err.textContent = 'نام درس را وارد کن.'; return; }
   if (!data.text) { err.textContent = 'توضیح تکلیف را بنویس.'; return; }
   const editing = state.editing;
   try {
+    let savedId = editing?.id;
     await busy($('#hwSave'), async () => {
       if (editing) {
         const up = await backend.updateHomework(editing.id, data);
         state.homework = state.homework.map(x => x.id === editing.id ? { ...x, ...data, ...(up || {}) } : x);
       } else {
-        state.homework.push(await backend.addHomework(data));
+        const created = await backend.addHomework(data);
+        state.homework.push(created); savedId = created && created.id;
       }
     });
-    state.date = data.date; $('#hwDlg').close(); renderAll();
+    persistCache(); if (!editing) store.del('hw:draft');
+    state.date = data.date; state.flash = savedId != null ? String(savedId) : null;
+    $('#hwDlg').close();
+    if (state.view === 'schedule') setView('day', { scroll: false }); else renderAll();
     toast(editing ? 'تغییرات ذخیره شد' : 'تکلیف ثبت شد');
   } catch (ex) { err.textContent = ex.message; }
 }
 async function removeHw(it) {
-  if (!confirm(`تکلیف «${it.subject}» حذف شود؟`)) return;
+  const ok = await confirmBox({ title: 'حذف تکلیف', message: `تکلیف «${it.subject}» برای همه حذف شود؟ این کار قابل بازگشت نیست.`, ok: 'حذف' });
+  if (!ok) return;
   try {
     await backend.deleteHomework(it.id);
     state.homework = state.homework.filter(x => x.id !== it.id);
-    renderAll(); toast('تکلیف حذف شد');
+    persistCache(); renderAll({ anim: false }); toast('تکلیف حذف شد');
   } catch (ex) { toast(ex.message, true); }
+}
+
+/* ================= جستجو ================= */
+let sFilter = '';
+function openSearch() { const dlg = $('#searchDlg'); $('#sq').value = ''; sFilter = ''; renderSearch(); dlg.showModal(); $('#sq').focus(); }
+function hl(text, q) {
+  if (!q) return [text];
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i < 0) return [text];
+  return [text.slice(0, i), h('mark', {}, text.slice(i, i + q.length)), text.slice(i + q.length)];
+}
+function snippet(text, q) {
+  const i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1;
+  let s = text, pre = '', post = '';
+  if (i > 70) { s = text.slice(i - 40); pre = '… '; }
+  if (s.length > 170) { s = s.slice(0, 170); post = ' …'; }
+  return [pre, ...hl(s, q), post];
+}
+function renderSearch() {
+  const q = $('#sq').value.trim(), nq = normFa(q);
+  const subs = [...new Set(state.homework.map(x => x.subject))];
+  const chips = $('#sFilter');
+  chips.hidden = subs.length < 2;
+  chips.replaceChildren(...['', ...subs].map(s => h('button', { class: 'schip' + (sFilter === s ? ' on' : ''), type: 'button', onclick: () => { sFilter = s; renderSearch(); } }, s || 'همه')));
+  const box = $('#sRes');
+  if (!nq && !sFilter) { box.replaceChildren(h('div', { class: 'hint' }, `در ${fa(state.homework.length)} تکلیف جستجو کن؛ درس، متن، نام دبیر یا یادداشت خودت.`)); return; }
+  const t = iso(today());
+  const res = state.homework.filter(it => (!sFilter || it.subject === sFilter) && (!nq || normFa([it.subject, it.text, it.author, getNote(it)].join(' ')).includes(nq)))
+    .sort((a, b) => { const au = a.date >= t, bu = b.date >= t; if (au !== bu) return au ? -1 : 1; return au ? (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) : (a.date < b.date ? 1 : a.date > b.date ? -1 : 0); })
+    .slice(0, 60);
+  if (!res.length) { box.replaceChildren(h('div', { class: 'hint' }, 'چیزی پیدا نشد.')); return; }
+  box.replaceChildren(...res.map(it => h('button', { class: 'sr' + (isDone(it) ? ' done' : ''), type: 'button', style: `--h:${hue(it.subject)}`, onclick: () => gotoItem(it) },
+    h('div', { class: 'sr-top' }, h('span', { class: 'pill' }, ...hl(it.subject, q)), h('span', { class: 'sr-date' }, `${fmt(fromIso(it.date), { weekday: 'long', day: 'numeric', month: 'long' })} · ${relLabel(fromIso(it.date))}`), isDone(it) && h('span', { class: 'sr-date' }, '· انجام شده')),
+    h('p', {}, ...snippet(it.text || '', q)))));
+}
+function gotoItem(it) { $('#searchDlg').close(); state.date = it.date; state.flash = String(it.id); setView('day', { scroll: false }); }
+
+/* ================= حساب کاربری و تنظیمات ================= */
+function openAccount() {
+  const u = state.user, dlg = $('#accDlg');
+  const row = (icon, label, fn, cls = '') => h('button', { class: 'arow ' + cls, type: 'button', onclick: () => { dlg.close(); fn(); } },
+    h('span', { class: 'arow-ic' }, ic(icon)), h('span', { class: 'arow-t' }, label), ic('chevL', 'arow-chev'));
+  const rows = [];
+  if (isStaff(u)) rows.push(row('calendarEdit', 'ویرایش برنامه زنگ‌ها', openSched));
+  if (u && u.role === 'admin') rows.push(row('users', 'مدیریت معلم‌ها', openTeachers));
+  rows.push(row('timer', 'تایمر تمرکز', openTimer), row('settings', 'تنظیمات و ظاهر', openSettings));
+  if (u) rows.push(row('logout', 'خروج از حساب', logout, 'bad'));
+  const head = u
+    ? h('div', { class: 'prof' }, h('span', { class: 'who-av' }, initial(u.name)),
+        h('div', {}, h('b', {}, u.name), roleText(u.role, u.subject) ? h('span', { class: 'role' }, roleText(u.role, u.subject)) : h('span', { class: 'sub ltr' }, u.username || '')))
+    : h('div', {}, h('h3', {}, 'خوش آمدی'), h('p', { class: 'sub' }, 'برای ثبت و ویرایش تکلیف وارد شو یا ثبت‌نام کن. دیدن تکلیف‌ها نیاز به حساب ندارد.'),
+        h('div', { class: 'auth-cta' },
+          h('button', { class: 'btn line', type: 'button', onclick: () => { dlg.close(); openAuth('login'); } }, 'ورود'),
+          h('button', { class: 'btn', type: 'button', onclick: () => { dlg.close(); openAuth('register'); } }, 'ثبت‌نام')));
+  $('#accBody').replaceChildren(head, h('div', { class: 'alist' }, ...rows),
+    h('div', { class: 'dlg-actions' }, h('button', { class: 'btn line', type: 'button', onclick: () => dlg.close() }, 'بستن')));
+  dlg.showModal();
+}
+function openSettings() { renderSettingsState(); $('#setDlg').showModal(); }
+function renderSettingsState() {
+  const tp = themePref();
+  $$('#themeSeg [data-theme-pref]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.themePref === tp)));
+  $$('#fsSeg [data-fs]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.fs === prefs.fs)));
+  $('#optHideDone').checked = !!prefs.hideDone;
+  $('#optMotion').checked = prefs.motion !== false;
+  $('#swatches').replaceChildren(...ACCENTS.map(a => h('button', {
+    class: 'swatch' + (prefs.accent === a.id ? ' on' : ''), type: 'button', 'aria-label': a.n, title: a.n, 'aria-pressed': String(prefs.accent === a.id),
+    style: `--sw:hsl(${a.h} ${a.s}% ${a.l}%)`,
+    onclick: () => { prefs.accent = a.id; savePrefs(); renderSettingsState(); },
+  }, ic('check'))));
 }
 
 /* ================= ویرایش برنامه (معلم) ================= */
@@ -1064,7 +1876,7 @@ async function onSchedSubmit(e) {
   });
   try {
     await busy($('#schedSave'), () => backend.saveSchedule(out));
-    state.schedule = out; $('#schedDlg').close(); renderAll(); toast('برنامه ذخیره شد');
+    state.schedule = out; persistCache(); $('#schedDlg').close(); renderAll(); toast('برنامه ذخیره شد');
   } catch (ex) { $('#schedErr').textContent = ex.message; }
 }
 
@@ -1085,8 +1897,7 @@ function teacherForm(t = null) {
 function renderTeachers() {
   $('#teacherList').replaceChildren(...(teachers.length
     ? teachers.map(t => h('li', {},
-        h('div', { class: 'tinfo' }, h('b', {}, t.name),
-          h('small', {}, (t.subject ? t.subject + ' · ' : '') + t.username)),
+        h('div', { class: 'tinfo' }, h('b', {}, t.name), h('small', {}, (t.subject ? t.subject + ' · ' : '') + t.username)),
         h('button', { class: 'btn line small', type: 'button', onclick: () => { teacherForm(t); $('#teacherForm').tname.focus(); } }, 'ویرایش'),
         h('button', { class: 'btn line small', type: 'button', onclick: () => removeTeacher(t) }, 'حذف')))
     : [h('li', { class: 'pteacher' }, 'هنوز معلمی اضافه نشده است.')]));
@@ -1116,7 +1927,8 @@ async function onTeacherSubmit(e) {
   } catch (ex) { err.textContent = ex.message; }
 }
 async function removeTeacher(t) {
-  if (!confirm(`«${t.name}» حذف شود؟ تکلیف‌هایی که او ثبت کرده هم پاک می‌شود.`)) return;
+  const ok = await confirmBox({ title: 'حذف معلم', message: `«${t.name}» حذف شود؟ تکلیف‌هایی که او ثبت کرده هم پاک می‌شود.`, ok: 'حذف' });
+  if (!ok) return;
   try {
     await backend.deleteTeacher(t.username);
     if (editingTeacher?.username === t.username) teacherForm();
@@ -1124,298 +1936,228 @@ async function removeTeacher(t) {
   } catch (ex) { toast(ex.message, true); }
 }
 
+/* ================= تایمر تمرکز ================= */
+const MODES = { focus: { min: 25 }, short: { min: 5 }, long: { min: 15 } };
+const BASE_TITLE = document.title;
+const timer = { mode: 'focus', total: 25 * 60, remain: 25 * 60, running: false, endAt: 0, iv: null, ctx: null };
+const focusStat = () => { const s = store.get('hw:focus', null); return s && s.d === iso(today()) ? s : { d: iso(today()), n: 0, m: 0 }; };
+const mmss = s => faD(`${pad(Math.floor(s / 60))}:${pad(s % 60)}`);
+function timerSetMode(m) {
+  timerStop(); timer.mode = m; timer.total = timer.remain = MODES[m].min * 60; renderTimer();
+}
+function timerStop() { clearInterval(timer.iv); timer.iv = null; timer.running = false; }
+function timerStart() {
+  try { timer.ctx = timer.ctx || new (window.AudioContext || window.webkitAudioContext)(); if (timer.ctx.resume) timer.ctx.resume(); } catch {}
+  if (timer.remain <= 0) timer.remain = timer.total;
+  timer.running = true; timer.endAt = Date.now() + timer.remain * 1000;
+  timer.iv = setInterval(timerTick, 250); renderTimer();
+}
+function timerPause() { timer.remain = Math.max(0, Math.ceil((timer.endAt - Date.now()) / 1000)); timerStop(); renderTimer(); }
+function timerReset() { timerStop(); timer.remain = timer.total; renderTimer(); }
+function timerTick() {
+  const r = Math.max(0, Math.ceil((timer.endAt - Date.now()) / 1000));
+  if (r <= 0) { timerDone(); return; }
+  if (r !== timer.remain) { timer.remain = r; renderTimer(); }
+}
+function beep() {
+  const c = timer.ctx; if (!c) return;
+  try {
+    [0, .28, .56].forEach((t, i) => {
+      const o = c.createOscillator(), g = c.createGain(), at = c.currentTime + t;
+      o.type = 'sine'; o.frequency.value = i === 2 ? 988 : 784;
+      g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(.25, at + .02); g.gain.exponentialRampToValueAtTime(.0001, at + .22);
+      o.connect(g); g.connect(c.destination); o.start(at); o.stop(at + .25);
+    });
+  } catch {}
+}
+function timerDone() {
+  const wasFocus = timer.mode === 'focus';
+  timerStop(); beep();
+  try { if (navigator.vibrate) navigator.vibrate([220, 100, 220]); } catch {}
+  let next = 'focus';
+  if (wasFocus) {
+    const s = focusStat(); s.n += 1; s.m += MODES.focus.min; store.set('hw:focus', s);
+    next = s.n % 4 === 0 ? 'long' : 'short';
+    toast('جلسه‌ی تمرکز تمام شد؛ کمی استراحت کن');
+  } else toast('استراحت تمام شد؛ آماده‌ای؟');
+  timerSetMode(next);
+}
+function renderTimer() {
+  const s = Math.max(0, timer.remain);
+  const txt = mmss(s);
+  const set = (id, v) => { const el = $(id); if (el && el.textContent !== v) el.textContent = v; };
+  set('#tTime', txt); set('#fcTime', txt);
+  const fg = $('#trFg');
+  if (fg) { const c = 2 * Math.PI * 54; fg.style.strokeDasharray = c; fg.style.strokeDashoffset = c * (1 - (timer.total ? s / timer.total : 0)); }
+  const started = timer.remain < timer.total;
+  set('#tToggle', timer.running ? 'توقف' : started ? 'ادامه' : 'شروع');
+  $$('#tModes [data-mode]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === timer.mode)));
+  const st = focusStat();
+  set('#tCount', st.n ? `امروز ${fa(st.n)} جلسه‌ی تمرکز (${fa(st.m)} دقیقه) داشته‌ای.` : 'امروز هنوز جلسه‌ی تمرکزی نداشته‌ای.');
+  set('#fcSub', timer.running ? (timer.mode === 'focus' ? 'در حال تمرکز…' : 'در حال استراحت…') : '۲۵ دقیقه تمرکز، ۵ دقیقه استراحت');
+  set('#fcBtn', timer.running ? 'نمایش' : 'باز کردن');
+  const chip = $('#timerChip');
+  const showChip = timer.running && !$('#timerDlg').open;
+  chip.hidden = !showChip;
+  if (showChip) chip.replaceChildren(ic('timer'), txt);
+  document.title = timer.running ? `${txt} · ${BASE_TITLE}` : BASE_TITLE;
+}
+function openTimer() { renderTimer(); $('#timerDlg').showModal(); }
+
 /* ================= شروع ================= */
 function init() {
   $('#year').textContent = String(new Date().getFullYear());
 
-  const shift = n => { state.date = iso(addDays(selDate(), n)); renderAll(); };
-  $('#prevWeek').addEventListener('click', () => shift(-7));
-  $('#nextWeek').addEventListener('click', () => shift(7));
+  // آیکون‌های ثابت
+  $$('[data-ic]').forEach(el => el.prepend(ic(el.dataset.ic)));
+  $('#themeToggle').append(ic('moon', 'ic-moon'), ic('sun', 'ic-sun'));
+  paintTheme();
+  if (mqDark) mqDark.addEventListener('change', () => { if (themePref() === 'auto') paintTheme(); });
+
+  // ناوبری هفته و روز
+  $('#prevWeek').addEventListener('click', () => { state.date = iso(addDays(selDate(), -7)); renderAll(); });
+  $('#nextWeek').addEventListener('click', () => { state.date = iso(addDays(selDate(), 7)); renderAll(); });
   $('#goToday').addEventListener('click', () => { state.date = startDate(); renderAll(); });
+  $('#brand').addEventListener('click', e => { e.preventDefault(); state.date = startDate(); setView('day'); });
+  $$('.topnav [data-view], .bnav [data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
   $('#addBtn').addEventListener('click', onAdd);
-  $('#refreshBtn').addEventListener('click', loadAll);
+  $('#fab').addEventListener('click', onAdd);
+  $('#refreshBtn').addEventListener('click', () => loadAll());
+  $('#agRefresh').addEventListener('click', () => loadAll());
+  $('#shareDay').addEventListener('click', () => {
+    if (!onDate(state.date).length) { toast('برای این روز تکلیفی ثبت نشده است', true); return; }
+    shareOrCopy(dayText(state.date), 'تکلیف‌های ' + fmt(selDate(), FULLW));
+  });
+  $('#moreBtn').addEventListener('click', openAccount);
+  $('#searchBtn').addEventListener('click', openSearch);
+  $('#timerBtn').addEventListener('click', openTimer);
+  $('#settingsBtn').addEventListener('click', openSettings);
+  $('#themeToggle').addEventListener('click', e => setThemePref(effTheme() === 'dark' ? 'light' : 'dark', e.currentTarget));
+  $('#fcBtn').addEventListener('click', openTimer);
+  $('#timerChip').addEventListener('click', openTimer);
   $('#editSched').addEventListener('click', openSched);
   $('#addPeriod').addEventListener('click', () => { draft[draftDay].push({ subject: '', teacher: '' }); renderRows(); });
   $('#schedDay').addEventListener('change', e => { draftDay = Number(e.target.value); renderRows(); });
+
+  // فرم‌ها
   $('#segLogin').addEventListener('click', () => setAuthMode('login'));
   $('#segReg').addEventListener('click', () => setAuthMode('register'));
   $('#authForm').addEventListener('submit', onAuthSubmit);
+  $('#pwEye').addEventListener('click', () => {
+    const pw = $('#fPass'), show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password'; $('#pwEye').classList.toggle('on', show);
+    $('#pwEye').setAttribute('aria-label', show ? 'مخفی‌کردن رمز' : 'نمایش رمز');
+  });
   $('#hwForm').addEventListener('submit', onHwSubmit);
+  $('#hwForm').addEventListener('input', e => {
+    if (e.target.name === 'text') updateCount();
+    if (e.target.name === 'subject') renderSubChips();
+    saveDraft();
+  });
   $('#schedForm').addEventListener('submit', onSchedSubmit);
   $('#teacherForm').addEventListener('submit', onTeacherSubmit);
   $('#teacherCancel').addEventListener('click', () => teacherForm());
+  $('#sq').addEventListener('input', renderSearch);
 
-  document.querySelectorAll('dialog').forEach(dlg => {
-    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
-    dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
+  // تنظیمات
+  $('#themeSeg').addEventListener('click', e => { const b = e.target.closest('[data-theme-pref]'); if (b) setThemePref(b.dataset.themePref, b); });
+  $('#fsSeg').addEventListener('click', e => { const b = e.target.closest('[data-fs]'); if (b) { prefs.fs = b.dataset.fs; savePrefs(); renderSettingsState(); } });
+  $('#optHideDone').addEventListener('change', e => { prefs.hideDone = e.target.checked; savePrefs(); renderLists(false); });
+  $('#optMotion').addEventListener('change', e => { prefs.motion = e.target.checked; savePrefs(); });
+  $('#clearLocal').addEventListener('click', async () => {
+    const ok = await confirmBox({ title: 'پاک‌کردن داده‌های محلی', message: 'وضعیت «انجام شد»، ستاره‌ها، یادداشت‌ها، پیش‌نویس و حافظه‌ی آفلاین این دستگاه پاک می‌شود. تکلیف‌های اصلی روی سرور می‌مانند.', ok: 'پاک کن' });
+    if (!ok) return;
+    local.done = {}; local.star = {}; local.notes = {};
+    ['hw:done', 'hw:star', 'hw:notes', 'hw:draft', 'hw:cache', 'hw:focus'].forEach(store.del);
+    state.openNote = null; renderAll({ anim: false }); toast('داده‌های محلی پاک شد');
+  });
+
+  // تایمر
+  $('#tModes').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (b) timerSetMode(b.dataset.mode); });
+  $('#tToggle').addEventListener('click', () => timer.running ? timerPause() : timerStart());
+  $('#tReset').addEventListener('click', timerReset);
+  $('#timerDlg').addEventListener('close', renderTimer);
+
+  // پنجره‌ها: بستن با کلیک روی پس‌زمینه (فقط اگر کلیک از همان‌جا شروع شده)
+  $$('dialog').forEach(dlg => {
+    let down = false;
+    dlg.addEventListener('pointerdown', e => { down = e.target === dlg; });
+    dlg.addEventListener('click', e => { if (e.target === dlg && down) dlg.close(); });
+    $$('[data-close]', dlg).forEach(b => b.addEventListener('click', () => dlg.close()));
   });
   $('#authDlg').addEventListener('close', () => { if (!state.user) state.pendingAdd = false; });
 
-  $('#tabs').addEventListener('keydown', e => {
-    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-    const ws = weekStartOf(selDate()), n = CONFIG.DAYS.length;
-    const i = Math.round((selDate() - ws) / 864e5);
-    const next = (i + (e.key === 'ArrowLeft' ? 1 : -1) + n) % n; // در راست‌به‌چپ، چپ = روز بعد
-    state.date = iso(addDays(ws, next)); renderAll(); $('#tab-' + next).focus();
+  // میانبرهای صفحه‌کلید
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const tg = e.target, typing = tg && (/^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName) || tg.isContentEditable);
+    if (typing || $('dialog[open]')) return;
+    const c = e.code;
+    if (c === 'ArrowLeft' || c === 'ArrowRight') {
+      if (state.view === 'agenda') return;
+      stepDay(c === 'ArrowLeft' ? 1 : -1); // در راست‌به‌چپ، چپ = روز بعد
+      if (tg && tg.classList && tg.classList.contains('day')) $('#tab-' + ((selDate().getDay() - 6 + 7) % 7))?.focus();
+    } else if (c === 'KeyT') { state.date = startDate(); setView('day', { scroll: false }); }
+    else if (c === 'KeyN') { e.preventDefault(); onAdd(); }
+    else if (c === 'Slash') { e.preventDefault(); openSearch(); }
+    else if (c === 'KeyA') setView('agenda');
+    else if (c === 'KeyD') setView('day');
+    else if (c === 'KeyF') openTimer();
   });
 
+  // کشیدن انگشت روی لیست تکلیف‌ها برای تغییر روز (موبایل)
+  let sx = 0, sy = 0, st = 0, track = false;
+  const hwSheet = $('#hwSheet');
+  hwSheet.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1 || e.target.closest('textarea,input,a,.subchips')) { track = false; return; }
+    track = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
+  }, { passive: true });
+  hwSheet.addEventListener('touchend', e => {
+    if (!track) return; track = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 80 && Math.abs(dy) < 45 && Math.abs(dx) > Math.abs(dy) * 2.2 && Date.now() - st < 700) stepDay(dx > 0 ? 1 : -1);
+  }, { passive: true });
+
+  // آنلاین/آفلاین و بروزرسانی خودکار
+  addEventListener('online', () => { renderBanner(); loadAll(); });
+  addEventListener('offline', renderBanner);
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && Date.now() - state.lastLoad > CONFIG.REFRESH_AFTER_MS) loadAll();
   });
+  setInterval(() => { if (!document.hidden && Date.now() - state.lastLoad > CONFIG.AUTO_REFRESH_MS) loadAll(); }, 30000);
+  addEventListener('pagehide', () => local.save('notes'));
+  mqMobile.addEventListener('change', renderNav);
+
+  // ارتفاع هدر (برای جای توست‌ها و ستون کناری چسبان) و سایه‌ی هدر هنگام اسکرول
+  const topEl = $('#top');
+  const setHH = () => root.style.setProperty('--hh', topEl.offsetHeight + 'px');
+  setHH(); addEventListener('resize', setHH); addEventListener('load', setHH);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setHH).catch(() => {});
+  const shadow = () => topEl.classList.toggle('scrolled', (window.pageYOffset || root.scrollTop) > 8);
+  addEventListener('scroll', shadow, { passive: true }); shadow();
+
+  // ریپل لمسی
+  if (!reduceMotion()) {
+    document.addEventListener('pointerdown', e => {
+      const b = e.target.closest && e.target.closest('.btn,.ib,.day,.bn,.bn-fab,.chk,.schip,.dp-day,.seg button,.arow,.topnav button,.hchip');
+      if (!b || b.disabled) return;
+      const r = b.getBoundingClientRect(); if (!r.width && !r.height) return;
+      const s = Math.max(r.width, r.height) * 1.4, sp = h('span', { class: 'ripple' });
+      sp.style.width = sp.style.height = s + 'px';
+      sp.style.left = (e.clientX - r.left - s / 2) + 'px'; sp.style.top = (e.clientY - r.top - s / 2) + 'px';
+      b.appendChild(sp);
+      sp.addEventListener('animationend', () => sp.remove()); setTimeout(() => sp.remove(), 700);
+    }, true);
+  }
 
   renderAll();
   loadAll();
   // نقش کاربر را از سرور تازه کن (مثلاً اگر مدیر نقش او را عوض کرده باشد)
   if (state.user && API_READY) {
-    backend.me().then(r => { state.user = r.user; session.set({ ...session.get(), user: r.user }); renderAll(); }).catch(() => {});
+    backend.me().then(r => { state.user = r.user; session.set({ ...session.get(), user: r.user }); renderAll({ anim: false }); }).catch(() => {});
   }
 }
 init();
-})();
-</script>
-
-<script>
-/* ================= جلوه‌های افزودنی (مستقل از منطق اصلی) ================= */
-(function(){
-  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var topEl=document.querySelector('.top');
-  var authEl=document.getElementById('authArea');
-
-  /* ارتفاع واقعی هدر → متغیر --hh (برای جای توست‌ها و کارت چسبان) */
-  function setHH(){
-    try{document.documentElement.style.setProperty('--hh',(topEl?topEl.offsetHeight:76)+'px');}catch(e){}
-  }
-  setHH();
-  window.addEventListener('resize',setHH);
-  window.addEventListener('load',setHH);
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(setHH).catch(function(){});
-
-  /* آواتار حرف اول نام در هدر (وقتی لاگین است) */
-  function addAvatar(){
-    if(!authEl)return;
-    var who=authEl.querySelector('.who');
-    if(who&&!who.querySelector('.who-av')){
-      var name=who.querySelector('span');
-      if(name){
-        var av=document.createElement('b');
-        av.className='who-av';
-        av.setAttribute('aria-hidden','true');
-        var ch=Array.from((name.textContent||'').trim());
-        av.textContent=ch[0]||'؟';
-        who.insertBefore(av,who.firstChild);
-      }
-    }
-  }
-  function onAuthChange(){addAvatar();setHH();}
-  if(window.MutationObserver&&authEl){
-    new MutationObserver(onAuthChange).observe(authEl,{childList:true,subtree:true});
-  }
-  onAuthChange();
-
-  /* ریپل لمسی روی دکمه‌ها و چیپ‌ها */
-  if(!reduce){
-    document.addEventListener('pointerdown',function(e){
-      var b=e.target.closest&&e.target.closest('.btn,.nav-btn,.icon-btn,.day,.seg button,.dp-day,.schip,.xbtn');
-      if(!b||b.disabled)return;
-      var r=b.getBoundingClientRect();
-      if(!r.width&&!r.height)return;
-      var s=Math.max(r.width,r.height)*1.4;
-      var sp=document.createElement('span');sp.className='ripple';
-      sp.style.width=sp.style.height=s+'px';
-      sp.style.left=(e.clientX-r.left-s/2)+'px';
-      sp.style.top=(e.clientY-r.top-s/2)+'px';
-      b.appendChild(sp);
-      sp.addEventListener('animationend',function(){sp.remove();});
-      setTimeout(function(){if(sp.parentNode)sp.remove();},650);
-    },true);
-  }
-
-  /* سایه هدر هنگام اسکرول */
-  if(topEl){
-    var setShadow=function(){topEl.classList.toggle('scrolled',(window.pageYOffset||document.documentElement.scrollTop)>8);};
-    window.addEventListener('scroll',setShadow,{passive:true});
-    setShadow();
-  }
-
-  /* دکمه نمایش/مخفی رمز */
-  var pw=document.querySelector('#authForm input[name="password"]');
-  if(pw){
-    var eye=document.createElement('button');
-    eye.type='button';eye.className='pw-eye';eye.setAttribute('aria-label','نمایش رمز');
-    eye.innerHTML='<svg class="ic-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>'
-      +'<svg class="ic-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>';
-    pw.insertAdjacentElement('afterend',eye);
-    eye.addEventListener('click',function(ev){
-      ev.preventDefault();
-      var show=pw.type==='password';
-      pw.type=show?'text':'password';
-      eye.classList.toggle('on',show);
-      eye.setAttribute('aria-label',show?'مخفی‌کردن رمز':'نمایش رمز');
-    });
-  }
-
-  /* نشان لغزان سوییچ ورود/ثبت‌نام */
-  var seg=document.querySelector('.seg');
-  if(seg&&seg.querySelector('.seg-glider')){
-    var glider=seg.querySelector('.seg-glider');
-    var place=function(){
-      var sel=seg.querySelector('[aria-selected="true"]')||seg.querySelector('#segLogin');
-      if(!sel)return;
-      glider.style.transform='translateX('+(sel.offsetLeft-glider.offsetLeft)+'px)';
-    };
-    var rafPlace=function(){requestAnimationFrame(place);};
-    seg.addEventListener('click',rafPlace);
-    window.addEventListener('resize',place);
-    if(window.MutationObserver){
-      var dlg=document.getElementById('authDlg');
-      if(dlg)new MutationObserver(rafPlace).observe(dlg,{attributes:true,attributeFilter:['open']});
-      Array.prototype.forEach.call(seg.querySelectorAll('button'),function(b){
-        new MutationObserver(rafPlace).observe(b,{attributes:true,attributeFilter:['aria-selected']});
-      });
-    }
-  }
-
-  /* روز انتخابی وسط دید (اسکرول افقی تب‌ها در موبایل) */
-  var tabs=document.getElementById('tabs');
-  if(tabs&&window.MutationObserver){
-    new MutationObserver(function(){
-      var on=tabs.querySelector('.day[aria-selected="true"]');
-      if(on)requestAnimationFrame(function(){
-        try{on.scrollIntoView({block:'nearest',inline:'center',behavior:reduce?'auto':'smooth'});}catch(e){}
-      });
-    }).observe(tabs,{childList:true});
-  }
-
-  /* ===== انتخابگر تاریخ (چیپ‌ها به‌جای dropdown) ===== */
-  var hwDlg=document.getElementById('hwDlg');
-  var sel=hwDlg?hwDlg.querySelector('select[name="date"]'):null;
-  var dp=document.getElementById('datePick');
-  var subj=hwDlg?hwDlg.querySelector('input[name="subject"]'):null;
-  var dl=document.getElementById('subjects');
-  var chips=document.getElementById('subChips');
-
-  function pad2(n){return (n<10?'0':'')+n;}
-  function todayIso(){var d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());}
-  function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;}
-
-  function buildDP(){
-    if(!sel||!dp)return;
-    var opts=Array.prototype.slice.call(sel.querySelectorAll('option'));
-    if(!opts.length){dp.hidden=true;sel.hidden=false;return;}
-    var tIso=todayIso();
-    var groups=[],map={};
-    opts.forEach(function(o){
-      var gl=(o.closest('optgroup')||{}).label||'';
-      if(!map[gl]){map[gl]=[];groups.push(gl);}
-      var p=(o.textContent||'').trim().split(/\s+/);
-      map[gl].push({val:o.value,w:p[0]||'',d:p[1]||'',m:p[2]||'',title:o.textContent||''});
-    });
-    sel.hidden=true;dp.hidden=false;
-    var sum=el('div','dp-sum',(sel.selectedOptions&&sel.selectedOptions[0])?sel.selectedOptions[0].textContent:'');
-    var scroll=el('div','dp-scroll');
-    groups.forEach(function(gl){
-      var wk=el('div','dp-week');
-      if(gl)wk.append(el('span','dp-wk',gl));
-      var row=el('div','dp-row');
-      map[gl].forEach(function(day){
-        var b=el('button','dp-day'+(day.val===sel.value?' on':'')+(day.val===tIso?' today':''));
-        b.type='button';b.dataset.val=day.val;b.title=day.title;
-        b.append(el('span','w',day.w),el('span','d',day.d),el('span','m',day.m));
-        b.addEventListener('click',function(){
-          sel.value=day.val;
-          var old=dp.querySelector('.dp-day.on');if(old)old.classList.remove('on');
-          b.classList.add('on');
-          sum.textContent=day.title;
-        });
-        row.append(b);
-      });
-      wk.append(row);scroll.append(wk);
-    });
-    dp.replaceChildren(sum,scroll);
-    var on=dp.querySelector('.dp-day.on');
-    if(on)requestAnimationFrame(function(){
-      try{on.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});}catch(e){}
-    });
-  }
-
-  /* ===== چیپ‌های درس ===== */
-  function markChips(){
-    if(!chips||!subj)return;
-    var v=subj.value.trim();
-    Array.prototype.forEach.call(chips.children,function(c){c.classList.toggle('on',c.textContent===v);});
-  }
-  if(subj)subj.addEventListener('input',markChips);
-  function buildChips(){
-    if(!dl||!chips||!subj)return;
-    var opts=Array.prototype.slice.call(dl.querySelectorAll('option'))
-      .map(function(o){return o.value||o.textContent;});
-    chips.replaceChildren();
-    opts.forEach(function(s){
-      var b=el('button','schip',s);b.type='button';
-      b.addEventListener('click',function(){subj.value=s;markChips();});
-      chips.append(b);
-    });
-    chips.hidden=!opts.length;
-    markChips();
-  }
-
-  if(window.MutationObserver){
-    if(sel)new MutationObserver(buildDP).observe(sel,{childList:true});
-    if(dl)new MutationObserver(buildChips).observe(dl,{childList:true});
-    if(hwDlg)new MutationObserver(function(){
-      if(hwDlg.open){buildDP();buildChips();}
-    }).observe(hwDlg,{attributes:true,attributeFilter:['open']});
-  }
-  buildDP();buildChips();
-})();
-</script>
-
-<script>
-/* ================= تغییر پوسته (با انتقال دایره‌ای از محل دکمه) ================= */
-(function(){
-  var btn=document.getElementById('themeToggle'),
-      root=document.documentElement,
-      meta=document.querySelector('meta[name="theme-color"]');
-  var reduce=function(){return window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;};
-  function syncLabel(t){
-    btn.setAttribute('aria-label',t==='dark'?'تغییر به حالت روشن':'تغییر به حالت تیره');
-    btn.title=t==='dark'?'حالت روشن':'حالت تیره';
-  }
-  function setTheme(t){
-    root.dataset.theme=t;
-    try{localStorage.setItem('theme',t);}catch(e){}
-    if(meta)meta.content=(t==='dark')?'#090b19':'#f6f7fb';
-    syncLabel(t);
-  }
-  function smooth(fn){
-    root.classList.add('thx');
-    setTimeout(function(){root.classList.remove('thx');},520);
-    fn();
-  }
-  syncLabel(root.dataset.theme==='dark'?'dark':'light');
-  btn.addEventListener('click',function(){
-    var t=root.dataset.theme==='dark'?'light':'dark';
-    if(document.startViewTransition&&!reduce()){
-      try{
-        var vt=document.startViewTransition(function(){setTheme(t);});
-        vt.ready.then(function(){
-          var r=btn.getBoundingClientRect(),
-              x=r.left+r.width/2,y=r.top+r.height/2,
-              mr=Math.hypot(Math.max(x,window.innerWidth-x),Math.max(y,window.innerHeight-y));
-          root.animate(
-            {clipPath:['circle(0px at '+x+'px '+y+'px)','circle('+mr+'px at '+x+'px '+y+'px)']},
-            {duration:520,easing:'cubic-bezier(.4,0,.2,1)',pseudoElement:'::view-transition-new(root)'}
-          );
-        }).catch(function(){});
-      }catch(err){smooth(function(){setTheme(t);});}
-    }else{smooth(function(){setTheme(t);});}
-  });
-  try{
-    matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){
-      var saved=null;try{saved=localStorage.getItem('theme');}catch(err){}
-      if(!saved)smooth(function(){setTheme(e.matches?'dark':'light');});
-    });
-  }catch(e){}
 })();
 </script>
 </body>
