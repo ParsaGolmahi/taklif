@@ -137,8 +137,11 @@ html[data-theme="dark"] .logo{color:var(--on-accent)}
 .topnav button:hover{color:var(--text)}
 .topnav button[aria-current="page"]{background:var(--accent);color:var(--on-accent);box-shadow:var(--btn-shadow)}
 .top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
-.search-btn{width:auto;padding:0 14px;gap:9px;color:var(--muted);font-size:.86rem;font-weight:600}
-.search-btn kbd{font:inherit;font-size:.7rem;font-weight:700;border:1px solid var(--line-2);border-radius:7px;padding:0 7px;line-height:1.7;color:var(--muted)}
+.search-btn{display:inline-flex;align-items:center;justify-content:center;flex-wrap:nowrap;white-space:nowrap;width:auto;height:40px;padding:0 14px 0 12px;gap:8px;color:var(--muted);font-size:.86rem;font-weight:600}
+.search-btn .sb-label{line-height:1}
+.search-btn kbd{display:none}
+.top-actions{flex-wrap:nowrap}
+@media(min-width:1021px){.top .wrap{width:min(1200px,100% - 40px)}}
 #themeToggle svg{grid-area:1/1;transition:transform .5s cubic-bezier(.3,.7,.3,1.25),opacity .2s}
 #themeToggle .ic-sun{opacity:0;transform:rotate(-100deg) scale(.4)}
 html[data-theme="dark"] #themeToggle .ic-sun{opacity:1;transform:none}
@@ -148,7 +151,7 @@ html[data-theme="dark"] #themeToggle .ic-moon{opacity:0;transform:rotate(100deg)
   transition:border-color .18s,transform .15s var(--spring)}
 .acc-chip:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
 .acc-chip:active{transform:scale(.96)}
-.acc-name{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acc-name{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .who-av{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
   display:grid;place-items:center;font-weight:800;font-size:.82rem}
 .role{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:999px;
@@ -311,6 +314,7 @@ h2{margin:0;font-size:1.16rem;font-weight:800;line-height:1.55}
 dialog{border:0;padding:0;border-radius:28px;width:min(480px,calc(100% - 28px));max-height:calc(100dvh - 28px);overflow:auto;
   overscroll-behavior:contain;background:var(--card);color:var(--text);box-shadow:var(--shadow-lg)}
 dialog.wide{width:min(560px,calc(100% - 28px))}
+dialog.xl{width:min(780px,calc(100% - 28px))}
 dialog.sm{width:min(400px,calc(100% - 28px))}
 dialog::backdrop{background:rgba(9,11,28,.52);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
 dialog[open]{animation:dlgIn .4s cubic-bezier(.2,.9,.3,1.08)}
@@ -503,11 +507,41 @@ input.sw:checked::after{inset-inline-start:23px}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
 html.thx,html.thx *,html.thx *::before,html.thx *::after{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease,opacity .45s ease!important}
 
+/* ================= پرسش و پاسخ ================= */
+.hw-meta .qa-toggle{margin-inline-start:auto;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card-2);
+  color:var(--muted);border-radius:999px;padding:0 12px;font-size:.8rem;font-weight:700;line-height:2;transition:color .18s,border-color .18s,background .18s}
+.qa-toggle svg{width:15px;height:15px}
+.qa-toggle:hover,.qa-toggle.on{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line));background:var(--accent-soft)}
+.qa{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line-2);display:grid;gap:10px}
+.qa-hint{margin:0;color:var(--muted);font-size:.86rem;text-align:center;padding:4px 0}
+.qitem{border:1px solid var(--line);border-radius:16px;background:var(--card-2);padding:10px 12px}
+.qa-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.82rem}
+.qa-head b{font-weight:800}
+.qa-head small{color:var(--muted);margin-inline-end:auto}
+.qa-head .av{width:24px;height:24px;font-size:.68rem}
+.qa-text{margin:4px 0 0;line-height:1.95;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.93rem}
+.aitem{margin-top:8px;margin-inline-start:14px;padding:8px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line);
+  border-inline-start:3px solid color-mix(in srgb,var(--accent) 55%,var(--line))}
+.qa-form{display:grid;gap:8px;margin-top:8px}
+.qa-form textarea{min-height:64px;padding:9px 13px;border-radius:13px;font-size:.92rem;line-height:1.8}
+.qa-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+.qa-quota{margin-inline-end:auto;color:var(--muted);font-size:.78rem}
+.badge{display:inline-block;border-radius:999px;padding:0 10px;font-size:.7rem;font-weight:800;line-height:1.9;background:var(--accent-soft);color:var(--accent)}
+.badge.bad{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}
+.tinfo .l{display:block;color:var(--muted);font-size:.8rem;overflow-wrap:anywhere;unicode-bidi:plaintext}
+.tinfo .qtxt{display:block;white-space:pre-wrap;overflow-wrap:anywhere;margin:2px 0}
+.adm-tools{margin-top:14px}
+#admBody{margin-top:6px}
+
 /* ================= نمایش بر اساس بخش ================= */
 body[data-view="agenda"] #hwSheet,body[data-view="agenda"] .weeknav,body[data-view="agenda"] .days{display:none}
 body:not([data-view="agenda"]) #agendaSheet{display:none}
 
 /* ================= واکنش‌گرا ================= */
+@media(max-width:1260px){
+  .search-btn .sb-label{display:none}
+  .search-btn{width:40px;padding:0}
+}
 @media(max-width:1020px){
   .search-btn .sb-label,.search-btn kbd,.acc-name{display:none}
   .search-btn{width:40px;padding:0}
@@ -557,7 +591,7 @@ body:not([data-view="agenda"]) #agendaSheet{display:none}
   .hw{padding:12px 12px 10px 10px;padding-inline-start:18px;gap:10px;border-radius:18px}
   .hw-text{line-height:1.9}
   dialog{width:100%;max-width:none;margin:auto 0 0;border-radius:28px 28px 0 0;max-height:92dvh}
-  dialog.wide,dialog.sm{width:100%}
+  dialog.wide,dialog.sm,dialog.xl{width:100%}
   dialog[open]{animation:shUp .42s cubic-bezier(.2,.9,.3,1)}
   .dlg{padding:18px 18px calc(22px + env(safe-area-inset-bottom))}
   .dlg::before{content:"";display:block;width:44px;height:5px;border-radius:99px;background:var(--line-2);margin:0 auto 16px}
@@ -659,7 +693,7 @@ html[data-motion="off"]{scroll-behavior:auto}
       <small id="todayText"></small>
     </div>
     <button class="ib" id="nextWeek" type="button" data-ic="chevL" aria-label="هفته بعد"></button>
-    <button class="btn line small" id="goToday" type="button">امروز</button>
+    <button class="btn line small" id="goToday" type="button">تکلیف امروز</button>
   </div>
 
   <nav class="days" id="tabs" role="tablist" aria-label="روزهای هفته"></nav>
@@ -779,6 +813,7 @@ html[data-motion="off"]{scroll-behavior:auto}
 <dialog id="hwDlg" class="wide" aria-labelledby="hwTitle">
   <form class="dlg" id="hwForm" novalidate>
     <h3 id="hwTitle">ثبت تکلیف</h3>
+    <p class="sub" id="hwQuota"></p>
     <div class="field">
       <span>برای تاریخ</span>
       <div class="dp" id="datePick"></div>
@@ -907,6 +942,45 @@ html[data-motion="off"]{scroll-behavior:auto}
   </div>
 </dialog>
 
+<!-- پنل مدیر: حساب‌ها، IPها، مسدودی‌ها و پرسش‌وپاسخ -->
+<dialog id="adminDlg" class="xl" aria-labelledby="admTitle">
+  <div class="dlg">
+    <h3 id="admTitle">مدیریت کاربران و محتوا</h3>
+    <p class="sub">حساب‌ها و IPها را ببین و در صورت نیاز مسدود کن؛ پرسش‌وپاسخ‌های نامناسب را حذف کن.</p>
+    <div class="seg" id="admTabs" role="tablist">
+      <button type="button" role="tab" data-tab="users">حساب‌ها</button>
+      <button type="button" role="tab" data-tab="ips">آی‌پی‌ها</button>
+      <button type="button" role="tab" data-tab="bans">مسدودها</button>
+      <button type="button" role="tab" data-tab="qa">پرسش‌وپاسخ</button>
+    </div>
+    <div class="field adm-tools" id="admSearchWrap"><input id="admSearch" type="search" placeholder="جستجو در نام، نام کاربری، ایمیل یا IP…" autocomplete="off"></div>
+    <ul class="tlist" id="admBody" aria-live="polite"></ul>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" id="admRefresh">بروزرسانی</button>
+      <button type="button" class="btn line" data-close>بستن</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- مسدودسازی -->
+<dialog id="banDlg" class="sm" aria-labelledby="banTitle">
+  <form class="dlg" id="banForm" novalidate>
+    <h3 id="banTitle">مسدودسازی</h3>
+    <p class="sub" id="banSub"></p>
+    <div class="field"><label for="banReason">دلیل (اختیاری، به خود کاربر نشان داده می‌شود)</label>
+      <input id="banReason" name="reason" maxlength="120" autocomplete="off"></div>
+    <div class="field"><label for="banDur">مدت</label>
+      <select id="banDur" name="dur">
+        <option value="1">۱ ساعت</option><option value="24">۱ روز</option><option value="168">۷ روز</option><option value="0" selected>همیشگی</option>
+      </select></div>
+    <p class="ferr" id="banErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" data-close>انصراف</button>
+      <button type="submit" class="btn danger" id="banSave">مسدود کن</button>
+    </div>
+  </form>
+</dialog>
+
 <!-- تایید -->
 <dialog id="confirmDlg" class="sm" aria-labelledby="cfTitle">
   <form class="dlg" method="dialog">
@@ -966,6 +1040,14 @@ html[data-motion="off"]{scroll-behavior:auto}
    DELETE /api/admin/teachers/{username}
    user = {username, name, role: student|teacher|admin, subject}
 
+   جدید:
+   GET    /api/quota                                            -> {homework|question|answer: {used, limit|null}}
+   GET    /api/homework/{id}/questions                          -> [{id,text,author,authorId,authorRole,authorSubject,createdAt,answers:[...]}]
+   POST   /api/homework/{id}/questions {text} | DELETE /api/questions/{id}
+   POST   /api/questions/{id}/answers {text}  | DELETE /api/answers/{id}
+   GET    /api/admin/users | /api/admin/ips | /api/admin/bans | /api/admin/qa (مدیر)
+   POST   /api/admin/bans {kind: user|ip, value, reason, hours} | DELETE /api/admin/bans/{id}
+
    قابلیت‌های جدید (انجام‌شده، ستاره، یادداشت، حافظه‌ی آفلاین، تنظیمات، تایمر و ...)
    فقط در localStorage همین مرورگر ذخیره می‌شوند و به بک‌اند چیزی اضافه نمی‌کنند.
 */
@@ -1000,9 +1082,11 @@ const fromIso = s => { const [y, m, d] = s.split('-').map(Number); return new Da
 const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); };
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const weekStartOf = d => addDays(d, -((d.getDay() - 6 + 7) % 7)); // شنبه همان هفته
-const startDate = () => { // نزدیک‌ترین روز مدرسه از امروز
-  for (let i = 0; i < 7; i++) { const d = addDays(today(), i); if (SCHOOL.includes(d.getDay())) return iso(d); }
-  return iso(today());
+// «تکلیف امروز» = تکلیفی که باید برای اولین روز مدرسه‌ی بعد از امروز آماده کنیم
+// (صبح می‌رویم مدرسه و تکلیف همان روز را تحویل می‌دهیم؛ پس امروز تکلیف فردا را حل می‌کنیم)
+const startDate = () => {
+  for (let i = 1; i <= 7; i++) { const d = addDays(today(), i); if (SCHOOL.includes(d.getDay())) return iso(d); }
+  return iso(addDays(today(), 1));
 };
 const dayName = id => CONFIG.DAYS.find(d => d.id === id)?.name ?? '';
 const firstName = n => String(n || '').trim().split(/\s+/)[0] || '';
@@ -1067,6 +1151,8 @@ const ICON = {
   chevR: '<path d="M9 6l6 6-6 6"/>',
   chevL: '<path d="M15 6l-6 6 6 6"/>',
   calendarEdit: '<rect x="3" y="4.5" width="18" height="16.5" rx="3.5"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18M9 15h6"/>',
+  chat: '<path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  shield: '<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
 };
 const SVGNS = 'http://www.w3.org/2000/svg';
 function ic(name, cls = '') {
@@ -1140,6 +1226,7 @@ const state = {
   loading: !hasCache, error: '', lastLoad: 0, refreshing: false, offline: false,
   cacheTs: hasCache ? (cached.t || 0) : 0,
   pendingAdd: false, editing: null, openNote: null, justDone: null, flash: null,
+  quota: null, qa: {}, qaOpen: new Set(), qaDraft: {}, qaReply: null,
 };
 function persistCache() { state.cacheTs = Date.now(); store.set('hw:cache', { t: state.cacheTs, schedule: state.schedule, homework: state.homework }); }
 
@@ -1166,6 +1253,7 @@ const remote = {
     if (!res.ok) {
       let msg = 'مشکلی پیش آمد. دوباره تلاش کن.';
       try { const j = await res.json(); if (typeof j.detail === 'string') msg = j.detail; } catch {}
+      if (res.status === 403 && s && msg.includes('مسدود')) { session.clear(); state.user = null; state.quota = null; renderAll({ anim: false }); }
       throw new Error(msg);
     }
     return res.status === 204 ? null : res.json();
@@ -1183,6 +1271,18 @@ const remote = {
   addTeacher: d => remote.req('/api/admin/teachers', { method: 'POST', body: d }),
   updateTeacher: (u, d) => remote.req('/api/admin/teachers/' + encodeURIComponent(u), { method: 'PUT', body: d }),
   deleteTeacher: u => remote.req('/api/admin/teachers/' + encodeURIComponent(u), { method: 'DELETE' }),
+  quota: () => remote.req('/api/quota'),
+  listQuestions: id => remote.req('/api/homework/' + id + '/questions'),
+  addQuestion: (id, d) => remote.req('/api/homework/' + id + '/questions', { method: 'POST', body: d }),
+  deleteQuestion: id => remote.req('/api/questions/' + id, { method: 'DELETE' }),
+  addAnswer: (qid, d) => remote.req('/api/questions/' + qid + '/answers', { method: 'POST', body: d }),
+  deleteAnswer: id => remote.req('/api/answers/' + id, { method: 'DELETE' }),
+  adminUsers: () => remote.req('/api/admin/users'),
+  adminIps: () => remote.req('/api/admin/ips'),
+  adminBans: () => remote.req('/api/admin/bans'),
+  adminQa: () => remote.req('/api/admin/qa'),
+  addBan: d => remote.req('/api/admin/bans', { method: 'POST', body: d }),
+  deleteBan: id => remote.req('/api/admin/bans/' + id, { method: 'DELETE' }),
 };
 const backend = remote;
 const API_READY = !!CONFIG.API_BASE && !CONFIG.API_BASE.includes('YOUR-APP');
@@ -1312,7 +1412,7 @@ function counts() {
   let up = 0, over = 0, star = 0;
   for (const x of state.homework) {
     if (isStar(x)) star++;
-    if (!isDone(x)) { if (x.date >= t) up++; else if (x.date >= od) over++; }
+    if (!isDone(x)) { if (x.date > t) up++; else if (x.date < t && x.date >= od) over++; }
   }
   return { up, over, star };
 }
@@ -1338,23 +1438,25 @@ function ringSvg(pct) {
 
 function renderHero() {
   const fd = startDate(), d = fromIso(fd);
-  const items = onDate(fd), total = items.length, done = items.filter(isDone).length;
+  const items = onDate(fd), total = items.length, done = items.filter(isDone).length, left = total - done;
   const diff = Math.round((d - today()) / 864e5);
-  const title = diff === 0 ? 'تکلیف‌های امروز' : diff === 1 ? 'تکلیف‌های فردا' : `تکلیف‌های ${dayName(d.getDay()) || fmt(d, { weekday: 'long' })}`;
-  const sub = !total ? 'برای این روز هنوز تکلیفی ثبت نشده است.'
-    : done === total ? 'همه‌ی تکلیف‌های این روز انجام شده؛ آفرین!'
-    : `${fa(done)} از ${fa(total)} تکلیف انجام شده است.`;
+  const dn = dayName(d.getDay()) || fmt(d, { weekday: 'long' });
+  const when = diff === 1 ? `فردا (${dn})` : dn;
+  const sub = !total ? `برای ${when} هنوز تکلیفی ثبت نشده است.`
+    : left === 0 ? `همه‌ی تکلیف‌های ${when} را حل کرده‌ای؛ آفرین!`
+    : `${fa(left)} تکلیف مانده از ${fa(total)} · برای ${when}`;
   const c = counts();
   const chip = (label, n, f) => h('button', { class: 'hchip', type: 'button', onclick: () => openAgenda(f) }, label, h('b', {}, fa(n)));
-  const chips = [chip('پیش‌رو', c.up, 'upcoming')];
+  const chips = [h('button', { class: 'hchip', type: 'button', onclick: () => { state.date = fd; setView('day'); } }, 'دیدن تکلیف‌های ' + dn),
+    chip('پیش‌رو', c.up, 'upcoming')];
   if (c.over > 0) chips.push(chip('عقب‌افتاده', c.over, 'overdue'));
   if (c.star > 0) chips.push(chip('ستاره‌دار', c.star, 'starred'));
   const pct = total ? done / total : 0;
-  const center = !total ? '—' : done === total ? ic('check') : `${fa(done)}/${fa(total)}`;
+  const center = !total ? '—' : left === 0 ? ic('check') : `${fa(left)}`;
   $('#hero').replaceChildren(
     h('div', { class: 'hero-txt' },
       h('p', { class: 'hero-hi' }, greet() + (state.user ? '، ' + firstName(state.user.name) : '')),
-      h('h2', { class: 'hero-title' }, title),
+      h('h2', { class: 'hero-title' }, 'تکلیف‌های امروز'),
       h('p', { class: 'hero-sub' }, sub),
       h('div', { class: 'hero-chips' }, ...chips)),
     h('div', { class: 'hero-ring', 'aria-hidden': 'true' }, ringSvg(pct), h('span', { class: 'hero-pct' }, center)));
@@ -1426,11 +1528,119 @@ function hwCard(it, o = {}) {
       h('div', { class: 'hw-meta' },
         h('span', { class: 'av', 'aria-hidden': 'true' }, initial(it.author)),
         h('span', {}, it.author || ''),
-        role && h('span', { class: 'role' }, role))));
+        role && h('span', { class: 'role' }, role),
+        h('button', { class: 'qa-toggle' + (state.qaOpen.has(id) ? ' on' : ''), type: 'button', 'aria-expanded': String(state.qaOpen.has(id)), onclick: () => toggleQA(it) },
+          ic('chat'), qaCount(it) ? `پرسش و پاسخ (${fa(qaCount(it))})` : 'پرسش و پاسخ')),
+      state.qaOpen.has(id) && qaPanel(it)));
   const ta = $('.note-ta', card); if (ta) requestAnimationFrame(() => autoGrow(ta));
   return card;
 }
 function autoGrow(ta) { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 160) + 'px'; }
+
+/* ----- پرسش و پاسخ ----- */
+const qaCount = it => { const st = state.qa[String(it.id)]; return st && st.items ? st.items.length : (it.qCount || 0); };
+const quotaLeft = kind => { const q = state.quota && state.quota[kind]; return q && q.limit != null ? Math.max(0, q.limit - q.used) : null; };
+const canDelQA = x => !!state.user && (isStaff(state.user) || state.user.username === x.authorId);
+const typingQA = () => { const a = document.activeElement; return !!(a && a.closest && a.closest('.qa')); };
+async function loadQuota() {
+  if (!state.user) { state.quota = null; return; }
+  try { state.quota = await backend.quota(); } catch {}
+}
+async function loadQA(it, quiet = false) {
+  const id = String(it.id);
+  if (!quiet || !state.qa[id]) { state.qa[id] = { loading: true, items: null, error: '' }; renderLists(false); }
+  try { const items = await backend.listQuestions(it.id); state.qa[id] = { loading: false, items, error: '' }; it.qCount = items.length; }
+  catch (e) { if (!quiet || !state.qa[id].items) state.qa[id] = { loading: false, items: null, error: e.message }; }
+  if (!typingQA()) renderLists(false);
+}
+function toggleQA(it) {
+  const id = String(it.id), st = state.qa[id];
+  if (state.qaOpen.has(id)) { state.qaOpen.delete(id); renderLists(false); return; }
+  state.qaOpen.add(id);
+  if (st && st.items) { renderLists(false); loadQA(it, true); } else loadQA(it);
+}
+function reloadOpenQA() {
+  state.qaOpen.forEach(id => { const it = state.homework.find(x => String(x.id) === id); if (it) loadQA(it, true); });
+}
+function qaHead(x, onDel) {
+  const role = roleText(x.authorRole, x.authorSubject);
+  return h('div', { class: 'qa-head' },
+    h('span', { class: 'av', 'aria-hidden': 'true' }, initial(x.author)), h('b', {}, x.author),
+    role && h('span', { class: 'role' }, role), h('small', {}, ago(x.createdAt)),
+    onDel && h('button', { class: 'ib sm bad', type: 'button', 'aria-label': 'حذف', title: 'حذف', onclick: onDel }, ic('trash')));
+}
+function focusField(sel) {
+  requestAnimationFrame(() => { const el = $$(sel).find(e => e.offsetParent); if (el) el.focus(); });
+}
+function replyArea(it, qi) {
+  if (!state.user) return h('button', { class: 'linkbtn', type: 'button', style: 'margin-top:6px', onclick: () => openAuth('login', 'برای پاسخ دادن، وارد شو یا ثبت‌نام کن.') }, 'پاسخ دادن');
+  if (state.qaReply !== qi.id) return h('button', { class: 'linkbtn', type: 'button', style: 'margin-top:6px', onclick: () => { state.qaReply = qi.id; renderLists(false); focusField(`textarea[data-reply="${qi.id}"]`); } }, 'پاسخ دادن');
+  const left = quotaLeft('answer');
+  return h('form', { class: 'qa-form', onsubmit: e => { e.preventDefault(); submitAnswer(it, qi, e.target); } },
+    h('textarea', { name: 't', maxlength: 500, rows: 2, 'data-reply': qi.id, placeholder: 'پاسخ تو…', 'aria-label': 'پاسخ',
+      oninput: e => { state.qaDraft['a' + qi.id] = e.target.value; } }, state.qaDraft['a' + qi.id] || ''),
+    h('div', { class: 'qa-actions' },
+      left !== null && h('small', { class: 'qa-quota' }, left > 0 ? `${fa(left)} پاسخ دیگر برای امروز` : 'سهمیه‌ی پاسخ امروزت تمام شده است.'),
+      h('button', { class: 'btn line small', type: 'button', onclick: () => { state.qaReply = null; renderLists(false); } }, 'انصراف'),
+      h('button', { class: 'btn small', type: 'submit', disabled: left === 0 }, 'ارسال پاسخ')));
+}
+function askForm(it) {
+  const id = String(it.id);
+  if (!state.user) return h('div', { class: 'qa-actions' },
+    h('button', { class: 'btn line small', type: 'button', onclick: () => openAuth('login', 'برای پرسیدن سؤال، وارد شو یا ثبت‌نام کن.') }, 'برای پرسیدن سؤال وارد شو'));
+  const left = quotaLeft('question');
+  return h('form', { class: 'qa-form', onsubmit: e => { e.preventDefault(); submitQuestion(it, e.target); } },
+    h('textarea', { name: 't', maxlength: 300, rows: 2, placeholder: 'سؤالت درباره‌ی این تکلیف را بنویس…', 'aria-label': 'سؤال جدید',
+      oninput: e => { state.qaDraft['q' + id] = e.target.value; } }, state.qaDraft['q' + id] || ''),
+    h('div', { class: 'qa-actions' },
+      left !== null && h('small', { class: 'qa-quota' }, left > 0 ? `امروز ${fa(left)} سؤال دیگر می‌توانی بپرسی.` : 'سهمیه‌ی سؤال امروزت تمام شده است.'),
+      h('button', { class: 'btn small', type: 'submit', disabled: left === 0 }, 'ارسال سؤال')));
+}
+function qaPanel(it) {
+  const st = state.qa[String(it.id)], box = h('div', { class: 'qa' });
+  if (!st || st.loading) { box.append(h('p', { class: 'qa-hint' }, 'در حال بارگذاری...')); return box; }
+  if (st.error) { box.append(h('p', { class: 'qa-hint' }, st.error), h('button', { class: 'btn line small', type: 'button', onclick: () => loadQA(it) }, 'تلاش دوباره')); return box; }
+  if (!st.items.length) box.append(h('p', { class: 'qa-hint' }, 'هنوز سؤالی پرسیده نشده؛ اولین نفر باش!'));
+  st.items.forEach(qi => box.append(h('div', { class: 'qitem' },
+    qaHead(qi, canDelQA(qi) && (() => removeQ(it, qi))),
+    h('p', { class: 'qa-text' }, qi.text),
+    ...qi.answers.map(a => h('div', { class: 'aitem' }, qaHead(a, canDelQA(a) && (() => removeA(it, qi, a))), h('p', { class: 'qa-text' }, a.text))),
+    replyArea(it, qi))));
+  box.append(askForm(it));
+  return box;
+}
+async function submitQuestion(it, form) {
+  const t = form.t.value.trim(), id = String(it.id);
+  if (t.length < 3) { toast('سؤال را کامل‌تر بنویس.', true); return; }
+  try {
+    const q = await busy(form.querySelector('[type=submit]'), () => backend.addQuestion(it.id, { text: t }));
+    const st = state.qa[id]; if (st && st.items) { st.items.push(q); it.qCount = st.items.length; }
+    delete state.qaDraft['q' + id];
+    await loadQuota(); renderLists(false); toast('سؤال ثبت شد');
+  } catch (ex) { toast(ex.message, true); }
+}
+async function submitAnswer(it, qi, form) {
+  const t = form.t.value.trim();
+  if (!t) { toast('پاسخ را بنویس.', true); return; }
+  try {
+    const a = await busy(form.querySelector('[type=submit]'), () => backend.addAnswer(qi.id, { text: t }));
+    qi.answers.push(a); delete state.qaDraft['a' + qi.id]; state.qaReply = null;
+    await loadQuota(); renderLists(false); toast('پاسخ ثبت شد');
+  } catch (ex) { toast(ex.message, true); }
+}
+async function removeQ(it, qi) {
+  if (!await confirmBox({ title: 'حذف سؤال', message: 'این سؤال و پاسخ‌هایش حذف شود؟', ok: 'حذف' })) return;
+  try {
+    await backend.deleteQuestion(qi.id);
+    const st = state.qa[String(it.id)]; if (st && st.items) { st.items = st.items.filter(x => x.id !== qi.id); it.qCount = st.items.length; }
+    renderLists(false); toast('سؤال حذف شد');
+  } catch (ex) { toast(ex.message, true); }
+}
+async function removeA(it, qi, a) {
+  if (!await confirmBox({ title: 'حذف پاسخ', message: 'این پاسخ حذف شود؟', ok: 'حذف' })) return;
+  try { await backend.deleteAnswer(a.id); qi.answers = qi.answers.filter(x => x.id !== a.id); renderLists(false); toast('پاسخ حذف شد'); }
+  catch (ex) { toast(ex.message, true); }
+}
 
 /* ----- وضعیت‌های شخصی ----- */
 function toggleDone(it) {
@@ -1502,12 +1712,12 @@ function renderDay(anim = true) {
   const items = prefs.hideDone ? all.filter(x => !isDone(x)) : all;
   if (all.length) {
     line.hidden = false;
-    line.replaceChildren(
+    line.replaceChildren(...[
       h('div', { class: 'progress', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(all.length), 'aria-valuenow': String(done) },
         h('span', { style: `width:${Math.round(done / all.length * 100)}%` })),
       h('small', {}, `${fa(done)} از ${fa(all.length)} انجام شد`),
       done > 0 && h('button', { class: 'linkbtn', type: 'button', onclick: () => { prefs.hideDone = !prefs.hideDone; savePrefs(); renderLists(false); renderSettingsState(); } },
-        prefs.hideDone ? 'نمایش همه' : 'پنهان‌کردن انجام‌شده‌ها'));
+        prefs.hideDone ? 'نمایش همه' : 'پنهان‌کردن انجام‌شده‌ها')].filter(Boolean));
   } else line.hidden = true;
 
   const isPast = key < iso(today());
@@ -1531,7 +1741,7 @@ function runFlash() {
 /* ----- نمای پیش‌رو ----- */
 function agendaItems(filter, subject) {
   const t = iso(today()), od = iso(addDays(today(), -CONFIG.OVERDUE_DAYS));
-  const base = state.homework.filter(x => filter === 'upcoming' ? x.date >= t : filter === 'overdue' ? (x.date < t && x.date >= od && !isDone(x)) : isStar(x));
+  const base = state.homework.filter(x => filter === 'upcoming' ? x.date > t : filter === 'overdue' ? (x.date < t && x.date >= od && !isDone(x)) : isStar(x));
   const list = subject ? base.filter(x => x.subject === subject) : base;
   const dir = filter === 'overdue' ? -1 : 1;
   return { base, list: list.sort((a, b) => dir * (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || byCreated(a, b)) };
@@ -1556,7 +1766,7 @@ function renderAgenda(anim = true) {
     class: 'schip' + (state.agendaSubject === s ? ' on' : ''), type: 'button',
     onclick: () => { state.agendaSubject = s; renderAgenda(false); },
   }, s || 'همه')));
-  $('#agSub').textContent = f === 'upcoming' ? 'از امروز به بعد' : f === 'overdue' ? `انجام‌نشده‌های ${fa(CONFIG.OVERDUE_DAYS)} روز گذشته` : 'تکلیف‌هایی که ستاره‌دار کرده‌ای';
+  $('#agSub').textContent = f === 'upcoming' ? 'تکلیف‌های روزهای آینده (از فردا به بعد)' : f === 'overdue' ? `انجام‌نشده‌های ${fa(CONFIG.OVERDUE_DAYS)} روز گذشته` : 'تکلیف‌هایی که ستاره‌دار کرده‌ای';
 
   if (!list.length) {
     box.replaceChildren(emptyBox(
@@ -1597,8 +1807,8 @@ function renderNav() {
   });
 }
 
-function renderAll({ anim = true } = {}) {
-  renderBanner(); renderAuth(); renderHero(); renderWeek(); renderTabs(); renderLists(anim); renderSchedule(); renderNav(); renderTimer();
+function renderAll({ anim = true, keepLists = false } = {}) {
+  renderBanner(); renderAuth(); renderHero(); renderWeek(); renderTabs(); if (!keepLists) renderLists(anim); renderSchedule(); renderNav(); renderTimer();
 }
 function setView(v, { scroll = true } = {}) {
   state.view = v; document.body.dataset.view = v; renderAll();
@@ -1616,7 +1826,7 @@ async function loadAll() {
   if (state.refreshing) return;
   state.refreshing = true; state.error = '';
   if (!state.homework.length) state.loading = true;
-  renderLists(false);
+  if (!typingQA()) renderLists(false);   // وسط نوشتن سؤال/پاسخ، لیست دوباره ساخته نمی‌شود
   try {
     const [schedule, homework] = await Promise.all([backend.getSchedule(), backend.listHomework()]);
     state.schedule = schedule || {}; state.homework = Array.isArray(homework) ? homework : [];
@@ -1625,7 +1835,7 @@ async function loadAll() {
     state.error = e.message; state.offline = true;
     if (state.homework.length) toast(e.message, true);
   }
-  state.loading = false; state.refreshing = false; state.lastLoad = Date.now(); renderAll({ anim: false });
+  state.loading = false; state.refreshing = false; state.lastLoad = Date.now(); renderAll({ anim: false, keepLists: typingQA() });
 }
 
 /* ================= ورود و ثبت‌نام ================= */
@@ -1660,21 +1870,23 @@ async function onAuthSubmit(e) {
     data.email = f.email.value.trim().toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email) || data.email.length > 254) { err.textContent = 'ایمیل را درست وارد کن.'; return; }
     if (!/^[A-Za-z0-9_]{3,20}$/.test(data.username)) { err.textContent = 'نام کاربری ۳ تا ۲۰ حرف انگلیسی، عدد یا _ باشد.'; return; }
-    if (data.password.length < 6) { err.textContent = 'رمز عبور حداقل ۶ نویسه باشد.'; return; }
+    if (data.password.length < 8) { err.textContent = 'رمز عبور حداقل ۸ نویسه باشد.'; return; }
+    if (/^\d+$/.test(data.password)) { err.textContent = 'رمز عبور نباید فقط عدد باشد.'; return; }
   } else if (!data.username || !data.password) { err.textContent = 'نام کاربری و رمز عبور را وارد کن.'; return; }
   try {
     const res = await busy($('#authSubmit'), () => authMode === 'login' ? backend.login(data) : backend.register(data));
     session.set(res); state.user = res.user;
-    $('#authDlg').close(); renderAll();
+    $('#authDlg').close(); renderAll(); loadQuota();
     toast(`${res.user.name}، خوش آمدی`);
     if (state.pendingAdd) { state.pendingAdd = false; openHw(); }
   } catch (ex) { err.textContent = ex.message; }
 }
-function logout() { session.clear(); state.user = null; renderAll(); toast('از حساب خارج شدی'); }
+function logout() { session.clear(); state.user = null; state.quota = null; state.qaReply = null; renderAll(); toast('از حساب خارج شدی'); }
 
 /* ================= ثبت و ویرایش تکلیف ================= */
 function onAdd() {
   if (!state.user) { state.pendingAdd = true; openAuth('login', 'برای ثبت تکلیف، وارد شو یا ثبت‌نام کن.'); return; }
+  if (quotaLeft('homework') === 0) { toast(`سهمیه‌ی ثبت تکلیف امروزت (${fa(state.quota.homework.limit)} تکلیف) تمام شده است. فردا دوباره امتحان کن.`, true); return; }
   openHw();
 }
 let hwDate = '';
@@ -1733,6 +1945,8 @@ function openHw(it = null) {
   f.subject.value = it?.subject ?? (draft?.subject || (state.user?.role === 'teacher' ? state.user.subject || '' : ''));
   f.text.value = it?.text ?? (draft?.text || '');
   updateCount(); renderSubChips();
+  const ql = quotaLeft('homework');
+  $('#hwQuota').textContent = !it && ql !== null ? (ql > 0 ? `امروز ${fa(ql)} تکلیف دیگر می‌توانی ثبت کنی.` : 'سهمیه‌ی ثبت تکلیف امروزت تمام شده است.') : '';
   $('#hwErr').textContent = '';
   $('#hwDlg').showModal();
   requestAnimationFrame(() => $('.dp-day.on', $('#datePick'))?.scrollIntoView({ block: 'nearest' }));
@@ -1758,7 +1972,7 @@ async function onHwSubmit(e) {
         state.homework.push(created); savedId = created && created.id;
       }
     });
-    persistCache(); if (!editing) store.del('hw:draft');
+    persistCache(); if (!editing) { store.del('hw:draft'); loadQuota(); }
     state.date = data.date; state.flash = savedId != null ? String(savedId) : null;
     $('#hwDlg').close();
     if (state.view === 'schedule') setView('day', { scroll: false }); else renderAll();
@@ -1817,7 +2031,7 @@ function openAccount() {
     h('span', { class: 'arow-ic' }, ic(icon)), h('span', { class: 'arow-t' }, label), ic('chevL', 'arow-chev'));
   const rows = [];
   if (isStaff(u)) rows.push(row('calendarEdit', 'ویرایش برنامه زنگ‌ها', openSched));
-  if (u && u.role === 'admin') rows.push(row('users', 'مدیریت معلم‌ها', openTeachers));
+  if (u && u.role === 'admin') rows.push(row('users', 'مدیریت معلم‌ها', openTeachers), row('shield', 'کاربران، IP ها و پرسش‌وپاسخ', openAdmin));
   rows.push(row('timer', 'تایمر تمرکز', openTimer), row('settings', 'تنظیمات و ظاهر', openSettings));
   if (u) rows.push(row('logout', 'خروج از حساب', logout, 'bad'));
   const head = u
@@ -1934,6 +2148,92 @@ async function removeTeacher(t) {
     if (editingTeacher?.username === t.username) teacherForm();
     toast('معلم حذف شد'); loadTeachers(); loadAll();
   } catch (ex) { toast(ex.message, true); }
+}
+
+/* ================= پنل مدیر: حساب‌ها، IPها، مسدودی‌ها، پرسش‌وپاسخ ================= */
+const adm = { tab: 'users', users: [], ips: [], bans: [], qa: [], q: '' };
+let banTarget = null;
+const ipEl = ip => h('bdi', { dir: 'ltr' }, ip || '—');
+const seen = ts => (ts ? ago(ts) : '—');
+const banOf = (kind, value) => adm.bans.find(b => b.kind === kind && b.value === value);
+const bannedBadge = () => h('span', { class: 'badge bad', style: 'margin-inline-start:6px' }, 'مسدود');
+function renderAdmin() {
+  $$('#admTabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === adm.tab)));
+  $('#admSearchWrap').hidden = !(adm.tab === 'users' || adm.tab === 'ips');
+  const q = normFa(adm.q), none = () => [h('li', { class: 'pteacher' }, 'موردی پیدا نشد.')];
+  const btn = (label, cls, fn) => h('button', { class: 'btn small ' + cls, type: 'button', onclick: fn }, label);
+  let rows = [];
+  if (adm.tab === 'users') {
+    rows = adm.users.filter(u => !q || normFa([u.name, u.username, u.email, u.lastIp].join(' ')).includes(q)).map(u => h('li', {},
+      h('div', { class: 'tinfo' },
+        h('b', {}, u.name, u.role !== 'student' && h('span', { class: 'badge', style: 'margin-inline-start:6px' }, roleText(u.role, '')), u.banned && bannedBadge()),
+        h('span', { class: 'l' }, ipEl(u.username), ' · ', ipEl(u.email || 'بدون ایمیل')),
+        h('span', { class: 'l' }, 'آخرین IP: ', ipEl(u.lastIp), ` · آخرین فعالیت: ${seen(u.lastSeen)}`),
+        h('span', { class: 'l' }, `تکلیف: ${fa(u.homework)} · سؤال: ${fa(u.questions)} · پاسخ: ${fa(u.answers)}`)),
+      u.role === 'admin' ? null : u.banned ? btn('رفع مسدودی', 'line', () => unban(u.banId)) : btn('مسدود', 'danger', () => openBan('user', u.username, u.name))));
+  } else if (adm.tab === 'ips') {
+    rows = adm.ips.filter(i => !q || normFa([i.ip, ...i.accounts.map(a => a.name + ' ' + a.username)].join(' ')).includes(q)).map(i => h('li', {},
+      h('div', { class: 'tinfo' },
+        h('b', {}, ipEl(i.ip), i.banned && bannedBadge()),
+        h('span', { class: 'l' }, 'حساب‌ها: ' + (i.accounts.map(a => a.name).join('، ') || '—') + (i.accountCount > i.accounts.length ? ` و ${fa(i.accountCount - i.accounts.length)} حساب دیگر` : '')),
+        h('span', { class: 'l' }, `درخواست‌ها: ${fa(i.hits)} · آخرین بازدید: ${seen(i.lastSeen)}`)),
+      i.banned ? btn('رفع مسدودی', 'line', () => unban(i.banId))
+        : btn('مسدود', 'danger', () => openBan('ip', i.ip, i.ip, i.accountCount > 1 ? ` — ${fa(i.accountCount)} حساب از این IP استفاده کرده‌اند؛ اگر IP مشترک (مدرسه/خانه) باشد همه‌ی آن‌ها بسته می‌شوند.` : ''))));
+  } else if (adm.tab === 'bans') {
+    rows = adm.bans.map(b => h('li', {},
+      h('div', { class: 'tinfo' },
+        h('b', {}, b.kind === 'ip' ? 'IP: ' : 'حساب: ', ipEl(b.value)),
+        h('span', { class: 'l' }, (b.reason ? `دلیل: ${b.reason} · ` : '') + (b.expiresAt ? 'تا ' + fmt(new Date(b.expiresAt), { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'همیشگی') + ` · توسط ${b.createdBy}`)),
+      btn('رفع مسدودی', 'line', () => unban(b.id))));
+  } else {
+    rows = adm.qa.map(x => h('li', {},
+      h('div', { class: 'tinfo' },
+        h('b', {}, x.type === 'question' ? 'سؤال' : 'پاسخ', ' · ', x.author),
+        h('span', { class: 'qtxt' }, x.text),
+        h('span', { class: 'l' }, x.context + ' · ', ipEl(x.ip), ` · ${ago(x.createdAt)}`)),
+      btn('حذف', 'line', () => adminDeleteQa(x)),
+      btn('مسدود کاربر', 'danger', () => openBan('user', x.authorId, x.author))));
+  }
+  $('#admBody').replaceChildren(...(rows.length ? rows : none()));
+}
+async function loadAdmin(quiet = false) {
+  if (!quiet) $('#admBody').replaceChildren(h('li', { class: 'pteacher' }, 'در حال بارگذاری...'));
+  try {
+    const [u, i, b] = await Promise.all([backend.adminUsers(), backend.adminIps(), backend.adminBans()]);
+    adm.users = u; adm.ips = i; adm.bans = b;
+    if (adm.tab === 'qa') adm.qa = await backend.adminQa();
+    renderAdmin();
+  } catch (e) { $('#admBody').replaceChildren(h('li', { class: 'pteacher' }, e.message)); }
+}
+async function setAdmTab(t) {
+  adm.tab = t; renderAdmin();
+  if (t === 'qa') { try { adm.qa = await backend.adminQa(); renderAdmin(); } catch (e) { toast(e.message, true); } }
+}
+function openAdmin() { adm.tab = 'users'; adm.q = ''; $('#admSearch').value = ''; renderAdmin(); $('#adminDlg').showModal(); loadAdmin(); }
+async function unban(id) {
+  try { await backend.deleteBan(id); toast('مسدودی برداشته شد'); await loadAdmin(true); } catch (e) { toast(e.message, true); }
+}
+function openBan(kind, value, label, extra = '') {
+  banTarget = { kind, value };
+  $('#banTitle').textContent = kind === 'ip' ? 'مسدودکردن IP' : 'مسدودکردن ' + label;
+  $('#banSub').textContent = kind === 'ip' ? value + extra : `«${label}» دیگر نمی‌تواند وارد شود یا چیزی ثبت کند.`;
+  $('#banForm').reset(); $('#banDur').value = '0'; $('#banErr').textContent = '';
+  $('#banDlg').showModal();
+}
+async function onBanSubmit(e) {
+  e.preventDefault();
+  const f = e.target;
+  try {
+    await busy($('#banSave'), () => backend.addBan({ kind: banTarget.kind, value: banTarget.value, reason: f.reason.value.trim(), hours: Number(f.dur.value) || 0 }));
+    $('#banDlg').close(); toast('مسدود شد'); await loadAdmin(true);
+  } catch (ex) { $('#banErr').textContent = ex.message; }
+}
+async function adminDeleteQa(x) {
+  if (!await confirmBox({ title: x.type === 'question' ? 'حذف سؤال' : 'حذف پاسخ', message: 'این مورد برای همه حذف شود؟', ok: 'حذف' })) return;
+  try {
+    await (x.type === 'question' ? backend.deleteQuestion(x.id) : backend.deleteAnswer(x.id));
+    adm.qa = await backend.adminQa(); renderAdmin(); reloadOpenQA(); loadAll(); toast('حذف شد');
+  } catch (e) { toast(e.message, true); }
 }
 
 /* ================= تایمر تمرکز ================= */
@@ -2058,6 +2358,10 @@ function init() {
   $('#teacherForm').addEventListener('submit', onTeacherSubmit);
   $('#teacherCancel').addEventListener('click', () => teacherForm());
   $('#sq').addEventListener('input', renderSearch);
+  $('#admTabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) setAdmTab(b.dataset.tab); });
+  $('#admSearch').addEventListener('input', e => { adm.q = e.target.value; renderAdmin(); });
+  $('#admRefresh').addEventListener('click', () => loadAdmin());
+  $('#banForm').addEventListener('submit', onBanSubmit);
 
   // تنظیمات
   $('#themeSeg').addEventListener('click', e => { const b = e.target.closest('[data-theme-pref]'); if (b) setThemePref(b.dataset.themePref, b); });
@@ -2154,6 +2458,7 @@ function init() {
   loadAll();
   // نقش کاربر را از سرور تازه کن (مثلاً اگر مدیر نقش او را عوض کرده باشد)
   if (state.user && API_READY) {
+    loadQuota();
     backend.me().then(r => { state.user = r.user; session.set({ ...session.get(), user: r.user }); renderAll({ anim: false }); }).catch(() => {});
   }
 }
