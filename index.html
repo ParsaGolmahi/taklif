@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f4f5fb">
+<meta name="theme-color" content="#f6f7fb">
 <title>سامانه تکلیف کلاس ۹۰۱ - دبیرستان شهید بهشتی</title>
 <meta name="description" content="مشاهده و ثبت تکلیف‌های کلاس ۹۰۱ دبیرستان شهید بهشتی به تفکیک تاریخ">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -235,7 +235,7 @@ h2{margin:0;font-size:1.16rem;font-weight:800;line-height:1.55}
 .head-actions{display:flex;gap:8px;align-items:center}
 .sheet-head h2,.dlg h3{display:flex;align-items:center;gap:10px}
 .sheet-head h2::before,.dlg h3::before{content:"";flex:none;width:6px;height:1.05em;border-radius:4px;background:var(--accent)}
-#hwList,#agList{min-height:150px}
+#hwList,#agList,#exList,#peList{min-height:150px}
 .dayline{display:flex;align-items:center;gap:12px;padding:6px 22px 4px}
 .progress{flex:1;height:8px;border-radius:99px;background:color-mix(in srgb,var(--accent) 12%,var(--line));overflow:hidden}
 .progress span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .5s var(--ease)}
@@ -534,8 +534,13 @@ html.thx,html.thx *,html.thx *::before,html.thx *::after{transition:background-c
 #admBody{margin-top:6px}
 
 /* ================= نمایش بر اساس بخش ================= */
-body[data-view="agenda"] #hwSheet,body[data-view="agenda"] .weeknav,body[data-view="agenda"] .days{display:none}
+body:not([data-view="day"]) #hwSheet,body:not([data-view="day"]) .weeknav,body:not([data-view="day"]) .days{display:none}
 body:not([data-view="agenda"]) #agendaSheet{display:none}
+body:not([data-view="exams"]) #examSheet{display:none}
+body:not([data-view="personal"]) #personalSheet{display:none}
+body:not([data-view="ai"]) #aiSheet{display:none}
+body:not([data-view="day"]):not([data-view="agenda"]) .viewseg{display:none}
+body:is([data-view="exams"],[data-view="personal"],[data-view="ai"]) .hero{display:none}
 
 /* ================= واکنش‌گرا ================= */
 @media(max-width:1260px){
@@ -629,6 +634,256 @@ body:not([data-view="agenda"]) #agendaSheet{display:none}
 }
 html[data-motion="off"] *,html[data-motion="off"] *::before,html[data-motion="off"] *::after{animation:none!important;transition:none!important}
 html[data-motion="off"]{scroll-behavior:auto}
+
+/* ================= امتحان‌ها ================= */
+.viewseg{margin:0 0 14px;width:min(100%,360px)}
+.grp{display:flex;align-items:center;gap:10px;margin:6px 2px 10px;font-size:.8rem;font-weight:800;color:var(--muted)}
+.grp::after{content:"";flex:1;height:1px;background:var(--line)}
+.grp:not(:first-child){margin-top:18px}
+.ex{--c:hsl(var(--h) 72% var(--bar-l));display:flex;gap:14px;align-items:stretch;border:1px solid var(--line);border-radius:20px;padding:12px 14px 12px 12px;margin-bottom:12px;background:var(--card);
+  transition:border-color .2s,box-shadow .22s,opacity .25s}
+.ex.enter{animation:cardIn .45s var(--ease) backwards;animation-delay:calc(var(--i,0) * 45ms)}
+.ex:hover{border-color:color-mix(in srgb,var(--c) 45%,var(--line));box-shadow:var(--shadow)}
+.ex.past{opacity:.62}
+.ex.flash{animation:flash 1.6s ease}
+.ex-date{flex:none;width:76px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;text-align:center;line-height:1.35;
+  background:hsl(var(--h) 80% 58%/.14);color:hsl(var(--h) 62% var(--pill-l));box-shadow:inset 0 0 0 1px hsl(var(--h) 70% 55%/.18)}
+.ex-date .w{font-size:.72rem;font-weight:800}
+.ex-date .d{font-size:1.55rem;font-weight:800;line-height:1.15}
+.ex-date .m{font-size:.7rem;font-weight:700}
+.ex-body{flex:1;min-width:0}
+.ex-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;margin-bottom:2px}
+.ex-title{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+.cd{display:inline-block;font-size:.76rem;font-weight:800;padding:0 11px;line-height:1.9;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.cd.hot{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}
+.cd.soon{background:color-mix(in srgb,var(--warn) 18%,transparent);color:color-mix(in srgb,var(--warn) 70%,var(--text))}
+.ex .hw-text{line-height:1.9;font-size:.93rem}
+.ex .hw-meta{margin-top:8px}
+
+/* ================= برنامه شخصی ================= */
+.pe-nav{display:flex;align-items:center;gap:8px;padding:8px 22px 4px}
+.pdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding:8px 22px 14px}
+.pdays .day{padding:9px 0 8px;border-radius:17px}
+.pdays .dd{width:34px;height:34px;font-size:1.1rem}
+.pe{--c:hsl(var(--h) 72% var(--bar-l));display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:20px;padding:11px 14px 11px 12px;margin-bottom:10px;background:var(--card);
+  transition:border-color .2s,box-shadow .22s,opacity .25s,background .2s}
+.pe.enter{animation:cardIn .4s var(--ease) backwards;animation-delay:calc(var(--i,0) * 40ms)}
+.pe:hover{border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
+.pe.live{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)}
+.pe.done{background:color-mix(in srgb,var(--ok) 4%,var(--card))}
+.pe.done .pe-main{opacity:.55}
+.pe.done .pe-name{text-decoration:line-through}
+.pe-time{flex:none;width:64px;border-radius:15px;padding:7px 2px;text-align:center;line-height:1.45;font-variant-numeric:tabular-nums;font-weight:800;font-size:.86rem;
+  background:hsl(var(--h) 80% 58%/.14);color:hsl(var(--h) 62% var(--pill-l));box-shadow:inset 0 0 0 1px hsl(var(--h) 70% 55%/.18)}
+.pe-time i{display:block;font-style:normal;font-size:.64rem;opacity:.7;line-height:1.2}
+.pe-main{flex:1;min-width:0;transition:opacity .2s}
+.pe-name{font-weight:800;line-height:1.7;overflow-wrap:anywhere}
+.pe-note{margin:0;color:var(--muted);font-size:.86rem;line-height:1.8;overflow-wrap:anywhere;white-space:pre-wrap}
+.pe-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.pe .hw-actions{align-self:flex-start}
+.privacy{display:flex;align-items:center;gap:8px;margin:0 22px 8px;padding:8px 12px;border-radius:14px;font-size:.8rem;font-weight:600;line-height:1.7;
+  color:var(--muted);background:var(--accent-soft)}
+.privacy svg{width:17px;height:17px;color:var(--accent)}
+
+/* ================= هوش مصنوعی (به‌زودی) ================= */
+.ai-soon{text-align:center;padding:30px 18px 26px}
+.ai-orb{position:relative;width:84px;height:84px;margin:0 auto 14px;border-radius:30px;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 55%,#fff),var(--accent) 50%,var(--hero-2));
+  box-shadow:0 22px 40px -20px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.4);animation:floatY 2.8s ease-in-out infinite alternate}
+html[data-theme="dark"] .ai-orb{color:var(--on-accent)}
+.ai-orb svg{width:38px;height:38px}
+.soon-badge,.topnav .soon{display:inline-block;font-style:normal;font-size:.68rem;font-weight:800;line-height:1.9;padding:0 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.topnav .soon{padding:0 7px;font-size:.62rem}
+.topnav button[aria-current="page"] .soon{background:rgba(255,255,255,.22);color:inherit}
+.ai-soon h2{justify-content:center;margin-top:6px}
+.ai-soon h2::before{display:none}
+.ai-soon p{margin:6px auto 0;max-width:430px;color:var(--muted);line-height:1.95}
+.ai-feats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.ai-mock{max-width:470px;margin:22px auto 0;display:grid;gap:10px;text-align:start;pointer-events:none;user-select:none}
+.bub{max-width:84%;padding:9px 14px;border-radius:18px;font-size:.9rem;line-height:1.85}
+.bub.me{justify-self:start;background:var(--accent);color:var(--on-accent);border-end-start-radius:6px}
+.bub.ai{justify-self:end;background:var(--card-2);border:1px solid var(--line);border-end-end-radius:6px}
+.ai-input{display:flex;gap:8px;margin-top:4px}
+.ai-input input{flex:1}
+.ai-input .btn{min-width:84px}
+
+/* ================= اعلان‌ها ================= */
+.ib .nbadge{position:absolute;top:3px;inset-inline-end:3px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;display:grid;place-items:center;
+  background:var(--danger);color:#fff;font-size:.62rem;font-weight:800;line-height:1;animation:tIn .35s var(--spring)}
+.nlist{display:grid;gap:8px;margin-top:14px;max-height:min(56vh,480px);overflow:auto;overscroll-behavior:contain;padding:2px}
+.nitem{display:flex;align-items:flex-start;gap:4px;border:1px solid var(--line);border-radius:16px;background:var(--card);transition:border-color .15s,background .15s}
+.nitem.unread{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 30%,var(--line))}
+.nmain{flex:1;min-width:0;display:flex;align-items:flex-start;gap:12px;border:0;background:none;text-align:start;padding:10px 12px;border-radius:16px}
+.nitem .ib.sm{margin:6px 4px 0 0}
+.nic{flex:none;width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.nitem.unread .nic{background:var(--card)}
+.nic svg{width:19px;height:19px}
+.nic.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.nic.bad{background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger)}
+.nic.warn{background:color-mix(in srgb,var(--warn) 16%,transparent);color:color-mix(in srgb,var(--warn) 75%,var(--text))}
+.nbody{min-width:0;line-height:1.7}
+.nbody b{display:block;font-size:.92rem;overflow-wrap:anywhere}
+.nbody p{margin:0;color:var(--muted);font-size:.85rem;overflow-wrap:anywhere;white-space:pre-wrap}
+.nbody small{color:var(--muted);font-size:.74rem;font-weight:600}
+.udot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-inline-start:6px;vertical-align:middle}
+.ann{margin-top:14px;border:1.5px dashed var(--line-2);border-radius:16px;padding:2px 14px}
+.ann summary{cursor:pointer;font-weight:800;font-size:.9rem;padding:10px 0;list-style:none;display:flex;align-items:center;gap:8px}
+.ann summary::-webkit-details-marker{display:none}
+.ann summary svg{width:18px;height:18px;color:var(--accent)}
+.ann[open] summary{border-bottom:1px solid var(--line)}
+.ann form{padding-bottom:12px}
+.ann textarea{min-height:84px}
+
+/* ================= ارتقای حس و روانی ================= */
+html{-webkit-tap-highlight-color:transparent}
+.col-main>.sheet,.viewseg{animation:viewIn .36s var(--ease)}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px)}}
+dialog{-webkit-overflow-scrolling:touch}
+.btn:focus-visible,.ib:focus-visible,.day:focus-visible{outline-offset:3px}
+.topnav button svg{flex:none}
+@media(max-width:1180px){
+  .topnav button{padding:7px 13px}
+  .topnav .soon{display:none}
+}
+@media(pointer:coarse){
+  .ib{width:44px;height:44px}
+  .ib.sm{width:40px;height:40px}
+  .chk{width:32px;height:32px}
+  .schip{padding:6px 16px}
+  .seg button{padding:9px 6px}
+}
+@media(max-width:820px){
+  input:not([type=checkbox]),select,textarea{font-size:16px}              /* جلوگیری از زوم خودکار iOS */
+  dialog::backdrop{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(9,11,28,.6)}
+  .top{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg)}
+  .hchip{backdrop-filter:none;-webkit-backdrop-filter:none}
+  .bnav-in{background:color-mix(in srgb,var(--card) 96%,transparent)}
+  .bn{font-size:.64rem}
+  .bn span{white-space:nowrap}
+  .pe-nav{padding-inline:16px}
+  .pdays{padding-inline:16px;gap:5px}
+  .pdays .dm{display:none}
+  .pdays .dn{font-size:.62rem}
+  .pdays .dd{width:30px;height:30px;font-size:1rem}
+  .privacy{margin-inline:16px}
+  .ex-date{width:58px}
+  .ex-date .d{font-size:1.3rem}
+  .pe-time{width:58px;font-size:.8rem}
+  .ai-soon{padding:22px 10px 18px}
+  .ex .hw-actions,.pe .hw-actions{margin-inline-end:-8px}
+}
+@media(max-width:380px){
+  .ex{gap:10px;padding-inline-start:8px}
+  .ex-date{width:50px}
+  .pdays{gap:3px}
+}
+@media print{.ex .hw-actions,.pe .hw-actions,.pe .chk{display:none!important}}
+
+/* ================= ظاهر مینیمال و مدرن ================= */
+:root{--bg:#f6f7fb;--card:#fff;--card-2:#f9fafc;--line:#e8eaf1;--line-2:#d9dce7;--shadow-sm:none;
+  --shadow:0 1px 2px rgba(16,20,40,.04),0 10px 28px -18px rgba(16,20,40,.2);--btn-shadow:none}
+html[data-theme="dark"]{--bg:#0b0c12;--card:#13141c;--card-2:#171822;--line:#23252f;--line-2:#32344a;--shadow-sm:none;
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 12px 30px -18px rgba(0,0,0,.75);--btn-shadow:none}
+body{background:var(--bg)}
+h2,.titles h1,.dlg h3{font-weight:700}
+.sheet-head h2::before,.dlg h3::before{display:none}
+.top{background:color-mix(in srgb,var(--bg) 88%,transparent);box-shadow:none}
+.top.scrolled{box-shadow:0 1px 0 var(--line)}
+.logo{width:40px;height:40px;border-radius:12px;background:var(--accent);box-shadow:none}
+.logo svg{width:21px;height:21px}
+.topnav{background:transparent;border:0;padding:0;gap:2px}
+.topnav button{border-radius:10px;padding:8px 14px;font-weight:600;font-size:.88rem}
+.topnav button[aria-current="page"]{background:var(--accent-soft);color:var(--accent);box-shadow:none}
+.topnav button[aria-current="page"] .soon{background:var(--card);color:var(--accent)}
+.ib{border-radius:12px;box-shadow:none;background:transparent;border-color:transparent}
+.ib:hover{background:var(--accent-soft);border-color:transparent}
+.sheet-head .ib,.weeknav .ib,.pe-nav .ib{border-color:var(--line);background:var(--card)}
+.acc-chip{box-shadow:none}
+.btn{border-radius:12px;box-shadow:none;font-weight:700}
+.btn.danger{box-shadow:none}
+.sheet{border-radius:20px;box-shadow:none}
+.hw,.ex,.pe,.qitem{border-radius:16px}
+.hw:hover,.ex:hover,.pe:hover{box-shadow:none}
+.day{border-radius:16px;box-shadow:none}
+.day:hover{box-shadow:none;transform:none}
+.day[aria-selected=true]{background:var(--accent);box-shadow:none;animation:none}
+dialog{border-radius:24px}
+.empty-ic{animation:none;border-radius:16px}
+.hero{color:var(--text);border-radius:22px;padding:20px 24px;box-shadow:none;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 11%,var(--card)),var(--card));
+  border:1px solid color-mix(in srgb,var(--accent) 18%,var(--line))}
+.hero::before,.hero::after{display:none}
+.hero-hi,.hero-sub{color:var(--muted);opacity:1}
+.hero-title{font-size:1.35rem;font-weight:700}
+.hchip{background:var(--card);color:var(--text);box-shadow:inset 0 0 0 1px var(--line);backdrop-filter:none;-webkit-backdrop-filter:none}
+.hchip:hover{background:var(--accent-soft)}
+.hchip b{color:var(--accent)}
+.ring-bg{stroke:color-mix(in srgb,var(--accent) 16%,var(--line))}
+.ring-fg{stroke:var(--accent)}
+.hero-pct{color:var(--text)}
+.bnav-in{border-radius:24px;box-shadow:0 12px 32px -16px rgba(12,14,40,.4)}
+.bn-fab{background:var(--accent);border-radius:18px;box-shadow:0 10px 22px -10px color-mix(in srgb,var(--accent) 80%,transparent)}
+.viewseg{margin:0 auto 14px;width:min(100%,360px)}
+.viewseg button{text-align:center}
+
+/* ----- هدر دسکتاپ: لوگو | ناوبری وسط | ابزارها ----- */
+@media(min-width:821px){
+  .top-in{grid-template-columns:auto minmax(0,1fr) auto;gap:20px}
+  .topnav{justify-self:center}
+  .top-actions{gap:6px}
+  .top-actions .ib{width:40px;height:40px}
+}
+@media(min-width:821px) and (max-width:1100px){
+  .topnav button span{display:none}
+  .topnav button{padding:9px 12px}
+  .titles small{display:none}
+}
+
+@media print{.foot{display:none!important}}
+
+/* ================= یکپارچگی طراحی (مقیاس واحد) ================= */
+@media(min-width:601px){.top .wrap{width:min(1120px,100% - 40px)}}
+.wrap{width:min(1120px,100% - 40px)}
+.toolbar{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.toolbar .viewseg{margin:0;width:auto;min-width:240px;flex:none}
+.toolbar .weeknav{flex:1;margin:0;min-width:0}
+body:is([data-view="exams"],[data-view="personal"],[data-view="ai"]) .toolbar{display:none}
+.seg{border-radius:14px;padding:3px}
+.seg button{border-radius:11px}
+input:not([type=checkbox]),select,textarea{border-radius:12px}
+.pill{background:hsl(var(--h) 65% 52%/.12);color:hsl(var(--h) 55% var(--pill-l));box-shadow:none}
+.hw::before{width:3px}
+.days{gap:8px;padding-bottom:16px}
+.day{padding:8px 2px 7px}
+.dd{width:36px;height:36px;font-size:1.25rem}
+.hero{padding:16px 22px;margin-bottom:14px}
+.hero-title{font-size:1.25rem}
+.hero-ring{width:68px;height:68px}
+.hero-chips{margin-top:10px}
+.foot{margin-top:8px;padding:18px 0 22px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem;background:transparent}
+.foot-in{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 14px;text-align:center}
+.foot a{color:var(--accent);font-weight:700;text-decoration:none}
+.foot a:hover{text-decoration:underline}
+.foot .sep{opacity:.35}
+@media(max-width:820px){
+  .toolbar{flex-direction:column;align-items:stretch;gap:10px}
+  .toolbar .viewseg{width:min(100%,360px);margin-inline:auto}
+  .foot{display:block;padding:16px 0 calc(100px + env(safe-area-inset-bottom));margin-top:0}
+}
+@media(max-width:600px){
+  .hero{padding:14px 16px;gap:10px}
+  .hero-title{font-size:1.08rem}
+  .hero-sub{font-size:.82rem}
+  .hero-ring{width:54px;height:54px}
+  .hero-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-2px;padding:2px}
+  .hero-chips::-webkit-scrollbar{display:none}
+  .hchip{flex:none;white-space:nowrap}
+  .days{gap:6px;padding-bottom:12px}
+  .day{padding:7px 0 6px}
+  .dd{width:32px;height:32px;font-size:1.1rem}
+}
+
+
 </style>
 <script>
 /* اعمال پوسته و تنظیمات ظاهری پیش از رندر (جلوگیری از فلش) */
@@ -638,7 +893,7 @@ html[data-motion="off"]{scroll-behavior:auto}
   if(t!=='light'&&t!=='dark')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
   r.dataset.theme=t;
   var m=document.querySelector('meta[name="theme-color"]');
-  if(m)m.content=(t==='dark')?'#080a18':'#f4f5fb';
+  if(m)m.content=(t==='dark')?'#0b0c12':'#f6f7fb';
   try{
     var p=JSON.parse(localStorage.getItem('hw:prefs')||'null');
     if(p){
@@ -661,20 +916,21 @@ html[data-motion="off"]{scroll-behavior:auto}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg>
       </span>
       <span class="titles">
-        <h1>سامانه تکلیف کلاس ۹۰۱</h1>
+        <h1>تکلیف کلاس ۹۰۱</h1>
         <small>دبیرستان شهید بهشتی</small>
       </span>
     </a>
 
     <nav class="topnav" id="topnav" aria-label="بخش‌ها">
-      <button type="button" data-view="day" data-ic="calendar">تکلیف‌های روزانه</button>
-      <button type="button" data-view="agenda" data-ic="list">پیش‌رو</button>
+      <button type="button" data-view="day" aria-label="تکلیف‌ها" title="تکلیف‌ها" data-ic="calendar"><span>تکلیف‌ها</span></button>
+      <button type="button" data-view="exams" aria-label="امتحان‌ها" title="امتحان‌ها" data-ic="exam"><span>امتحان‌ها</span></button>
+      <button type="button" data-view="personal" aria-label="برنامه من" title="برنامه من" data-ic="task"><span>برنامه من</span></button>
+      <button type="button" data-view="ai" aria-label="هوش مصنوعی" title="هوش مصنوعی" data-ic="sparkles"><span>هوش مصنوعی</span><em class="soon">بزودی</em></button>
     </nav>
 
     <div class="top-actions">
-      <button class="ib search-btn" id="searchBtn" type="button" data-ic="search" aria-label="جستجو" title="جستجو ( / )"><span class="sb-label">جستجو</span><kbd>/</kbd></button>
-      <button class="ib hide-m" id="timerBtn" type="button" data-ic="timer" aria-label="تایمر تمرکز" title="تایمر تمرکز"></button>
-      <button class="ib hide-m" id="settingsBtn" type="button" data-ic="settings" aria-label="تنظیمات" title="تنظیمات"></button>
+      <button class="ib" id="searchBtn" type="button" data-ic="search" aria-label="جستجو" title="جستجو ( / )"></button>
+      <button class="ib" id="notifBtn" type="button" data-ic="bell" aria-label="اعلان‌ها" title="اعلان‌ها"></button>
       <button class="ib" id="themeToggle" type="button" aria-label="تغییر حالت روشن/تیره" title="حالت روشن/تیره"></button>
       <div id="authArea" class="hide-m"></div>
     </div>
@@ -686,6 +942,12 @@ html[data-motion="off"]{scroll-behavior:auto}
 
   <section class="hero" id="hero" aria-live="polite"></section>
 
+  <div class="toolbar">
+  <div class="seg viewseg" id="viewSeg" role="tablist" aria-label="نمای تکلیف‌ها">
+    <button type="button" role="tab" data-vs="day">روزانه</button>
+    <button type="button" role="tab" data-vs="agenda">پیش‌رو</button>
+  </div>
+
   <div class="weeknav">
     <button class="ib" id="prevWeek" type="button" data-ic="chevR" aria-label="هفته قبل"></button>
     <div class="weeklabel" aria-live="polite">
@@ -694,6 +956,7 @@ html[data-motion="off"]{scroll-behavior:auto}
     </div>
     <button class="ib" id="nextWeek" type="button" data-ic="chevL" aria-label="هفته بعد"></button>
     <button class="btn line small" id="goToday" type="button">تکلیف امروز</button>
+  </div>
   </div>
 
   <nav class="days" id="tabs" role="tablist" aria-label="روزهای هفته"></nav>
@@ -732,6 +995,59 @@ html[data-motion="off"]{scroll-behavior:auto}
         </div>
         <div class="sheet-body" id="agList" aria-live="polite"></div>
       </section>
+
+      <section class="sheet" id="examSheet">
+        <div class="sheet-head">
+          <div>
+            <h2>امتحان‌ها</h2>
+            <p class="sub" id="exSub"></p>
+          </div>
+          <div class="head-actions">
+            <button class="ib" id="exRefresh" type="button" data-ic="refresh" aria-label="بروزرسانی" title="بروزرسانی"></button>
+            <button class="btn hide-m" id="exAdd" type="button" data-ic="plus">ثبت امتحان</button>
+          </div>
+        </div>
+        <div class="ag-tools"><div class="seg in-tools" id="exSeg" role="tablist" aria-label="فیلتر امتحان‌ها"></div></div>
+        <div class="sheet-body" id="exList" aria-live="polite"></div>
+      </section>
+
+      <section class="sheet" id="personalSheet">
+        <div class="sheet-head">
+          <div>
+            <h2>برنامه و فعالیت‌های شخصی من</h2>
+            <p class="sub">مثلاً «ساعت ۶ تا ۸ کلاس ورزش دارم»</p>
+          </div>
+          <div class="head-actions">
+            <button class="btn hide-m" id="peAdd" type="button" data-ic="plus">فعالیت جدید</button>
+          </div>
+        </div>
+        <p class="privacy"><span data-ic="shield" style="display:grid"></span><span>این برنامه فقط روی همین مرورگر ذخیره می‌شود و هرگز به سرور فرستاده نمی‌شود.</span></p>
+        <div class="pe-nav">
+          <button class="ib" id="pePrev" type="button" data-ic="chevR" aria-label="هفته قبل"></button>
+          <div class="weeklabel" aria-live="polite"><b id="peLabel"></b></div>
+          <button class="ib" id="peNext" type="button" data-ic="chevL" aria-label="هفته بعد"></button>
+          <button class="btn line small" id="peToday" type="button">امروز</button>
+        </div>
+        <nav class="pdays" id="peTabs" aria-label="روزهای هفته"></nav>
+        <div class="sheet-body" id="peList" aria-live="polite"></div>
+      </section>
+
+      <section class="sheet" id="aiSheet">
+        <div class="ai-soon">
+          <div class="ai-orb" aria-hidden="true" data-ic="sparkles"></div>
+          <span class="soon-badge">بزودی</span>
+          <h2>چت با هوش مصنوعی</h2>
+          <p>دستیار هوشمند کلاس به‌زودی اینجا فعال می‌شود: سؤال درسی بپرس، توضیح مبحث بخواه و برای امتحان برنامه‌ی مطالعه بگیر.</p>
+          <div class="ai-feats" aria-hidden="true">
+            <span class="badge">توضیح درس‌ها</span><span class="badge">کمک در حل تمرین</span><span class="badge">برنامه‌ریزی مطالعه</span>
+          </div>
+          <div class="ai-mock" aria-hidden="true">
+            <div class="bub me">این تکلیف ریاضی را می‌شود ساده‌تر توضیح بدهی؟</div>
+            <div class="bub ai">حتماً! بیا قدم‌به‌قدم جلو برویم…</div>
+            <div class="ai-input"><input disabled tabindex="-1" placeholder="پیامت را بنویس… (بزودی)"><button class="btn" type="button" disabled tabindex="-1">ارسال</button></div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <aside class="col-side">
@@ -758,20 +1074,10 @@ html[data-motion="off"]{scroll-behavior:auto}
 </main>
 
 <footer class="foot">
-  <div class="wrap">
-    <div class="foot-line">
-      <span dir="ltr">© <span id="year">2026</span> Taklif</span>
-      <span class="sep" aria-hidden="true">|</span>
-      <span>سامانه هوشمند تکالیف</span>
-    </div>
-
-    <div class="foot-credit" dir="rtl">
-      <span class="dot" aria-hidden="true"></span>
-      <span>
-        طراحی و توسعه توسط
-        <a href="https://parsagolmahi.github.io/aboutme/" target="_blank" rel="noopener noreferrer">پارسا گل‌ماهی</a>
-      </span>
-    </div>
+  <div class="wrap foot-in">
+    <span>طراحی و توسعه توسط <a href="https://parsagolmahi.github.io/aboutme/" target="_blank" rel="noopener noreferrer">پارسا گل‌ماهی</a></span>
+    <span class="sep" aria-hidden="true">·</span>
+    <span dir="ltr">© <span id="year">2026</span> Taklif</span>
   </div>
 </footer>
 
@@ -782,10 +1088,10 @@ html[data-motion="off"]{scroll-behavior:auto}
 <!-- نوار ناوبری پایین (موبایل) -->
 <nav class="bnav" id="bnav" aria-label="ناوبری اصلی">
   <div class="bnav-in">
-    <button class="bn" type="button" data-view="day" data-ic="calendar"><span>تکلیف‌ها</span></button>
-    <button class="bn" type="button" data-view="agenda" data-ic="list"><span>پیش‌رو</span></button>
+    <button class="bn" type="button" data-view="day" data-ic="calendar"><span>تکالیف</span></button>
+    <button class="bn" type="button" data-view="exams" data-ic="exam"><span>امتحان‌ها</span></button>
     <button class="bn-fab" id="fab" type="button" data-ic="plus" aria-label="ثبت تکلیف جدید"></button>
-    <button class="bn" type="button" data-view="schedule" data-ic="clock"><span>برنامه</span></button>
+    <button class="bn" type="button" data-view="personal" data-ic="task"><span>برنامه من</span></button>
     <button class="bn" type="button" id="moreBtn" data-ic="menu"><span>بیشتر</span></button>
   </div>
 </nav>
@@ -903,6 +1209,93 @@ html[data-motion="off"]{scroll-behavior:auto}
   </div>
 </dialog>
 
+<!-- ثبت / ویرایش امتحان -->
+<dialog id="exDlg" class="wide" aria-labelledby="exTitle">
+  <form class="dlg" id="exForm" novalidate>
+    <h3 id="exTitle">ثبت امتحان</h3>
+    <p class="sub" id="exQuota"></p>
+    <div class="field">
+      <span>تاریخ امتحان</span>
+      <div class="dp" id="exDatePick"></div>
+    </div>
+    <div class="field"><label for="exSubject">درس</label>
+      <input id="exSubject" name="subject" maxlength="30" autocomplete="off" placeholder="مثلاً فیزیک">
+      <div class="subchips" id="exChips" hidden></div></div>
+    <div class="field"><label for="exText">مباحث امتحان (اختیاری)</label>
+      <textarea id="exText" name="text" maxlength="600" placeholder="فصل‌ها، صفحه‌ها، نکته‌های معلم..."></textarea>
+      <div class="count-line"><span id="exCount"></span></div></div>
+    <p class="ferr" id="exErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" data-close>انصراف</button>
+      <button type="submit" class="btn" id="exSave">ثبت امتحان</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- فعالیت شخصی (فقط در مرورگر) -->
+<dialog id="peDlg" class="wide" aria-labelledby="peTitle">
+  <form class="dlg" id="peForm" novalidate>
+    <h3 id="peTitle">فعالیت شخصی جدید</h3>
+    <p class="sub">فقط روی همین مرورگر ذخیره می‌شود؛ هیچ‌کس دیگری آن را نمی‌بیند.</p>
+    <div class="field"><label for="peName">عنوان</label>
+      <input id="peName" name="ptitle" maxlength="60" autocomplete="off" placeholder="مثلاً کلاس ورزش"></div>
+    <div class="two">
+      <div class="field"><label for="peStart">از ساعت</label><input id="peStart" name="pstart" type="time" class="ltr"></div>
+      <div class="field"><label for="peEnd">تا ساعت</label><input id="peEnd" name="pend" type="time" class="ltr"></div>
+    </div>
+    <div class="field"><span>تکرار</span>
+      <div class="seg in-tools" id="peKind" role="radiogroup" aria-label="تکرار">
+        <button type="button" data-kind="once">فقط یک روز</button>
+        <button type="button" data-kind="weekly">هر هفته</button>
+      </div></div>
+    <div class="field" id="peOnceBox"><span>تاریخ</span><div class="dp" id="peDatePick"></div></div>
+    <div class="field" id="peWeeklyBox" hidden><span>روز هفته</span><div class="subchips" id="peWd" style="flex-wrap:wrap;overflow:visible"></div></div>
+    <div class="field"><label for="peNote">توضیح (اختیاری)</label>
+      <textarea id="peNote" name="pnote" maxlength="200" style="min-height:70px" placeholder="مکان، وسایل لازم..."></textarea></div>
+    <p class="ferr" id="peErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" data-close>انصراف</button>
+      <button type="submit" class="btn" id="peSave">ذخیره</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- اعلان‌ها و اطلاعیه‌ها -->
+<dialog id="notifDlg" class="wide" aria-labelledby="notifTitle">
+  <div class="dlg">
+    <h3 id="notifTitle">اعلان‌ها</h3>
+    <p class="sub">اطلاعیه‌های مدیر، پاسخ به سؤال‌هایت و حذف‌شدن مطالبی که ثبت کرده‌ای.</p>
+    <details class="ann" id="annDet" hidden>
+      <summary id="annSum"></summary>
+      <form id="annForm" novalidate>
+        <div class="field"><label for="annTitle">عنوان</label><input id="annTitle" name="atitle" maxlength="80" autocomplete="off" placeholder="مثلاً سایت به‌روزرسانی شد"></div>
+        <div class="field"><label for="annBody">متن (اختیاری)</label><textarea id="annBody" name="abody" maxlength="400" placeholder="جزئیات اطلاعیه..."></textarea></div>
+        <p class="ferr" id="annErr" role="alert"></p>
+        <div class="dlg-actions"><button type="submit" class="btn" id="annSend">ارسال برای همه</button></div>
+      </form>
+    </details>
+    <div class="nlist" id="nList" aria-live="polite"></div>
+    <div class="dlg-actions"><button type="button" class="btn line" data-close>بستن</button></div>
+  </div>
+</dialog>
+
+<!-- سهمیه‌ی روزانه‌ی کاربر (مدیر) -->
+<dialog id="limDlg" class="sm" aria-labelledby="limTitle">
+  <form class="dlg" id="limForm" novalidate>
+    <h3 id="limTitle">سهمیه‌ی روزانه</h3>
+    <p class="sub" id="limSub"></p>
+    <div class="field"><label for="limHw">ثبت تکلیف در روز</label><input id="limHw" name="l_homework" type="number" inputmode="numeric" min="0" max="100" class="ltr"></div>
+    <div class="field"><label for="limQ">پرسیدن سؤال در روز</label><input id="limQ" name="l_question" type="number" inputmode="numeric" min="0" max="100" class="ltr"></div>
+    <div class="field"><label for="limA">پاسخ دادن در روز</label><input id="limA" name="l_answer" type="number" inputmode="numeric" min="0" max="100" class="ltr"></div>
+    <p class="sub" style="margin-top:10px">خالی بگذاری، مقدار پیش‌فرض اعمال می‌شود. عدد ۰ یعنی آن کار برای این کاربر بسته است.</p>
+    <p class="ferr" id="limErr" role="alert"></p>
+    <div class="dlg-actions">
+      <button type="button" class="btn line" id="limReset">پیش‌فرض</button>
+      <button type="submit" class="btn" id="limSave">ذخیره</button>
+    </div>
+  </form>
+</dialog>
+
 <!-- حساب کاربری / منوی بیشتر -->
 <dialog id="accDlg" aria-label="حساب کاربری"><div class="dlg" id="accBody"></div></dialog>
 
@@ -934,7 +1327,7 @@ html[data-motion="off"]{scroll-behavior:auto}
     </div>
 
     <div class="sect"><h4>داده‌های این دستگاه</h4>
-      <p class="sub" style="margin-bottom:10px">وضعیت «انجام شد»، ستاره‌ها، یادداشت‌ها و حافظه‌ی آفلاین فقط روی همین مرورگر هستند و به سرور ارسال نمی‌شوند.</p>
+      <p class="sub" style="margin-bottom:10px">وضعیت «انجام شد»، ستاره‌ها، یادداشت‌ها، برنامه‌ی شخصی و حافظه‌ی آفلاین فقط روی همین مرورگر هستند و به سرور ارسال نمی‌شوند.</p>
       <button class="btn line small" id="clearLocal" type="button" data-ic="trash">پاک‌کردن داده‌های محلی</button>
     </div>
 
@@ -947,6 +1340,8 @@ html[data-motion="off"]{scroll-behavior:auto}
         <span><kbd>A</kbd>نمای پیش‌رو</span>
         <span><kbd>D</kbd>نمای روزانه</span>
         <span><kbd>F</kbd>تایمر تمرکز</span>
+        <span><kbd>E</kbd>امتحان‌ها</span>
+        <span><kbd>P</kbd>برنامه من</span>
       </div>
     </div>
 
@@ -1165,6 +1560,11 @@ const ICON = {
   calendarEdit: '<rect x="3" y="4.5" width="18" height="16.5" rx="3.5"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18M9 15h6"/>',
   chat: '<path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
   shield: '<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  exam: '<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 3V2h6v1M9 13l2.2 2.2L15.5 11"/>',
+  task: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/>',
+  sparkles: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+  megaphone: '<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/>',
 };
 const SVGNS = 'http://www.w3.org/2000/svg';
 function ic(name, cls = '') {
@@ -1235,12 +1635,23 @@ const state = {
   view: 'day', agendaFilter: 'upcoming', agendaSubject: '',
   schedule: hasCache ? (cached.schedule || {}) : {},
   homework: hasCache ? cached.homework : [],
+  exams: hasCache ? (cached.exams || []) : [],
   loading: !hasCache, error: '', lastLoad: 0, refreshing: false, offline: false,
   cacheTs: hasCache ? (cached.t || 0) : 0,
   pendingAdd: false, editing: null, openNote: null, justDone: null, flash: null,
   quota: null, qa: {}, qaOpen: new Set(), qaDraft: {}, qaReply: null,
+  exFilter: 'upcoming', editingEx: null, flashEx: null, pendingExam: false,
+  notifs: { items: [], unread: 0, loaded: false },
+  pDate: iso(today()), editingPe: null,
 };
-function persistCache() { state.cacheTs = Date.now(); store.set('hw:cache', { t: state.cacheTs, schedule: state.schedule, homework: state.homework }); }
+// برنامه‌ی شخصی: فقط در localStorage همین مرورگر (هیچ‌وقت به سرور نمی‌رود)
+const personal = {
+  list: (() => { const v = store.get('hw:personal', []); return Array.isArray(v) ? v : []; })(),
+  done: store.get('hw:pdone', {}) || {},
+  save() { store.set('hw:personal', personal.list); },
+  saveDone() { store.set('hw:pdone', personal.done); },
+};
+function persistCache() { state.cacheTs = Date.now(); store.set('hw:cache', { t: state.cacheTs, schedule: state.schedule, homework: state.homework, exams: state.exams }); }
 
 /* ================= بک‌اند واقعی ================= */
 const remote = {
@@ -1295,6 +1706,15 @@ const remote = {
   adminQa: () => remote.req('/api/admin/qa'),
   addBan: d => remote.req('/api/admin/bans', { method: 'POST', body: d }),
   deleteBan: id => remote.req('/api/admin/bans/' + id, { method: 'DELETE' }),
+  listExams: () => remote.req('/api/exams'),
+  addExam: d => remote.req('/api/exams', { method: 'POST', body: d }),
+  updateExam: (id, d) => remote.req('/api/exams/' + id, { method: 'PUT', body: d }),
+  deleteExam: id => remote.req('/api/exams/' + id, { method: 'DELETE' }),
+  notifications: () => remote.req('/api/notifications'),
+  readNotifs: () => remote.req('/api/notifications/read', { method: 'POST' }),
+  sendAnnouncement: d => remote.req('/api/admin/announcements', { method: 'POST', body: d }),
+  deleteAnnouncement: id => remote.req('/api/admin/announcements/' + id, { method: 'DELETE' }),
+  setLimits: (u, d) => remote.req('/api/admin/users/' + encodeURIComponent(u) + '/limits', { method: 'PUT', body: d }),
 };
 const backend = remote;
 const API_READY = !!CONFIG.API_BASE && !CONFIG.API_BASE.includes('YOUR-APP');
@@ -1304,7 +1724,15 @@ const isStaff = u => !!u && (u.role === 'teacher' || u.role === 'admin');
 const canEdit = it => !!state.user && (isStaff(state.user) || state.user.username === it.authorId);
 const roleText = (role, subject) => role === 'admin' ? 'مدیر' : role === 'teacher' ? (subject ? 'معلم ' + subject : 'معلم') : '';
 const byCreated = (a, b) => tsOf(a) - tsOf(b);
-const onDate = date => state.homework.filter(x => x.date === date).sort(byCreated);
+// تکلیف‌های هم‌درس کنار هم می‌آیند؛ ترتیب گروه‌ها بر اساس اولین تکلیفِ ثبت‌شده‌ی همان درس است
+// (تکلیف جدید زیست زیرِ زیست‌های قبلی می‌نشیند، نه زیر آخرین درس)
+const subjKey = x => normFa(String(x.subject || '').trim());
+function groupBySubject(list) {
+  const sorted = list.slice().sort(byCreated), first = new Map();
+  sorted.forEach(x => { const k = subjKey(x); if (!first.has(k)) first.set(k, tsOf(x)); });
+  return sorted.sort((a, b) => { const ka = subjKey(a), kb = subjKey(b); return first.get(ka) - first.get(kb) || (ka < kb ? -1 : ka > kb ? 1 : 0) || byCreated(a, b); });
+}
+const onDate = date => groupBySubject(state.homework.filter(x => x.date === date));
 const selDate = () => fromIso(state.date);
 const relLabel = d => {
   const diff = Math.round((d - today()) / 864e5);
@@ -1372,7 +1800,7 @@ function paintTheme() {
   const t = effTheme();
   root.dataset.theme = t;
   const m = document.querySelector('meta[name="theme-color"]');
-  if (m) m.content = t === 'dark' ? '#080a18' : '#f4f5fb';
+  if (m) m.content = t === 'dark' ? '#0b0c12' : '#f6f7fb';
   const b = $('#themeToggle');
   if (b) { b.setAttribute('aria-label', t === 'dark' ? 'تغییر به حالت روشن' : 'تغییر به حالت تیره'); b.title = t === 'dark' ? 'حالت روشن' : 'حالت تیره'; }
 }
@@ -1462,6 +1890,8 @@ function renderHero() {
   const chips = [h('button', { class: 'hchip', type: 'button', onclick: () => { state.date = fd; setView('day'); } }, 'دیدن تکلیف‌های ' + dn),
     chip('پیش‌رو', c.up, 'upcoming')];
   if (c.over > 0) chips.push(chip('عقب‌افتاده', c.over, 'overdue'));
+  const nx = nextExam();
+  if (nx && Math.round((fromIso(nx.date) - today()) / 864e5) <= 21) chips.push(h('button', { class: 'hchip', type: 'button', onclick: () => setView('exams') }, 'امتحان ' + nx.subject, h('b', {}, relLabel(fromIso(nx.date)))));
   if (c.star > 0) chips.push(chip('ستاره‌دار', c.star, 'starred'));
   const pct = total ? done / total : 0;
   const center = !total ? '—' : left === 0 ? ic('check') : `${fa(left)}`;
@@ -1756,7 +2186,10 @@ function agendaItems(filter, subject) {
   const base = state.homework.filter(x => filter === 'upcoming' ? x.date > t : filter === 'overdue' ? (x.date < t && x.date >= od && !isDone(x)) : isStar(x));
   const list = subject ? base.filter(x => x.subject === subject) : base;
   const dir = filter === 'overdue' ? -1 : 1;
-  return { base, list: list.sort((a, b) => dir * (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || byCreated(a, b)) };
+  const sorted = list.slice().sort((a, b) => dir * (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || byCreated(a, b));
+  const byDate = new Map();
+  sorted.forEach(x => { if (!byDate.has(x.date)) byDate.set(x.date, []); byDate.get(x.date).push(x); });
+  return { base, list: [...byDate.values()].flatMap(groupBySubject) };
 }
 function renderAgenda(anim = true) {
   const box = $('#agList'); if (!box) return;
@@ -1812,18 +2245,31 @@ function renderSchedule() {
     : [h('li', { class: 'pteacher' }, state.loading ? 'در حال بارگذاری...' : 'برنامه این روز هنوز ثبت نشده است.')]));
 }
 
+const effView = () => (state.view === 'schedule' && !mqMobile.matches ? 'day' : state.view);
 function renderNav() {
-  const eff = state.view === 'schedule' && !mqMobile.matches ? 'day' : state.view;
+  const eff = effView();
+  document.body.dataset.view = eff;
+  const group = eff === 'agenda' ? 'day' : eff;
   $$('.topnav [data-view], .bnav [data-view]').forEach(b => {
-    if (b.dataset.view === eff) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    if (b.dataset.view === group) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
+  const more = $('#moreBtn');
+  if (eff === 'schedule' || eff === 'ai') more.setAttribute('aria-current', 'page'); else more.removeAttribute('aria-current');
+  $$('#viewSeg [data-vs]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.vs === eff)));
+  const fab = $('#fab');
+  fab.setAttribute('aria-label', eff === 'exams' ? 'ثبت امتحان جدید' : eff === 'personal' ? 'فعالیت شخصی جدید' : 'ثبت تکلیف جدید');
 }
 
 function renderAll({ anim = true, keepLists = false } = {}) {
-  renderBanner(); renderAuth(); renderHero(); renderWeek(); renderTabs(); if (!keepLists) renderLists(anim); renderSchedule(); renderNav(); renderTimer();
+  renderNav(); renderBanner(); renderAuth(); renderNotifBtn(); renderHero(); renderWeek(); renderTabs();
+  if (!keepLists) renderLists(anim);
+  const v = effView();
+  if (v === 'exams') renderExams(anim);
+  if (v === 'personal') renderPersonal(anim);
+  renderSchedule(); renderTimer();
 }
 function setView(v, { scroll = true } = {}) {
-  state.view = v; document.body.dataset.view = v; renderAll();
+  state.view = v; renderAll();
   if (scroll) window.scrollTo({ top: 0, behavior: reduceMotion() ? 'auto' : 'smooth' });
 }
 function openAgenda(f) { state.agendaFilter = f; state.agendaSubject = ''; setView('agenda'); }
@@ -1840,8 +2286,9 @@ async function loadAll() {
   if (!state.homework.length) state.loading = true;
   if (!typingQA()) renderLists(false);   // وسط نوشتن سؤال/پاسخ، لیست دوباره ساخته نمی‌شود
   try {
-    const [schedule, homework] = await Promise.all([backend.getSchedule(), backend.listHomework()]);
+    const [schedule, homework, exams] = await Promise.all([backend.getSchedule(), backend.listHomework(), backend.listExams().catch(() => null)]);
     state.schedule = schedule || {}; state.homework = Array.isArray(homework) ? homework : [];
+    if (Array.isArray(exams)) state.exams = exams;
     state.offline = false; persistCache(); pruneLocal();
   } catch (e) {
     state.error = e.message; state.offline = true;
@@ -1888,12 +2335,13 @@ async function onAuthSubmit(e) {
   try {
     const res = await busy($('#authSubmit'), () => authMode === 'login' ? backend.login(data) : backend.register(data));
     session.set(res); state.user = res.user;
-    $('#authDlg').close(); renderAll(); loadQuota();
+    $('#authDlg').close(); renderAll(); loadQuota(); loadNotifs();
     toast(`${res.user.name}، خوش آمدی`);
     if (state.pendingAdd) { state.pendingAdd = false; openHw(); }
+    else if (state.pendingExam) { state.pendingExam = false; onAddExam(); }
   } catch (ex) { err.textContent = ex.message; }
 }
-function logout() { session.clear(); state.user = null; state.quota = null; state.qaReply = null; renderAll(); toast('از حساب خارج شدی'); }
+function logout() { session.clear(); state.user = null; state.quota = null; state.qaReply = null; state.notifs = { items: [], unread: 0, loaded: false }; renderAll(); toast('از حساب خارج شدی'); }
 
 /* ================= ثبت و ویرایش تکلیف ================= */
 function onAdd() {
@@ -1902,34 +2350,36 @@ function onAdd() {
   openHw();
 }
 let hwDate = '';
-function renderDatePick() {
+function mountDatePicker(dp, get, set, { weeks = CONFIG.ADD_WEEKS_AHEAD, allDays = false } = {}) {
   const t = today(), ws0 = weekStartOf(t), groups = [], vals = [];
   let cur = null, lastW = null;
-  for (let i = 0; i < CONFIG.ADD_WEEKS_AHEAD * 7; i++) {
+  for (let i = 0; i < weeks * 7; i++) {
     const d = addDays(t, i);
-    if (!SCHOOL.includes(d.getDay())) continue;
+    if (!allDays && !SCHOOL.includes(d.getDay())) continue;
     const w = Math.round((weekStartOf(d) - ws0) / (7 * 864e5));
     if (w !== lastW) { cur = { label: w === 0 ? 'این هفته' : w === 1 ? 'هفته بعد' : `${fa(w)} هفته بعد`, days: [] }; groups.push(cur); lastW = w; }
     cur.days.push(d); vals.push(iso(d));
   }
-  if (hwDate && !vals.includes(hwDate)) groups.unshift({ label: 'تاریخ فعلی', days: [fromIso(hwDate)] });
+  let val = get();
+  if (val && !vals.includes(val)) groups.unshift({ label: 'تاریخ فعلی', days: [fromIso(val)] });
   const tIso = iso(t);
-  const sum = h('div', { class: 'dp-sum' }, fmt(fromIso(hwDate), FULLW));
-  const dp = $('#datePick');
+  const wname = d => dayName(d.getDay()) || fmt(d, { weekday: 'long' });
+  const sum = h('div', { class: 'dp-sum' }, val ? fmt(fromIso(val), FULLW) : '');
   dp.replaceChildren(sum, h('div', { class: 'dp-scroll' }, ...groups.map(g => h('div', { class: 'dp-week' },
     h('span', { class: 'dp-wk' }, g.label),
     h('div', { class: 'dp-row' }, ...g.days.map(d => {
       const key = iso(d);
       return h('button', {
-        class: 'dp-day' + (key === hwDate ? ' on' : '') + (key === tIso ? ' today' : ''), type: 'button', 'data-val': key, title: fmt(d, FULLW),
-        'aria-pressed': String(key === hwDate),
+        class: 'dp-day' + (key === val ? ' on' : '') + (key === tIso ? ' today' : ''), type: 'button', 'data-val': key, title: fmt(d, FULLW),
+        'aria-pressed': String(key === val),
         onclick: () => {
-          hwDate = key; sum.textContent = fmt(d, FULLW);
+          val = key; set(key); sum.textContent = fmt(d, FULLW);
           $$('.dp-day', dp).forEach(b => { const on = b.dataset.val === key; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
         },
-      }, h('span', { class: 'w' }, dayName(d.getDay())), h('span', { class: 'd' }, fmt(d, { day: 'numeric' })), h('span', { class: 'm' }, fmt(d, { month: 'long' })));
+      }, h('span', { class: 'w' }, wname(d)), h('span', { class: 'd' }, fmt(d, { day: 'numeric' })), h('span', { class: 'm' }, fmt(d, { month: 'long' })));
     }))))));
 }
+function renderDatePick() { mountDatePicker($('#datePick'), () => hwDate, v => { hwDate = v; }); }
 function renderSubChips() {
   const f = $('#hwForm'), box = $('#subChips');
   const subs = [...new Set([...Object.values(state.schedule).flat().map(p => p.subject), ...state.homework.map(x => x.subject)].filter(Boolean))].slice(0, 16);
@@ -1987,7 +2437,7 @@ async function onHwSubmit(e) {
     persistCache(); if (!editing) { store.del('hw:draft'); loadQuota(); }
     state.date = data.date; state.flash = savedId != null ? String(savedId) : null;
     $('#hwDlg').close();
-    if (state.view === 'schedule') setView('day', { scroll: false }); else renderAll();
+    if (state.view !== 'day' && state.view !== 'agenda') setView('day', { scroll: false }); else renderAll();
     toast(editing ? 'تغییرات ذخیره شد' : 'تکلیف ثبت شد');
   } catch (ex) { err.textContent = ex.message; }
 }
@@ -2044,6 +2494,9 @@ function openAccount() {
   const rows = [];
   if (isStaff(u)) rows.push(row('calendarEdit', 'ویرایش برنامه زنگ‌ها', openSched));
   if (u && u.role === 'admin') rows.push(row('users', 'مدیریت معلم‌ها', openTeachers), row('shield', 'کاربران، IP ها و پرسش‌وپاسخ', openAdmin));
+  if (u && u.role === 'admin') rows.push(row('megaphone', 'ارسال اطلاعیه برای همه', () => openNotifs(true)));
+  if (mqMobile.matches) rows.push(row('clock', 'برنامه زنگ‌ها', () => setView('schedule')));
+  rows.push(row('sparkles', 'چت با هوش مصنوعی (بزودی)', () => setView('ai')));
   rows.push(row('timer', 'تایمر تمرکز', openTimer), row('settings', 'تنظیمات و ظاهر', openSettings));
   if (u) rows.push(row('logout', 'خروج از حساب', logout, 'bad'));
   const head = u
@@ -2181,7 +2634,9 @@ function renderAdmin() {
         h('b', {}, u.name, u.role !== 'student' && h('span', { class: 'badge', style: 'margin-inline-start:6px' }, roleText(u.role, '')), u.banned && bannedBadge()),
         h('span', { class: 'l' }, ipEl(u.username), ' · ', ipEl(u.email || 'بدون ایمیل')),
         h('span', { class: 'l' }, 'آخرین IP: ', ipEl(u.lastIp), ` · آخرین فعالیت: ${seen(u.lastSeen)}`),
-        h('span', { class: 'l' }, `تکلیف: ${fa(u.homework)} · سؤال: ${fa(u.questions)} · پاسخ: ${fa(u.answers)}`)),
+        h('span', { class: 'l' }, `تکلیف: ${fa(u.homework)} · سؤال: ${fa(u.questions)} · پاسخ: ${fa(u.answers)}`),
+        u.role === 'student' && u.limits && h('span', { class: 'l' }, limitsText(u.limits))),
+      u.role === 'student' && btn('سهمیه', 'line', () => openLimits(u)),
       u.role === 'admin' ? null : u.banned ? btn('رفع مسدودی', 'line', () => unban(u.banId)) : btn('مسدود', 'danger', () => openBan('user', u.username, u.name))));
   } else if (adm.tab === 'ips') {
     rows = adm.ips.filter(i => !q || normFa([i.ip, ...i.accounts.map(a => a.name + ' ' + a.username)].join(' ')).includes(q)).map(i => h('li', {},
@@ -2316,6 +2771,329 @@ function renderTimer() {
 }
 function openTimer() { renderTimer(); $('#timerDlg').showModal(); }
 
+/* ================= امتحان‌ها ================= */
+const nextExam = () => { const t = iso(today()); return state.exams.filter(x => x.date >= t).sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : byCreated(a, b)))[0] || null; };
+function examCard(it, o = {}) {
+  const d = fromIso(it.date), diff = Math.round((d - today()) / 864e5), role = roleText(it.authorRole, it.authorSubject), editable = canEdit(it);
+  const ib = (icon, label, fn, cls = '') => h('button', { class: 'ib sm ' + cls, type: 'button', 'aria-label': label, title: label, onclick: fn }, ic(icon));
+  return h('article', { class: 'ex' + (diff < 0 ? ' past' : '') + (o.anim ? ' enter' : ''), style: `--h:${hue(it.subject)};--i:${Math.min(o.i || 0, 8)}`, 'data-id': String(it.id) },
+    h('div', { class: 'ex-date', 'aria-hidden': 'true' },
+      h('span', { class: 'w' }, dayName(d.getDay()) || fmt(d, { weekday: 'long' })),
+      h('span', { class: 'd' }, fmt(d, { day: 'numeric' })),
+      h('span', { class: 'm' }, fmt(d, { month: 'long' }))),
+    h('div', { class: 'ex-body' },
+      h('div', { class: 'ex-top' },
+        h('div', { class: 'ex-title' }, h('span', { class: 'pill' }, it.subject), h('span', { class: 'cd' + (diff === 0 ? ' hot' : diff > 0 && diff <= 3 ? ' soon' : '') }, relLabel(d))),
+        h('div', { class: 'hw-actions' },
+          ib('copy', 'کپی یا اشتراک این امتحان', () => shareOrCopy(examText(it), 'امتحان ' + it.subject)),
+          editable && ib('edit', 'ویرایش', () => openEx(it)),
+          editable && ib('trash', 'حذف', () => removeEx(it), 'bad'))),
+      h('p', { class: 'sub', style: 'margin:0' }, fmt(d, FULLW)),
+      it.text && h('p', { class: 'hw-text' }, ...linkify(it.text)),
+      h('div', { class: 'hw-meta' }, h('span', { class: 'av', 'aria-hidden': 'true' }, initial(it.author)), h('span', {}, it.author || ''), role && h('span', { class: 'role' }, role))));
+}
+function examText(it) {
+  return `📝 امتحان ${it.subject} — ${fmt(fromIso(it.date), FULLW)}${it.text ? '\n' + it.text : ''}\n\nکلاس ۹۰۱ · دبیرستان شهید بهشتی`;
+}
+function renderExams(anim = true) {
+  const box = $('#exList'); if (!box) return;
+  const f = state.exFilter, t = iso(today());
+  const up = state.exams.filter(x => x.date >= t).length, past = state.exams.length - up;
+  $('#exSeg').replaceChildren(...[['upcoming', 'پیش‌رو', up], ['past', 'گذشته', past]].map(([id, label, n]) => h('button', {
+    type: 'button', role: 'tab', 'aria-selected': String(f === id),
+    onclick: () => { state.exFilter = id; renderExams(true); },
+  }, n ? `${label} (${fa(n)})` : label)));
+  $('#exSub').textContent = f === 'upcoming' ? 'تاریخ و روز هفته‌ی امتحان‌های پیش‌رو' : 'امتحان‌های چند روز اخیر';
+  $('#exRefresh').classList.toggle('spin', !!state.refreshing);
+  if (state.loading && !state.exams.length) { box.replaceChildren(skel(), skel()); return; }
+  if (state.error && !state.homework.length && !state.exams.length) { box.replaceChildren(emptyBox(state.error, 'تلاش دوباره', () => loadAll())); return; }
+  const list = state.exams.filter(x => (f === 'past' ? x.date < t : x.date >= t))
+    .sort((a, b) => (f === 'past' ? -1 : 1) * (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || byCreated(a, b));
+  if (!list.length) {
+    box.replaceChildren(emptyBox(f === 'upcoming' ? 'امتحان پیش‌رویی ثبت نشده است.' : 'امتحان گذشته‌ای وجود ندارد.', f === 'upcoming' && 'ثبت امتحان', onAddExam));
+    return;
+  }
+  const ws0 = weekStartOf(today()), nodes = []; let lastG = null;
+  list.forEach((it, i) => {
+    if (f === 'upcoming') {
+      const w = Math.round((weekStartOf(fromIso(it.date)) - ws0) / (7 * 864e5));
+      const g = w <= 0 ? 'این هفته' : w === 1 ? 'هفته بعد' : `${fa(w)} هفته بعد`;
+      if (g !== lastG) { lastG = g; nodes.push(h('div', { class: 'grp' }, g)); }
+    }
+    nodes.push(examCard(it, { anim, i }));
+  });
+  box.replaceChildren(...nodes);
+  if (state.flashEx) {
+    const id = state.flashEx; state.flashEx = null;
+    requestAnimationFrame(() => {
+      const el = $$('.ex').find(x => x.dataset.id === id); if (!el) return;
+      el.scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' });
+      el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1800);
+    });
+  }
+}
+let exDate = '';
+function onAddExam() {
+  if (!state.user) { state.pendingExam = true; openAuth('login', 'برای ثبت امتحان، وارد شو یا ثبت‌نام کن.'); return; }
+  if (quotaLeft('exam') === 0) { toast('سهمیه‌ی ثبت امتحان امروزت تمام شده است. فردا دوباره امتحان کن.', true); return; }
+  openEx();
+}
+function renderExChips() {
+  const f = $('#exForm'), box = $('#exChips');
+  const subs = [...new Set([...Object.values(state.schedule).flat().map(p => p.subject), ...state.exams.map(x => x.subject), ...state.homework.map(x => x.subject)].filter(Boolean))].slice(0, 16);
+  const v = f.subject.value.trim();
+  box.hidden = !subs.length;
+  box.replaceChildren(...subs.map(sub => h('button', { class: 'schip' + (sub === v ? ' on' : ''), type: 'button', onclick: () => { f.subject.value = sub; renderExChips(); } }, sub)));
+}
+function openEx(it = null) {
+  state.editingEx = it;
+  const f = $('#exForm');
+  $('#exTitle').textContent = it ? 'ویرایش امتحان' : 'ثبت امتحان';
+  $('#exSave').textContent = it ? 'ذخیره تغییرات' : 'ثبت امتحان';
+  exDate = it?.date || startDate();
+  mountDatePicker($('#exDatePick'), () => exDate, v => { exDate = v; }, { weeks: 16 });
+  f.subject.value = it?.subject ?? ''; f.text.value = it?.text ?? '';
+  $('#exCount').textContent = `${fa(f.text.value.length)} / ${fa(600)}`;
+  renderExChips();
+  const ql = quotaLeft('exam');
+  $('#exQuota').textContent = !it && ql !== null ? (ql > 0 ? `امروز ${fa(ql)} امتحان دیگر می‌توانی ثبت کنی.` : 'سهمیه‌ی ثبت امتحان امروزت تمام شده است.') : '';
+  $('#exErr').textContent = '';
+  $('#exDlg').showModal();
+  requestAnimationFrame(() => $('.dp-day.on', $('#exDatePick'))?.scrollIntoView({ block: 'nearest' }));
+  (it ? f.text : f.subject).focus();
+}
+async function onExSubmit(e) {
+  e.preventDefault();
+  const f = e.target, err = $('#exErr');
+  const data = { date: exDate, subject: f.subject.value.trim(), text: f.text.value.trim() };
+  if (!data.date) { err.textContent = 'تاریخ امتحان را انتخاب کن.'; return; }
+  if (!data.subject) { err.textContent = 'نام درس را وارد کن.'; return; }
+  const editing = state.editingEx;
+  try {
+    let savedId = editing?.id;
+    await busy($('#exSave'), async () => {
+      if (editing) {
+        const up = await backend.updateExam(editing.id, data);
+        state.exams = state.exams.map(x => x.id === editing.id ? { ...x, ...data, ...(up || {}) } : x);
+      } else {
+        const created = await backend.addExam(data);
+        state.exams.push(created); savedId = created && created.id;
+      }
+    });
+    persistCache(); if (!editing) loadQuota();
+    state.exFilter = 'upcoming'; state.flashEx = savedId != null ? String(savedId) : null;
+    $('#exDlg').close(); setView('exams', { scroll: false });
+    toast(editing ? 'تغییرات ذخیره شد' : 'امتحان ثبت شد');
+  } catch (ex) { err.textContent = ex.message; }
+}
+async function removeEx(it) {
+  if (!await confirmBox({ title: 'حذف امتحان', message: `امتحان «${it.subject}» برای همه حذف شود؟`, ok: 'حذف' })) return;
+  try {
+    await backend.deleteExam(it.id);
+    state.exams = state.exams.filter(x => x.id !== it.id);
+    persistCache(); renderAll({ anim: false }); toast('امتحان حذف شد');
+  } catch (ex) { toast(ex.message, true); }
+}
+function onFab() {
+  const v = effView();
+  if (v === 'exams') onAddExam(); else if (v === 'personal') openPe(); else onAdd();
+}
+
+/* ================= برنامه و فعالیت‌های شخصی (فقط localStorage) ================= */
+const WEEK7 = [{ id: 6, name: 'شنبه' }, { id: 0, name: 'یکشنبه' }, { id: 1, name: 'دوشنبه' }, { id: 2, name: 'سه‌شنبه' }, { id: 3, name: 'چهارشنبه' }, { id: 4, name: 'پنج‌شنبه' }, { id: 5, name: 'جمعه' }];
+const wdName = id => (WEEK7.find(d => d.id === id) || {}).name || '';
+const toMin = t => { const [a, b] = String(t).split(':').map(Number); return (a || 0) * 60 + (b || 0); };
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const pOn = dateIso => {
+  const wd = fromIso(dateIso).getDay();
+  return personal.list.filter(x => (x.kind === 'weekly' ? x.wd === wd : x.date === dateIso))
+    .sort((a, b) => toMin(a.start) - toMin(b.start) || toMin(a.end) - toMin(b.end));
+};
+const dateInWeek = (baseIso, wd) => iso(addDays(weekStartOf(fromIso(baseIso)), (wd - 6 + 7) % 7));
+function prunePersonal() {
+  const cutoff = iso(addDays(today(), -90)), before = personal.list.length;
+  personal.list = personal.list.filter(x => x.kind === 'weekly' || (x.date || '') >= cutoff);
+  if (personal.list.length !== before) personal.save();
+  const keep = new Set(personal.list.map(x => x.id)); let ch = false;
+  for (const k of Object.keys(personal.done)) { if (!keep.has(k.split('|')[0])) { delete personal.done[k]; ch = true; } }
+  if (ch) personal.saveDone();
+}
+function peCard(it, dateIso, o = {}) {
+  const k = it.id + '|' + dateIso, done = !!personal.done[k], n = new Date(), nowM = n.getHours() * 60 + n.getMinutes();
+  const live = dateIso === iso(today()) && toMin(it.start) <= nowM && nowM < toMin(it.end);
+  const clash = pOn(dateIso).some(x => x !== it && toMin(x.start) < toMin(it.end) && toMin(it.start) < toMin(x.end));
+  const ib = (icon, label, fn, cls = '') => h('button', { class: 'ib sm ' + cls, type: 'button', 'aria-label': label, title: label, onclick: fn }, ic(icon));
+  return h('article', { class: 'pe' + (done ? ' done' : '') + (live ? ' live' : '') + (o.anim ? ' enter' : ''), style: `--h:${hue(it.title)};--i:${Math.min(o.i || 0, 8)}` },
+    h('button', { class: 'chk', type: 'button', role: 'checkbox', 'aria-checked': String(done), 'aria-label': done ? 'علامت انجام‌شدن را بردار' : 'علامت‌گذاری به‌عنوان انجام‌شده',
+      onclick: () => { if (personal.done[k]) delete personal.done[k]; else personal.done[k] = Date.now(); personal.saveDone(); renderPersonal(false); } }, ic('check')),
+    h('div', { class: 'pe-time', dir: 'ltr' }, faD(it.start), h('i', {}, 'تا'), faD(it.end)),
+    h('div', { class: 'pe-main' },
+      h('div', { class: 'pe-name' }, it.title),
+      (it.kind === 'weekly' || live || clash) && h('div', { class: 'pe-badges' },
+        it.kind === 'weekly' && h('span', { class: 'badge' }, 'هر هفته'),
+        live && h('span', { class: 'badge' }, 'همین الان'),
+        clash && h('span', { class: 'badge bad' }, 'هم‌پوشانی دارد')),
+      it.note && h('p', { class: 'pe-note' }, it.note)),
+    h('div', { class: 'hw-actions' }, ib('edit', 'ویرایش', () => openPe(it)), ib('trash', 'حذف', () => removePe(it), 'bad')));
+}
+function renderPersonal(anim = true) {
+  const box = $('#peList'); if (!box) return;
+  const sel = fromIso(state.pDate), ws = weekStartOf(sel), t = iso(today());
+  $('#peLabel').textContent = `${fmt(ws, SHORT)} تا ${fmt(addDays(ws, 6), FULL)}`;
+  $('#peToday').hidden = state.pDate === t;
+  $('#peTabs').replaceChildren(...WEEK7.map((d, i) => {
+    const dt = addDays(ws, i), key = iso(dt), n = pOn(key).length, selected = key === state.pDate;
+    return h('button', { class: 'day' + (key < t ? ' past' : '') + (key === t ? ' is-today' : ''), type: 'button', 'aria-selected': String(selected),
+      'aria-label': fmt(dt, FULLW) + (n ? ` (${fa(n)} فعالیت)` : ''), onclick: () => { state.pDate = key; renderPersonal(false); } },
+      h('span', { class: 'dn' }, d.name), h('span', { class: 'dd' }, fmt(dt, { day: 'numeric' })), h('span', { class: 'dm' }, fmt(dt, { month: 'long' })),
+      h('span', { class: 'dots', 'aria-hidden': 'true' }, ...(n ? [h('i', { class: 'dot', style: '--h:244' }), n > 1 && h('small', {}, '+' + fa(n - 1))] : [])));
+  }));
+  const items = pOn(state.pDate);
+  if (!items.length) {
+    box.replaceChildren(h('div', { class: 'empty' }, ic('task', 'empty-ic'), h('p', {}, `برای ${wdName(sel.getDay())} ${fmt(sel, SHORT)} فعالیتی نداری.`), h('button', { class: 'btn', type: 'button', onclick: () => openPe() }, 'افزودن فعالیت')));
+    return;
+  }
+  box.replaceChildren(...items.map((it, i) => peCard(it, state.pDate, { anim, i })));
+}
+let peKind = 'once', peDate = '', peWd = 0;
+function renderPeKind() {
+  $$('#peKind [data-kind]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.kind === peKind)));
+  $('#peOnceBox').hidden = peKind !== 'once'; $('#peWeeklyBox').hidden = peKind !== 'weekly';
+  if (peKind === 'once') mountDatePicker($('#peDatePick'), () => peDate, v => { peDate = v; }, { weeks: 12, allDays: true });
+  $('#peWd').replaceChildren(...WEEK7.map(d => h('button', { class: 'schip' + (d.id === peWd ? ' on' : ''), type: 'button', onclick: () => { peWd = d.id; renderPeKind(); } }, d.name)));
+}
+function openPe(it = null) {
+  state.editingPe = it;
+  const f = $('#peForm');
+  $('#peTitle').textContent = it ? 'ویرایش فعالیت' : 'فعالیت شخصی جدید';
+  $('#peSave').textContent = it ? 'ذخیره تغییرات' : 'ذخیره';
+  peKind = it?.kind || 'once'; peDate = it?.date || state.pDate; peWd = it?.wd ?? fromIso(state.pDate).getDay();
+  f.ptitle.value = it?.title ?? ''; f.pstart.value = it?.start ?? '16:00'; f.pend.value = it?.end ?? '17:00'; f.pnote.value = it?.note ?? '';
+  $('#peErr').textContent = ''; renderPeKind();
+  $('#peDlg').showModal(); f.ptitle.focus();
+}
+function onPeSubmit(e) {
+  e.preventDefault();
+  const f = e.target, err = $('#peErr');
+  const title = f.ptitle.value.trim().replace(/\s+/g, ' '), start = f.pstart.value, end = f.pend.value, note = f.pnote.value.trim();
+  if (!title) { err.textContent = 'عنوان فعالیت را بنویس.'; return; }
+  if (!start || !end) { err.textContent = 'ساعت شروع و پایان را وارد کن.'; return; }
+  if (toMin(end) <= toMin(start)) { err.textContent = 'ساعت پایان باید بعد از ساعت شروع باشد.'; return; }
+  if (peKind === 'once' && !peDate) { err.textContent = 'تاریخ را انتخاب کن.'; return; }
+  const item = { id: state.editingPe?.id || uid(), title, kind: peKind, date: peKind === 'once' ? peDate : '', wd: peKind === 'weekly' ? peWd : null, start, end, note };
+  if (state.editingPe) personal.list = personal.list.map(x => x.id === item.id ? item : x); else personal.list.push(item);
+  personal.save();
+  state.pDate = peKind === 'once' ? peDate : dateInWeek(state.pDate, peWd);
+  $('#peDlg').close(); renderPersonal(true); toast(state.editingPe ? 'تغییرات ذخیره شد' : 'فعالیت ذخیره شد');
+}
+async function removePe(it) {
+  if (!await confirmBox({ title: 'حذف فعالیت', message: `«${it.title}»${it.kind === 'weekly' ? ' (و تکرار هفتگی‌اش)' : ''} حذف شود؟`, ok: 'حذف' })) return;
+  personal.list = personal.list.filter(x => x.id !== it.id); personal.save();
+  for (const k of Object.keys(personal.done)) if (k.startsWith(it.id + '|')) delete personal.done[k];
+  personal.saveDone(); renderPersonal(false); toast('فعالیت حذف شد');
+}
+
+/* ================= اعلان‌ها و اطلاعیه‌ها ================= */
+const NKIND = { announcement: ['megaphone', ''], answer: ['chat', 'ok'], removed: ['trash', 'bad'], exam: ['exam', 'warn'] };
+function renderNotifBtn() {
+  const b = $('#notifBtn'); if (!b) return;
+  if (!state.user) { const x = $('.nbadge', b); if (x) x.remove(); b.setAttribute('aria-label', 'اعلان‌ها'); return; }
+  const n = state.notifs.unread; let badge = $('.nbadge', b);
+  if (n > 0) { if (!badge) { badge = h('span', { class: 'nbadge', 'aria-hidden': 'true' }); b.append(badge); } badge.textContent = n > 99 ? '۹۹+' : fa(n); }
+  else if (badge) badge.remove();
+  b.setAttribute('aria-label', n ? `اعلان‌ها (${fa(n)} خوانده‌نشده)` : 'اعلان‌ها');
+}
+async function loadNotifs() {
+  if (!state.user || !API_READY) return;
+  try {
+    const prev = state.notifs.unread, was = state.notifs.loaded;
+    const r = await backend.notifications();
+    state.notifs = { items: Array.isArray(r.items) ? r.items : [], unread: r.unread || 0, loaded: true };
+    if (was && state.notifs.unread > prev && !$('#notifDlg').open) { const n = state.notifs.items[0]; toast(n ? n.title : 'اعلان جدید داری'); }
+    renderNotifBtn(); if ($('#notifDlg').open) renderNotifList();
+  } catch {}
+}
+async function markNotifsRead() {
+  if (!state.notifs.unread) return;
+  try { await backend.readNotifs(); state.notifs.unread = 0; renderNotifBtn(); } catch {}
+}
+function notifCard(n) {
+  const [icon, tone] = NKIND[n.kind] || ['bell', ''];
+  const isAdmin = state.user && state.user.role === 'admin';
+  return h('div', { class: 'nitem' + (n.unread ? ' unread' : '') },
+    h('button', { class: 'nmain', type: 'button', onclick: () => openNotifLink(n) },
+      h('span', { class: 'nic ' + tone }, ic(icon)),
+      h('span', { class: 'nbody' }, h('b', {}, n.title, n.unread && h('i', { class: 'udot' })), n.body && h('p', {}, n.body), h('small', {}, ago(n.createdAt)))),
+    isAdmin && n.kind === 'announcement' && n.broadcast && h('button', { class: 'ib sm bad', type: 'button', 'aria-label': 'حذف اطلاعیه', title: 'حذف اطلاعیه', onclick: () => removeAnnouncement(n) }, ic('trash')));
+}
+function renderNotifList() {
+  const items = state.notifs.items;
+  $('#nList').replaceChildren(...(items.length ? items.map(notifCard) : [h('div', { class: 'hint' }, 'هنوز اعلانی نداری.')]));
+}
+async function openNotifs(compose = false) {
+  if (!state.user) { openAuth('login', 'برای دیدن اعلان‌ها وارد شو.'); return; }
+  const isAdmin = state.user.role === 'admin', det = $('#annDet');
+  det.hidden = !isAdmin; det.open = false; $('#annErr').textContent = '';
+  $('#annSum').replaceChildren(ic('megaphone'), 'ارسال اطلاعیه برای همه');
+  renderNotifList(); $('#notifDlg').showModal();
+  if (compose && isAdmin) { det.open = true; $('#annTitle').focus(); }
+  await loadNotifs(); await markNotifsRead();
+}
+function openNotifLink(n) {
+  const link = n.link || '';
+  if (link.startsWith('hw:')) {
+    const id = link.slice(3), it = state.homework.find(x => String(x.id) === id);
+    if (!it) { toast('این تکلیف دیگر وجود ندارد', true); return; }
+    $('#notifDlg').close(); state.date = it.date; state.flash = id; state.qaOpen.add(id);
+    setView('day', { scroll: false }); loadQA(it, true);
+  } else if (link.startsWith('exam:')) {
+    const id = link.slice(5);
+    if (!state.exams.some(x => String(x.id) === id)) { toast('این امتحان دیگر وجود ندارد', true); return; }
+    $('#notifDlg').close(); state.exFilter = 'upcoming'; state.flashEx = id; setView('exams', { scroll: false });
+  }
+}
+async function onAnnSubmit(e) {
+  e.preventDefault();
+  const f = e.target, err = $('#annErr'), title = f.atitle.value.trim(), body = f.abody.value.trim();
+  if (title.length < 3) { err.textContent = 'عنوان اطلاعیه را بنویس (حداقل ۳ حرف).'; return; }
+  try {
+    await busy($('#annSend'), () => backend.sendAnnouncement({ title, body }));
+    f.reset(); err.textContent = ''; $('#annDet').open = false; toast('اطلاعیه برای همه ارسال شد');
+    await loadNotifs(); await markNotifsRead();
+  } catch (ex) { err.textContent = ex.message; }
+}
+async function removeAnnouncement(n) {
+  if (!await confirmBox({ title: 'حذف اطلاعیه', message: 'این اطلاعیه برای همه‌ی کاربران پاک شود؟', ok: 'حذف' })) return;
+  try { await backend.deleteAnnouncement(n.id); toast('اطلاعیه حذف شد'); await loadNotifs(); } catch (ex) { toast(ex.message, true); }
+}
+
+/* ================= سهمیه‌ی روزانه‌ی هر کاربر (مدیر) ================= */
+const LIM_KINDS = ['homework', 'question', 'answer'];
+const LIM_NAME = { homework: 'تکلیف', question: 'سؤال', answer: 'پاسخ' };
+const limitsText = L => 'سهمیه‌ی روزانه: ' + LIM_KINDS.map(k => `${LIM_NAME[k]} ${fa(L[k].value)}${L[k].custom ? '*' : ''}`).join(' · ');
+let limTarget = null;
+function openLimits(u) {
+  limTarget = u; const f = $('#limForm');
+  $('#limSub').textContent = `${u.name} (${u.username})`;
+  LIM_KINDS.forEach(k => { const el = f['l_' + k]; el.value = u.limits[k].custom ? u.limits[k].value : ''; el.placeholder = `پیش‌فرض: ${fa(u.limits[k].default)}`; });
+  $('#limErr').textContent = ''; $('#limDlg').showModal();
+}
+async function onLimSubmit(e) {
+  e.preventDefault();
+  const f = e.target, err = $('#limErr'), payload = {};
+  for (const k of LIM_KINDS) {
+    const raw = f['l_' + k].value.trim();
+    if (raw === '') { payload[k] = null; continue; }
+    const n = Number(raw);
+    if (!Number.isInteger(n) || n < 0 || n > 100) { err.textContent = 'هر سهمیه باید عددی بین ۰ تا ۱۰۰ باشد.'; return; }
+    payload[k] = n;
+  }
+  try {
+    const res = await busy($('#limSave'), () => backend.setLimits(limTarget.username, payload));
+    limTarget.limits = res; renderAdmin(); $('#limDlg').close(); toast('سهمیه ذخیره شد');
+  } catch (ex) { err.textContent = ex.message; }
+}
+
 /* ================= شروع ================= */
 function init() {
   $('#year').textContent = String(new Date().getFullYear());
@@ -2333,7 +3111,7 @@ function init() {
   $('#brand').addEventListener('click', e => { e.preventDefault(); state.date = startDate(); setView('day'); });
   $$('.topnav [data-view], .bnav [data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
   $('#addBtn').addEventListener('click', onAdd);
-  $('#fab').addEventListener('click', onAdd);
+  $('#fab').addEventListener('click', onFab);
   $('#refreshBtn').addEventListener('click', () => loadAll());
   $('#agRefresh').addEventListener('click', () => loadAll());
   $('#shareDay').addEventListener('click', () => {
@@ -2342,8 +3120,6 @@ function init() {
   });
   $('#moreBtn').addEventListener('click', openAccount);
   $('#searchBtn').addEventListener('click', openSearch);
-  $('#timerBtn').addEventListener('click', openTimer);
-  $('#settingsBtn').addEventListener('click', openSettings);
   $('#themeToggle').addEventListener('click', e => setThemePref(effTheme() === 'dark' ? 'light' : 'dark', e.currentTarget));
   $('#fcBtn').addEventListener('click', openTimer);
   $('#timerChip').addEventListener('click', openTimer);
@@ -2381,10 +3157,10 @@ function init() {
   $('#optHideDone').addEventListener('change', e => { prefs.hideDone = e.target.checked; savePrefs(); renderLists(false); });
   $('#optMotion').addEventListener('change', e => { prefs.motion = e.target.checked; savePrefs(); });
   $('#clearLocal').addEventListener('click', async () => {
-    const ok = await confirmBox({ title: 'پاک‌کردن داده‌های محلی', message: 'وضعیت «انجام شد»، ستاره‌ها، یادداشت‌ها، پیش‌نویس و حافظه‌ی آفلاین این دستگاه پاک می‌شود. تکلیف‌های اصلی روی سرور می‌مانند.', ok: 'پاک کن' });
+    const ok = await confirmBox({ title: 'پاک‌کردن داده‌های محلی', message: 'وضعیت «انجام شد»، ستاره‌ها، یادداشت‌ها، برنامه‌ی شخصی، پیش‌نویس و حافظه‌ی آفلاین این دستگاه پاک می‌شود. تکلیف‌ها و امتحان‌های اصلی روی سرور می‌مانند.', ok: 'پاک کن' });
     if (!ok) return;
-    local.done = {}; local.star = {}; local.notes = {};
-    ['hw:done', 'hw:star', 'hw:notes', 'hw:draft', 'hw:cache', 'hw:focus'].forEach(store.del);
+    local.done = {}; local.star = {}; local.notes = {}; personal.list = []; personal.done = {};
+    ['hw:done', 'hw:star', 'hw:notes', 'hw:draft', 'hw:cache', 'hw:focus', 'hw:personal', 'hw:pdone'].forEach(store.del);
     state.openNote = null; renderAll({ anim: false }); toast('داده‌های محلی پاک شد');
   });
 
@@ -2401,7 +3177,7 @@ function init() {
     dlg.addEventListener('click', e => { if (e.target === dlg && down) dlg.close(); });
     $$('[data-close]', dlg).forEach(b => b.addEventListener('click', () => dlg.close()));
   });
-  $('#authDlg').addEventListener('close', () => { if (!state.user) state.pendingAdd = false; });
+  $('#authDlg').addEventListener('close', () => { if (!state.user) { state.pendingAdd = false; state.pendingExam = false; } });
 
   // میانبرهای صفحه‌کلید
   document.addEventListener('keydown', e => {
@@ -2410,15 +3186,17 @@ function init() {
     if (typing || $('dialog[open]')) return;
     const c = e.code;
     if (c === 'ArrowLeft' || c === 'ArrowRight') {
-      if (state.view === 'agenda') return;
+      if (state.view !== 'day') return;
       stepDay(c === 'ArrowLeft' ? 1 : -1); // در راست‌به‌چپ، چپ = روز بعد
       if (tg && tg.classList && tg.classList.contains('day')) $('#tab-' + ((selDate().getDay() - 6 + 7) % 7))?.focus();
     } else if (c === 'KeyT') { state.date = startDate(); setView('day', { scroll: false }); }
-    else if (c === 'KeyN') { e.preventDefault(); onAdd(); }
+    else if (c === 'KeyN') { e.preventDefault(); onFab(); }
     else if (c === 'Slash') { e.preventDefault(); openSearch(); }
     else if (c === 'KeyA') setView('agenda');
     else if (c === 'KeyD') setView('day');
     else if (c === 'KeyF') openTimer();
+    else if (c === 'KeyE') setView('exams');
+    else if (c === 'KeyP') setView('personal');
   });
 
   // کشیدن انگشت روی لیست تکلیف‌ها برای تغییر روز (موبایل)
@@ -2465,6 +3243,31 @@ function init() {
       sp.addEventListener('animationend', () => sp.remove()); setTimeout(() => sp.remove(), 700);
     }, true);
   }
+
+  // بخش‌های جدید
+  $('#viewSeg').addEventListener('click', e => { const b = e.target.closest('[data-vs]'); if (b) setView(b.dataset.vs, { scroll: false }); });
+  $('#exAdd').addEventListener('click', onAddExam);
+  $('#exRefresh').addEventListener('click', () => loadAll());
+  $('#exForm').addEventListener('submit', onExSubmit);
+  $('#exForm').addEventListener('input', e => {
+    if (e.target.name === 'text') $('#exCount').textContent = `${fa(e.target.value.length)} / ${fa(600)}`;
+    if (e.target.name === 'subject') renderExChips();
+  });
+  $('#peAdd').addEventListener('click', () => openPe());
+  $('#peForm').addEventListener('submit', onPeSubmit);
+  $('#peKind').addEventListener('click', e => { const b = e.target.closest('[data-kind]'); if (b) { peKind = b.dataset.kind; renderPeKind(); } });
+  $('#pePrev').addEventListener('click', () => { state.pDate = iso(addDays(fromIso(state.pDate), -7)); renderPersonal(false); });
+  $('#peNext').addEventListener('click', () => { state.pDate = iso(addDays(fromIso(state.pDate), 7)); renderPersonal(false); });
+  $('#peToday').addEventListener('click', () => { state.pDate = iso(today()); renderPersonal(false); });
+  $('#notifBtn').addEventListener('click', () => openNotifs());
+  $('#annForm').addEventListener('submit', onAnnSubmit);
+  $('#limForm').addEventListener('submit', onLimSubmit);
+  $('#limReset').addEventListener('click', () => { LIM_KINDS.forEach(k => { $('#limForm')['l_' + k].value = ''; }); $('#limForm').requestSubmit(); });
+  prunePersonal();
+  setInterval(() => { if (!document.hidden && state.user) loadNotifs(); }, 60000);
+  setInterval(() => { if (!document.hidden && effView() === 'personal' && !$('dialog[open]')) renderPersonal(false); }, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && state.user) loadNotifs(); });
+  if (state.user) loadNotifs();
 
   renderAll();
   loadAll();
