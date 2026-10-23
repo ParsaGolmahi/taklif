@@ -884,6 +884,26 @@ input:not([type=checkbox]),select,textarea{border-radius:12px}
 }
 
 
+
+/* ================= وضعیت تایید تکلیف و چت هوشمند ================= */
+.hw.pending{border-style:dashed;border-color:color-mix(in srgb,var(--warn) 55%,var(--line));background:color-mix(in srgb,var(--warn) 6%,var(--card))}
+.badge.warn{background:color-mix(in srgb,var(--warn) 18%,transparent);color:color-mix(in srgb,var(--warn) 75%,var(--text))}
+.badge.ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.ai-wrap{display:flex;flex-direction:column;min-height:460px;max-height:72vh}
+.ai-head-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:18px 22px 12px;border-bottom:1px solid var(--line)}
+.ai-head-bar h2{display:flex;align-items:center;gap:8px;margin:0}
+.ai-log{flex:1;overflow:auto;overscroll-behavior:contain;padding:18px 22px;display:flex;flex-direction:column;gap:12px}
+.ai-empty{margin:auto;text-align:center;max-width:420px;padding:24px 12px;color:var(--muted)}
+.ai-empty .ai-orb{width:68px;height:68px;border-radius:22px;margin:0 auto 12px}
+.ai-empty .ai-orb svg{width:32px;height:32px}
+.bub{max-width:85%;padding:10px 15px;border-radius:18px;font-size:.92rem;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
+.bub.me{align-self:flex-start;background:var(--accent);color:var(--on-accent);border-end-start-radius:6px}
+.bub.ai{align-self:flex-end;background:var(--card-2);border:1px solid var(--line);border-end-end-radius:6px}
+.ai-foot{padding:12px 22px 18px;border-top:1px solid var(--line);display:grid;gap:8px}
+.ai-bar{display:flex;gap:8px;align-items:flex-end}
+.ai-bar textarea{flex:1;min-height:46px;max-height:130px;padding:10px 14px;border-radius:14px;resize:none;line-height:1.7}
+.ai-meta-line{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font-size:.78rem;color:var(--muted)}
+
 </style>
 <script>
 /* اعمال پوسته و تنظیمات ظاهری پیش از رندر (جلوگیری از فلش) */
@@ -911,7 +931,7 @@ input:not([type=checkbox]),select,textarea{border-radius:12px}
 
 <header class="top" id="top">
   <div class="wrap top-in">
-    <a class="brand" href="./" id="brand">
+    <a class="brand" href="#main" id="brand">
       <span class="logo" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5z"/><path d="M12 6.5v13"/></svg>
       </span>
@@ -925,7 +945,7 @@ input:not([type=checkbox]),select,textarea{border-radius:12px}
       <button type="button" data-view="day" aria-label="تکلیف‌ها" title="تکلیف‌ها" data-ic="calendar"><span>تکلیف‌ها</span></button>
       <button type="button" data-view="exams" aria-label="امتحان‌ها" title="امتحان‌ها" data-ic="exam"><span>امتحان‌ها</span></button>
       <button type="button" data-view="personal" aria-label="برنامه من" title="برنامه من" data-ic="task"><span>برنامه من</span></button>
-      <button type="button" data-view="ai" aria-label="هوش مصنوعی" title="هوش مصنوعی" data-ic="sparkles"><span>هوش مصنوعی</span><em class="soon">بزودی</em></button>
+      <button type="button" data-view="ai" aria-label="هوش مصنوعی" title="هوش مصنوعی" data-ic="sparkles"><span>هوش مصنوعی</span><em class="soon">هوشمند</em></button>
     </nav>
 
     <div class="top-actions">
@@ -1033,19 +1053,27 @@ input:not([type=checkbox]),select,textarea{border-radius:12px}
       </section>
 
       <section class="sheet" id="aiSheet">
-        <div class="ai-soon">
-          <div class="ai-orb" aria-hidden="true" data-ic="sparkles"></div>
-          <span class="soon-badge">بزودی</span>
-          <h2>چت با هوش مصنوعی</h2>
-          <p>دستیار هوشمند کلاس به‌زودی اینجا فعال می‌شود: سؤال درسی بپرس، توضیح مبحث بخواه و برای امتحان برنامه‌ی مطالعه بگیر.</p>
-          <div class="ai-feats" aria-hidden="true">
-            <span class="badge">توضیح درس‌ها</span><span class="badge">کمک در حل تمرین</span><span class="badge">برنامه‌ریزی مطالعه</span>
+        <div class="ai-wrap">
+          <div class="ai-head-bar">
+            <div>
+              <h2>دستیار هوشمند کلاس ۹۰۱</h2>
+              <p class="sub" id="aiSub">پاسخ‌گویی به سؤال‌های درسی، توضیح مفاهیم و برنامه‌ریزی مطالعه (مجهز به Atria-Dawn)</p>
+            </div>
+            <div class="head-actions">
+              <button class="btn line small" id="aiClearBtn" type="button" data-ic="trash">پاک‌کردن گفتگو</button>
+            </div>
           </div>
-          <div class="ai-mock" aria-hidden="true">
-            <div class="bub me">این تکلیف ریاضی را می‌شود ساده‌تر توضیح بدهی؟</div>
-            <div class="bub ai">حتماً! بیا قدم‌به‌قدم جلو برویم…</div>
-            <div class="ai-input"><input disabled tabindex="-1" placeholder="پیامت را بنویس… (بزودی)"><button class="btn" type="button" disabled tabindex="-1">ارسال</button></div>
-          </div>
+          <div class="ai-log" id="aiLog" aria-live="polite"></div>
+          <form class="ai-foot" id="aiForm" novalidate>
+            <div class="ai-bar">
+              <textarea id="aiInput" name="prompt" rows="1" maxlength="2000" placeholder="سؤال درسی خودت را بپرس…"></textarea>
+              <button class="btn" id="aiSendBtn" type="submit">ارسال</button>
+            </div>
+            <div class="ai-meta-line">
+              <span id="aiQuotaText"></span>
+              <span>پاسخ‌ها توسط هوش مصنوعی تولید می‌شوند؛ همیشه با کتاب درسی مطابقت بده.</span>
+            </div>
+          </form>
         </div>
       </section>
     </div>
@@ -1284,9 +1312,10 @@ input:not([type=checkbox]),select,textarea{border-radius:12px}
   <form class="dlg" id="limForm" novalidate>
     <h3 id="limTitle">سهمیه‌ی روزانه</h3>
     <p class="sub" id="limSub"></p>
-    <div class="field"><label for="limHw">ثبت تکلیف در روز</label><input id="limHw" name="l_homework" type="number" inputmode="numeric" min="0" max="100" class="ltr"></div>
-    <div class="field"><label for="limQ">پرسیدن سؤال در روز</label><input id="limQ" name="l_question" type="number" inputmode="numeric" min="0" max="100" class="ltr"></div>
-    <div class="field"><label for="limA">پاسخ دادن در روز</label><input id="limA" name="l_answer" type="number" inputmode="numeric" min="0" max="100" class="ltr"></div>
+    <div class="field"><label for="limHw">ثبت تکلیف در روز</label><input id="limHw" name="l_homework" type="number" inputmode="numeric" min="0" max="200" class="ltr"></div>
+    <div class="field"><label for="limQ">پرسیدن سؤال در روز</label><input id="limQ" name="l_question" type="number" inputmode="numeric" min="0" max="200" class="ltr"></div>
+    <div class="field"><label for="limA">پاسخ دادن در روز</label><input id="limA" name="l_answer" type="number" inputmode="numeric" min="0" max="200" class="ltr"></div>
+    <div class="field"><label for="limAi">پیام به هوش مصنوعی در روز (پیش‌فرض دانش‌آموز: ۰)</label><input id="limAi" name="l_ai" type="number" inputmode="numeric" min="0" max="200" class="ltr"></div>
     <p class="sub" style="margin-top:10px">خالی بگذاری، مقدار پیش‌فرض اعمال می‌شود. عدد ۰ یعنی آن کار برای این کاربر بسته است.</p>
     <p class="ferr" id="limErr" role="alert"></p>
     <div class="dlg-actions">
@@ -1592,6 +1621,16 @@ const session = {
   set(v) { try { localStorage.setItem('session', JSON.stringify(v)); } catch {} },
   clear() { try { localStorage.removeItem('session'); } catch {} },
 };
+function getDeviceId() {
+  try {
+    let id = localStorage.getItem('hw:devid');
+    if (!id || !/^[a-zA-Z0-9_-]{8,64}$/.test(id)) {
+      id = 'dev_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem('hw:devid', id);
+    }
+    return id;
+  } catch { return ''; }
+}
 
 const ACCENTS = [
   { id: 'indigo', n: 'نیلی', h: 244, s: 85, l: 60 },
@@ -1643,6 +1682,8 @@ const state = {
   exFilter: 'upcoming', editingEx: null, flashEx: null, pendingExam: false,
   notifs: { items: [], unread: 0, loaded: false },
   pDate: iso(today()), editingPe: null,
+  aiMsgs: (() => { const v = store.get('hw:ai_msgs', []); return Array.isArray(v) ? v : []; })(),
+  aiSending: false,
 };
 // برنامه‌ی شخصی: فقط در localStorage همین مرورگر (هیچ‌وقت به سرور نمی‌رود)
 const personal = {
@@ -1657,6 +1698,8 @@ function persistCache() { state.cacheTs = Date.now(); store.set('hw:cache', { t:
 const remote = {
   async req(path, { method = 'GET', body } = {}) {
     const headers = {};
+    const devId = getDeviceId();
+    if (devId) headers['X-Device-Id'] = devId;
     if (body) headers['Content-Type'] = 'application/json';
     const s = session.get();
     if (s?.token) headers.Authorization = 'Bearer ' + s.token;
@@ -1715,6 +1758,8 @@ const remote = {
   sendAnnouncement: d => remote.req('/api/admin/announcements', { method: 'POST', body: d }),
   deleteAnnouncement: id => remote.req('/api/admin/announcements/' + id, { method: 'DELETE' }),
   setLimits: (u, d) => remote.req('/api/admin/users/' + encodeURIComponent(u) + '/limits', { method: 'PUT', body: d }),
+  approveHomework: id => remote.req('/api/homework/' + id + '/approve', { method: 'POST' }),
+  aiChat: d => remote.req('/api/ai/chat', { method: 'POST', body: d }),
 };
 const backend = remote;
 const API_READY = !!CONFIG.API_BASE && !CONFIG.API_BASE.includes('YOUR-APP');
@@ -1950,7 +1995,9 @@ function hwCard(it, o = {}) {
       }, note));
   }
   const role = roleText(it.authorRole, it.authorSubject);
-  const card = h('article', { class: 'hw' + (done ? ' done' : '') + (o.anim ? ' enter' : ''), style: `--h:${hue(it.subject)};--i:${Math.min(o.i || 0, 8)}`, 'data-id': id },
+  const pending = it.status === 'pending';
+  const staff = isStaff(state.user);
+  const card = h('article', { class: 'hw' + (done ? ' done' : '') + (pending ? ' pending' : '') + (o.anim ? ' enter' : ''), style: `--h:${hue(it.subject)};--i:${Math.min(o.i || 0, 8)}`, 'data-id': id },
     h('button', {
       class: 'chk' + (state.justDone === id ? ' pop' : ''), type: 'button', role: 'checkbox', 'aria-checked': String(done),
       'aria-label': done ? 'علامت انجام‌شدن را بردار' : 'علامت‌گذاری به‌عنوان انجام‌شده', title: done ? 'انجام شده' : 'انجام شد؟',
@@ -1958,7 +2005,10 @@ function hwCard(it, o = {}) {
     }, ic('check')),
     h('div', { class: 'hw-body' },
       h('div', { class: 'hw-top' },
-        h('span', { class: 'pill' }, it.subject),
+        h('div', { style: 'display:flex;flex-wrap:wrap;align-items:center;gap:6px' },
+          h('span', { class: 'pill' }, it.subject),
+          pending && h('span', { class: 'badge warn', title: it.aiNote || 'در انتظار تایید معلم یا مدیر' }, 'در انتظار تایید معلم/مدیر'),
+          pending && staff && h('button', { class: 'btn small', type: 'button', style: 'padding:2px 10px;font-size:.76rem', onclick: () => approveHw(it) }, 'تایید انتشار')),
         h('div', { class: 'hw-actions' },
           h('button', { class: 'ib sm' + (starred ? ' on' : ''), type: 'button', 'aria-pressed': String(starred), 'aria-label': starred ? 'برداشتن ستاره' : 'ستاره‌دار کردن', title: starred ? 'برداشتن ستاره' : 'ستاره‌دار کردن', onclick: () => toggleStar(it) }, ic('star')),
           ib('note', 'یادداشت شخصی', () => toggleNote(it)),
@@ -2257,6 +2307,9 @@ function renderNav() {
   if (eff === 'schedule' || eff === 'ai') more.setAttribute('aria-current', 'page'); else more.removeAttribute('aria-current');
   $$('#viewSeg [data-vs]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.vs === eff)));
   const fab = $('#fab');
+  const exAddBtn = $('#exAdd');
+  if (exAddBtn) exAddBtn.hidden = !isStaff(state.user);
+  fab.hidden = (eff === 'exams' && !isStaff(state.user)) || eff === 'ai';
   fab.setAttribute('aria-label', eff === 'exams' ? 'ثبت امتحان جدید' : eff === 'personal' ? 'فعالیت شخصی جدید' : 'ثبت تکلیف جدید');
 }
 
@@ -2266,6 +2319,7 @@ function renderAll({ anim = true, keepLists = false } = {}) {
   const v = effView();
   if (v === 'exams') renderExams(anim);
   if (v === 'personal') renderPersonal(anim);
+  if (v === 'ai') renderAi();
   renderSchedule(); renderTimer();
 }
 function setView(v, { scroll = true } = {}) {
@@ -2324,8 +2378,12 @@ async function onAuthSubmit(e) {
   const f = e.target, err = $('#authErr');
   const data = { username: f.username.value.trim(), password: f.password.value };
   if (authMode === 'register') {
-    data.name = f.fullname.value.trim();
-    if (data.name.length < 3) { err.textContent = 'نام و نام‌خانوادگی را کامل بنویس.'; return; }
+    data.name = f.fullname.value.trim().replace(/\s+/g, ' ');
+    if (data.name.length < 5 || data.name.split(' ').length < 2) { err.textContent = 'نام و نام‌خانوادگی واقعی خودت را کامل (حداقل دو بخش) بنویس.'; return; }
+    if (!/^[\u0600-\u06FF\u200c\s]+$/.test(data.name)) { err.textContent = 'نام و نام‌خانوادگی را فقط با حروف فارسی بنویس.'; return; }
+    if (/مراد[یي]|ابوالفضل|ابولفضل|معلم|دبیر|استاد|مدیر/i.test(data.name) || /m+o*r+a*d+i*|moardi|abolfazl/i.test(data.username + ' ' + f.email.value)) {
+      err.textContent = 'استفاده از نام یا آیدی دبیران (مثل آقای مرادی) مجاز نیست! با مشخصات واقعی خودت ثبت‌نام کن.'; return;
+    }
     data.email = f.email.value.trim().toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email) || data.email.length > 254) { err.textContent = 'ایمیل را درست وارد کن.'; return; }
     if (!/^[A-Za-z0-9_]{3,20}$/.test(data.username)) { err.textContent = 'نام کاربری ۳ تا ۲۰ حرف انگلیسی، عدد یا _ باشد.'; return; }
@@ -2438,8 +2496,17 @@ async function onHwSubmit(e) {
     state.date = data.date; state.flash = savedId != null ? String(savedId) : null;
     $('#hwDlg').close();
     if (state.view !== 'day' && state.view !== 'agenda') setView('day', { scroll: false }); else renderAll();
-    toast(editing ? 'تغییرات ذخیره شد' : 'تکلیف ثبت شد');
+    const savedObj = state.homework.find(x => String(x.id) === String(savedId));
+    if (savedObj && savedObj.status === 'pending') toast('تکلیف ثبت شد و پس از تایید معلم/مدیر برای همه نمایش داده می‌شود');
+    else toast(editing ? 'تغییرات ذخیره شد' : 'تکلیف ثبت شد');
   } catch (ex) { err.textContent = ex.message; }
+}
+async function approveHw(it) {
+  try {
+    const up = await backend.approveHomework(it.id);
+    state.homework = state.homework.map(x => x.id === it.id ? { ...x, ...(up || {}), status: 'approved' } : x);
+    persistCache(); renderAll({ anim: false }); toast('تکلیف تایید و برای همه منتشر شد');
+  } catch (ex) { toast(ex.message, true); }
 }
 async function removeHw(it) {
   const ok = await confirmBox({ title: 'حذف تکلیف', message: `تکلیف «${it.subject}» برای همه حذف شود؟ این کار قابل بازگشت نیست.`, ok: 'حذف' });
@@ -2496,7 +2563,7 @@ function openAccount() {
   if (u && u.role === 'admin') rows.push(row('users', 'مدیریت معلم‌ها', openTeachers), row('shield', 'کاربران، IP ها و پرسش‌وپاسخ', openAdmin));
   if (u && u.role === 'admin') rows.push(row('megaphone', 'ارسال اطلاعیه برای همه', () => openNotifs(true)));
   if (mqMobile.matches) rows.push(row('clock', 'برنامه زنگ‌ها', () => setView('schedule')));
-  rows.push(row('sparkles', 'چت با هوش مصنوعی (بزودی)', () => setView('ai')));
+  rows.push(row('sparkles', 'چت با هوش مصنوعی', () => setView('ai')));
   rows.push(row('timer', 'تایمر تمرکز', openTimer), row('settings', 'تنظیمات و ظاهر', openSettings));
   if (u) rows.push(row('logout', 'خروج از حساب', logout, 'bad'));
   const head = u
@@ -2810,7 +2877,7 @@ function renderExams(anim = true) {
   const list = state.exams.filter(x => (f === 'past' ? x.date < t : x.date >= t))
     .sort((a, b) => (f === 'past' ? -1 : 1) * (a.date < b.date ? -1 : a.date > b.date ? 1 : 0) || byCreated(a, b));
   if (!list.length) {
-    box.replaceChildren(emptyBox(f === 'upcoming' ? 'امتحان پیش‌رویی ثبت نشده است.' : 'امتحان گذشته‌ای وجود ندارد.', f === 'upcoming' && 'ثبت امتحان', onAddExam));
+    box.replaceChildren(emptyBox(f === 'upcoming' ? 'امتحان پیش‌رویی ثبت نشده است.' : 'امتحان گذشته‌ای وجود ندارد.', f === 'upcoming' && isStaff(state.user) && 'ثبت امتحان', onAddExam));
     return;
   }
   const ws0 = weekStartOf(today()), nodes = []; let lastG = null;
@@ -2834,8 +2901,8 @@ function renderExams(anim = true) {
 }
 let exDate = '';
 function onAddExam() {
-  if (!state.user) { state.pendingExam = true; openAuth('login', 'برای ثبت امتحان، وارد شو یا ثبت‌نام کن.'); return; }
-  if (quotaLeft('exam') === 0) { toast('سهمیه‌ی ثبت امتحان امروزت تمام شده است. فردا دوباره امتحان کن.', true); return; }
+  if (!state.user) { state.pendingExam = true; openAuth('login', 'ثبت امتحان فقط مخصوص معلم و مدیر است.'); return; }
+  if (!isStaff(state.user)) { toast('فقط معلم یا مدیر می‌تواند امتحان ثبت کند.', true); return; }
   openEx();
 }
 function renderExChips() {
@@ -3068,9 +3135,9 @@ async function removeAnnouncement(n) {
 }
 
 /* ================= سهمیه‌ی روزانه‌ی هر کاربر (مدیر) ================= */
-const LIM_KINDS = ['homework', 'question', 'answer'];
-const LIM_NAME = { homework: 'تکلیف', question: 'سؤال', answer: 'پاسخ' };
-const limitsText = L => 'سهمیه‌ی روزانه: ' + LIM_KINDS.map(k => `${LIM_NAME[k]} ${fa(L[k].value)}${L[k].custom ? '*' : ''}`).join(' · ');
+const LIM_KINDS = ['homework', 'question', 'answer', 'ai'];
+const LIM_NAME = { homework: 'تکلیف', question: 'سؤال', answer: 'پاسخ', ai: 'هوش مصنوعی' };
+const limitsText = L => 'سهمیه‌ی روزانه: ' + LIM_KINDS.filter(k => L[k]).map(k => `${LIM_NAME[k]} ${fa(L[k].value)}${L[k].custom ? '*' : ''}`).join(' · ');
 let limTarget = null;
 function openLimits(u) {
   limTarget = u; const f = $('#limForm');
@@ -3085,13 +3152,85 @@ async function onLimSubmit(e) {
     const raw = f['l_' + k].value.trim();
     if (raw === '') { payload[k] = null; continue; }
     const n = Number(raw);
-    if (!Number.isInteger(n) || n < 0 || n > 100) { err.textContent = 'هر سهمیه باید عددی بین ۰ تا ۱۰۰ باشد.'; return; }
+    if (!Number.isInteger(n) || n < 0 || n > 200) { err.textContent = 'هر سهمیه باید عددی بین ۰ تا ۲۰۰ باشد.'; return; }
     payload[k] = n;
   }
   try {
     const res = await busy($('#limSave'), () => backend.setLimits(limTarget.username, payload));
     limTarget.limits = res; renderAdmin(); $('#limDlg').close(); toast('سهمیه ذخیره شد');
   } catch (ex) { err.textContent = ex.message; }
+}
+
+
+/* ================= چت با هوش مصنوعی (Atria-Dawn) ================= */
+function canChatAi() {
+  if (!state.user) return false;
+  if (state.user.role === 'admin') return true;
+  const q = state.quota && state.quota.ai;
+  return !!(q && q.limit != null && q.limit > 0);
+}
+function renderAi() {
+  const logBox = $('#aiLog'), qTxt = $('#aiQuotaText'), inp = $('#aiInput'), sendBtn = $('#aiSendBtn'), clearBtn = $('#aiClearBtn');
+  if (!logBox) return;
+  const isAdmin = state.user && state.user.role === 'admin';
+  const q = state.quota && state.quota.ai;
+  const left = isAdmin ? null : (q && q.limit != null ? Math.max(0, q.limit - q.used) : 0);
+  const allowed = canChatAi();
+
+  if (!state.user) {
+    qTxt.textContent = 'برای استفاده از هوش مصنوعی، ابتدا وارد حساب خود شو.';
+  } else if (isAdmin) {
+    qTxt.textContent = 'دسترسی مدیر: بدون محدودیت روزانه (مدل Atria-Dawn)';
+  } else if (!allowed) {
+    qTxt.textContent = 'دسترسی چت با هوش مصنوعی برای حساب تو فعال نیست (فقط با تعیین سهمیه توسط مدیر فعال می‌شود).';
+  } else {
+    qTxt.textContent = left > 0 ? `سهمیه‌ی باقی‌مانده امروز تو: ${fa(left)} از ${fa(q.limit)} پیام` : `سهمیه‌ی امروزت (${fa(q.limit)} پیام) تمام شده است.`;
+  }
+
+  const disabled = !state.user || (!isAdmin && (!allowed || left <= 0)) || state.aiSending;
+  inp.disabled = disabled;
+  sendBtn.disabled = disabled;
+  inp.placeholder = !state.user ? 'ابتدا وارد حساب کاربری شو…' : (!isAdmin && !allowed) ? 'دسترسی چت فقط با مجوز مدیر فعال می‌شود…' : (!isAdmin && left <= 0) ? 'سهمیه‌ی پیام امروزت تمام شده است…' : 'سؤال درسی خودت را بپرس…';
+  clearBtn.hidden = !state.aiMsgs.length;
+
+  if (!state.aiMsgs.length) {
+    logBox.replaceChildren(h('div', { class: 'ai-empty' },
+      h('div', { class: 'ai-orb', 'aria-hidden': 'true' }, ic('sparkles')),
+      h('b', { style: 'display:block;font-size:1.05rem;color:var(--text);margin-bottom:4px' }, 'دستیار هوشمند درسی کلاس ۹۰۱'),
+      h('p', { style: 'margin:0;line-height:1.85' },
+        !state.user ? 'برای گفتگو با هوش مصنوعی وارد حساب خود شو.'
+        : (!isAdmin && !allowed) ? 'برای جلوگیری از مصرف بی‌رویه توکن‌ها، دسترسی چت به‌صورت پیش‌فرض بسته است و فقط مدیر می‌تواند برای هر دانش‌آموز سهمیه‌ی روزانه فعال کند.'
+        : 'سؤال درسی‌ات را بنویس تا قدم‌به‌قدم کمکت کنم!')));
+    return;
+  }
+
+  logBox.replaceChildren(...state.aiMsgs.map(m => h('div', { class: 'bub ' + (m.role === 'user' ? 'me' : 'ai') }, m.content)),
+    state.aiSending && h('div', { class: 'bub ai', style: 'opacity:.7' }, 'در حال فکر کردن…'));
+  requestAnimationFrame(() => { logBox.scrollTop = logBox.scrollHeight; });
+}
+async function onAiSubmit(e) {
+  e.preventDefault();
+  if (!state.user) { openAuth('login', 'برای استفاده از هوش مصنوعی وارد شو.'); return; }
+  const inp = $('#aiInput'), prompt = inp.value.trim();
+  if (!prompt || state.aiSending) return;
+  state.aiMsgs.push({ role: 'user', content: prompt });
+  store.set('hw:ai_msgs', state.aiMsgs.slice(-20));
+  inp.value = '';
+  state.aiSending = true;
+  renderAi();
+  try {
+    const res = await backend.aiChat({ messages: state.aiMsgs.slice(-10) });
+    if (res && res.reply) {
+      state.aiMsgs.push({ role: 'assistant', content: res.reply });
+      store.set('hw:ai_msgs', state.aiMsgs.slice(-20));
+    }
+    if (res && res.quota) state.quota = res.quota; else await loadQuota();
+  } catch (ex) {
+    toast(ex.message, true);
+  } finally {
+    state.aiSending = false;
+    renderAi();
+  }
 }
 
 /* ================= شروع ================= */
@@ -3262,7 +3401,10 @@ function init() {
   $('#notifBtn').addEventListener('click', () => openNotifs());
   $('#annForm').addEventListener('submit', onAnnSubmit);
   $('#limForm').addEventListener('submit', onLimSubmit);
-  $('#limReset').addEventListener('click', () => { LIM_KINDS.forEach(k => { $('#limForm')['l_' + k].value = ''; }); $('#limForm').requestSubmit(); });
+  $('#limReset').addEventListener('click', () => { LIM_KINDS.forEach(k => { if ($('#limForm')['l_' + k]) $('#limForm')['l_' + k].value = ''; }); $('#limForm').requestSubmit(); });
+  $('#aiForm').addEventListener('submit', onAiSubmit);
+  $('#aiInput').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#aiForm').requestSubmit(); } });
+  $('#aiClearBtn').addEventListener('click', () => { state.aiMsgs = []; store.del('hw:ai_msgs'); renderAi(); });
   prunePersonal();
   setInterval(() => { if (!document.hidden && state.user) loadNotifs(); }, 60000);
   setInterval(() => { if (!document.hidden && effView() === 'personal' && !$('dialog[open]')) renderPersonal(false); }, 60000);
